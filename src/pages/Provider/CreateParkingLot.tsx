@@ -15,12 +15,12 @@ import LocationSearch from '../../components/Map/LocationSearch';
 import toast from 'react-hot-toast';
 
 const parkingLotSchema = z.object({
-  name: z.string().min(1, 'Parking lot name is required'),
-  description: z.string().min(10, 'Description must be at least 10 characters'),
-  address: z.string().min(1, 'Address is required'),
-  city: z.string().min(1, 'City is required'),
-  state: z.string().min(1, 'State is required'),
-  zipCode: z.string().min(1, 'ZIP code is required'),
+  name: z.string().min(1, 'Parking lot name is required').max(100, 'Name is too long'),
+  description: z.string().min(10, 'Description must be at least 10 characters').max(1000, 'Description is too long'),
+  address: z.string().min(1, 'Address is required').max(255, 'Address is too long'),
+  city: z.string().min(1, 'City is required').max(100, 'City is too long'),
+  state: z.string().min(1, 'State is required').max(50, 'State is too long'),
+  zipCode: z.string().min(1, 'ZIP code is required').max(20, 'ZIP code is too long'),
   totalSpaces: z.number().min(1, 'Must have at least 1 space'),
   carSpaces: z.number().min(0, 'Car spaces cannot be negative'),
   bikeSpaces: z.number().min(0, 'Bike spaces cannot be negative'),
