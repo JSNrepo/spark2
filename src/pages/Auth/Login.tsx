@@ -11,8 +11,8 @@ import Input from '../../components/UI/Input';
 import Card from '../../components/UI/Card';
 
 const loginSchema = z.object({
-  email: z.string().email('Please enter a valid email address'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
+  email: z.string().email('Please enter a valid email address').max(255, 'Email is too long'),
+  password: z.string().min(6, 'Password must be at least 6 characters').max(255, 'Password is too long'),
 });
 
 type LoginFormData = z.infer<typeof loginSchema>;

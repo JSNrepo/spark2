@@ -13,16 +13,16 @@ import LoadingSpinner from '../../components/UI/LoadingSpinner';
 import toast from 'react-hot-toast';
 
 const spaceProviderSchema = z.object({
-  email: z.string().email('Invalid email address'),
-  password: z.string().min(8, 'Password must be at least 8 characters'),
-  confirmPassword: z.string(),
-  firstName: z.string().min(2, 'First name is required'),
-  lastName: z.string().min(2, 'Last name is required'),
-  phone: z.string().min(10, 'Valid phone number is required'),
-  organizationName: z.string().min(2, 'Organization name is required'),
+  email: z.string().email('Invalid email address').max(255, 'Email is too long'),
+  password: z.string().min(8, 'Password must be at least 8 characters').max(255, 'Password is too long'),
+  confirmPassword: z.string().max(255, 'Password is too long'),
+  firstName: z.string().min(2, 'First name is required').max(50, 'First name is too long'),
+  lastName: z.string().min(2, 'Last name is required').max(50, 'Last name is too long'),
+  phone: z.string().min(10, 'Valid phone number is required').max(20, 'Phone number is too long'),
+  organizationName: z.string().min(2, 'Organization name is required').max(100, 'Organization name is too long'),
   organizationType: z.enum(['individual', 'business', 'government', 'nonprofit']),
-  businessLicense: z.string().optional(),
-  taxId: z.string().optional(),
+  businessLicense: z.string().max(100, 'Business license is too long').optional(),
+  taxId: z.string().max(100, 'Tax ID is too long').optional(),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Passwords don't match",
   path: ["confirmPassword"],

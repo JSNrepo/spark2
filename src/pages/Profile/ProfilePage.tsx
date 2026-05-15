@@ -11,16 +11,16 @@ import Input from '../../components/UI/Input';
 import toast from 'react-hot-toast';
 
 const profileSchema = z.object({
-  firstName: z.string().min(2, 'First name must be at least 2 characters'),
-  lastName: z.string().min(2, 'Last name must be at least 2 characters'),
-  email: z.string().email('Please enter a valid email address'),
-  phone: z.string().min(10, 'Please enter a valid phone number'),
+  firstName: z.string().min(2, 'First name must be at least 2 characters').max(50, 'First name is too long'),
+  lastName: z.string().min(2, 'Last name must be at least 2 characters').max(50, 'Last name is too long'),
+  email: z.string().email('Please enter a valid email address').max(255, 'Email is too long'),
+  phone: z.string().min(10, 'Please enter a valid phone number').max(20, 'Phone number is too long'),
 });
 
 const passwordSchema = z.object({
-  currentPassword: z.string().min(6, 'Current password is required'),
-  newPassword: z.string().min(6, 'Password must be at least 6 characters'),
-  confirmPassword: z.string(),
+  currentPassword: z.string().min(6, 'Current password is required').max(255, 'Password is too long'),
+  newPassword: z.string().min(6, 'Password must be at least 6 characters').max(255, 'Password is too long'),
+  confirmPassword: z.string().max(255, 'Password is too long'),
 }).refine((data) => data.newPassword === data.confirmPassword, {
   message: "Passwords don't match",
   path: ["confirmPassword"],

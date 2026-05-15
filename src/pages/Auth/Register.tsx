@@ -11,12 +11,12 @@ import Input from '../../components/UI/Input';
 import Card from '../../components/UI/Card';
 
 const registerSchema = z.object({
-  firstName: z.string().min(2, 'First name must be at least 2 characters'),
-  lastName: z.string().min(2, 'Last name must be at least 2 characters'),
-  email: z.string().email('Please enter a valid email address'),
-  phone: z.string().min(10, 'Please enter a valid phone number'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
-  confirmPassword: z.string(),
+  firstName: z.string().min(2, 'First name must be at least 2 characters').max(50, 'First name is too long'),
+  lastName: z.string().min(2, 'Last name must be at least 2 characters').max(50, 'Last name is too long'),
+  email: z.string().email('Please enter a valid email address').max(255, 'Email is too long'),
+  phone: z.string().min(10, 'Please enter a valid phone number').max(20, 'Phone number is too long'),
+  password: z.string().min(6, 'Password must be at least 6 characters').max(255, 'Password is too long'),
+  confirmPassword: z.string().max(255, 'Password is too long'),
   role: z.enum(['customer', 'owner']),
   terms: z.boolean().refine(val => val === true, 'You must accept the terms and conditions'),
 }).refine((data) => data.password === data.confirmPassword, {
