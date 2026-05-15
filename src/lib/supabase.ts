@@ -405,4 +405,30 @@ export const db = {
       return { data: null, error: err };
     }
   },
+
+  // Storage
+  uploadParkingLotImage: async (file: File, path: string) => {
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${path}-${Math.random()}.${fileExt}`;
+      const filePath = `${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('parking-lot-images')
+        .upload(filePath, file);
+
+      if (uploadError) {
+        throw uploadError;
+      }
+
+      const { data } = supabase.storage
+        .from('parking-lot-images')
+        .getPublicUrl(filePath);
+
+      return { publicUrl: data.publicUrl, error: null };
+    } catch (err) {
+      console.error('Storage error:', err);
+      return { publicUrl: null, error: err };
+    }
+  },
 };
