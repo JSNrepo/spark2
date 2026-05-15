@@ -14,10 +14,14 @@ jobs:
 
     steps:
       # Step 2.1: Automatically approve the Pull Request
-      - name: Auto Approve PR
-        uses: hmarr/auto-approve-action@v4
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+      # Note: GitHub Actions is not permitted to approve pull requests by default when using the built-in GITHUB_TOKEN
+      # If you encounter the error: "GitHub Actions is not permitted to approve pull requests"
+      # it means you are likely attempting to have the workflow approve a PR created by the workflow's user
+      # For now, we will skip the hmarr/auto-approve-action and let human or distinct bot reviewers approve.
+      # - name: Auto Approve PR
+      #   uses: hmarr/auto-approve-action@v4
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
 
       # Step 2.2: Set the PR to automatically merge once status checks pass
       - name: Enable GitHub Auto-Merge
