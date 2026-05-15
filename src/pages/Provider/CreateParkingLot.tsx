@@ -115,7 +115,7 @@ const CreateParkingLot: React.FC = () => {
         latitude: selectedLocation.lat,
         longitude: selectedLocation.lng,
         availableSpaces: data.totalSpaces,
-        images: [], // TODO: Implement image upload
+        images: ['https://images.pexels.com/photos/1004409/pexels-photo-1004409.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop'], // Using a default image as placeholder until file upload is fully implemented
         amenities: selectedAmenities,
         operatingHours: {
           open: data.openTime,

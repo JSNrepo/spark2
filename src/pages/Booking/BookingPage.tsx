@@ -139,8 +139,8 @@ const BookingPage: React.FC = () => {
         endTime: endDateTime.toISOString(),
         totalHours,
         totalAmount,
-        status: 'pending' as 'pending',
-        paymentStatus: 'pending' as 'pending',
+        status: 'pending' as const,
+        paymentStatus: 'pending' as const,
       };
 
       const { data: booking, error } = await db.createBooking(bookingData);
