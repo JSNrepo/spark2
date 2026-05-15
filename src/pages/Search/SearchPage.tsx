@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Search, MapPin, List, Grid } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -19,7 +19,7 @@ const SearchPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'list' | 'map' | 'grid'>('list');
   const [searchQuery, setSearchQuery] = useState(searchParams.get('location') || '');
-  const [selectedCoordinates, setSelectedCoordinates] = useState<{ lat: number; lng: number } | null>(null);
+  const [_selectedCoordinates, setSelectedCoordinates] = useState<{ lat: number; lng: number } | null>(null);
   const [filters, setFilters] = useState<FilterState>({
     priceRange: [0, 50] as [number, number],
     features: {
@@ -33,11 +33,7 @@ const SearchPage: React.FC = () => {
     vehicleType: 'any',
   });
 
-  useEffect(() => {
-    loadParkingLots();
-  }, [searchParams, filters]);
-
-  const loadParkingLots = async () => {
+  const loadParkingLots = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -66,7 +62,11 @@ const SearchPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [searchParams, filters]);
+
+  useEffect(() => {
+    loadParkingLots();
+  }, [loadParkingLots]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();

@@ -48,7 +48,7 @@ const ProfilePage: React.FC = () => {
     resolver: zodResolver(passwordSchema),
   });
 
-  const onProfileSubmit = async (formData: ProfileFormData) => {
+  const onProfileSubmit = async (_formData: ProfileFormData) => {
     setLoading(true);
     try {
       // In a real app, you'd update the user profile
@@ -61,7 +61,7 @@ const ProfilePage: React.FC = () => {
     }
   };
 
-  const onPasswordSubmit = async (formData: PasswordFormData) => {
+  const onPasswordSubmit = async (_formData: PasswordFormData) => {
     setLoading(true);
     try {
       // In a real app, you'd update the password

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { MapPin, DollarSign, Clock, Car } from 'lucide-react';
+import { MapPin, DollarSign, Clock, Car, Image as ImageIcon, Plus, X } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -29,6 +29,7 @@ const parkingLotSchema = z.object({
   monthlyRate: z.number().min(0, 'Monthly rate cannot be negative'),
   openTime: z.string().min(1, 'Opening time is required'),
   closeTime: z.string().min(1, 'Closing time is required'),
+  images: z.array(z.string().url('Must be a valid URL')).max(5, 'Maximum 5 images allowed'),
 });
 
 type ParkingLotFormData = z.infer<typeof parkingLotSchema>;
@@ -43,6 +44,7 @@ const CreateParkingLot: React.FC = () => {
     address: string;
   } | null>(null);
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
+  const [imageUrlInput, setImageUrlInput] = useState('');
 
   const {
     register,
@@ -58,6 +60,7 @@ const CreateParkingLot: React.FC = () => {
       hourlyRate: 0,
       dailyRate: 0,
       monthlyRate: 0,
+      images: [],
     },
   });
 
@@ -101,6 +104,28 @@ const CreateParkingLot: React.FC = () => {
     );
   };
 
+  const handleAddImage = () => {
+    if (!imageUrlInput) return;
+
+    try {
+      new URL(imageUrlInput); // Basic validation
+      const currentImages = watch('images') || [];
+      if (currentImages.length >= 5) {
+        toast.error('Maximum 5 images allowed');
+        return;
+      }
+      setValue('images', [...currentImages, imageUrlInput]);
+      setImageUrlInput('');
+    } catch {
+      toast.error('Please enter a valid URL');
+    }
+  };
+
+  const handleRemoveImage = (index: number) => {
+    const currentImages = watch('images') || [];
+    setValue('images', currentImages.filter((_, i) => i !== index));
+  };
+
   const onSubmit = async (data: ParkingLotFormData) => {
     if (!selectedLocation) {
       toast.error('Please select a location on the map');
@@ -115,7 +140,7 @@ const CreateParkingLot: React.FC = () => {
         latitude: selectedLocation.lat,
         longitude: selectedLocation.lng,
         availableSpaces: data.totalSpaces,
-        images: [], // TODO: Implement image upload
+        images: data.images || [],
         amenities: selectedAmenities,
         operatingHours: {
           open: data.openTime,
@@ -361,6 +386,81 @@ const CreateParkingLot: React.FC = () => {
                     error={errors.monthlyRate?.message}
                     placeholder="0.00"
                   />
+                </div>
+              </div>
+            </Card>
+          </motion.div>
+
+          {/* Images */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.45 }}
+          >
+            <Card className="p-6">
+              <div className="flex items-center mb-6">
+                <ImageIcon className="h-6 w-6 text-blue-600 mr-2" />
+                <h2 className="text-xl font-semibold text-gray-900">Images</h2>
+              </div>
+
+              <div className="space-y-4">
+                <div className="flex space-x-2">
+                  <div className="flex-1">
+                    <Input
+                      label="Image URL"
+                      value={imageUrlInput}
+                      onChange={(e) => setImageUrlInput(e.target.value)}
+                      placeholder="https://example.com/image.jpg"
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          handleAddImage();
+                        }
+                      }}
+                    />
+                  </div>
+                  <div className="pt-7">
+                    <Button
+                      type="button"
+                      onClick={handleAddImage}
+                      disabled={!imageUrlInput || (watchedFields.images?.length || 0) >= 5}
+                      className="px-4"
+                    >
+                      <Plus className="h-5 w-5" />
+                    </Button>
+                  </div>
+                </div>
+
+                {errors.images && (
+                  <p className="text-sm text-red-600">{errors.images.message}</p>
+                )}
+
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-4">
+                  {(watchedFields.images || []).map((url, index) => (
+                    <div key={index} className="relative group aspect-video bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
+                      <img
+                        src={url}
+                        alt={`Parking lot ${index + 1}`}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = 'https://via.placeholder.com/400x300?text=Invalid+Image';
+                        }}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveImage(index)}
+                        className="absolute top-1 right-1 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
+                    </div>
+                  ))}
+
+                  {(!watchedFields.images || watchedFields.images.length === 0) && (
+                    <div className="col-span-full py-8 text-center text-gray-500 border-2 border-dashed border-gray-300 rounded-lg">
+                      No images added yet. Add at least one image URL to show your parking lot.
+                    </div>
+                  )}
                 </div>
               </div>
             </Card>
