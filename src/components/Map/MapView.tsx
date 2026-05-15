@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -184,7 +184,7 @@ const MapView: React.FC<MapViewProps> = ({
   }, [showUserLocation]);
 
   // Calculate distance between two points
-  const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
+  const calculateDistance = useCallback((lat1: number, lon1: number, lat2: number, lon2: number): number => {
     const R = 6371; // Radius of the Earth in kilometers
     const dLat = (lat2 - lat1) * Math.PI / 180;
     const dLon = (lon2 - lon1) * Math.PI / 180;
@@ -194,30 +194,35 @@ const MapView: React.FC<MapViewProps> = ({
       Math.sin(dLon/2) * Math.sin(dLon/2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
     return R * c;
-  };
+  }, []);
 
-  // Filter parking lots based on criteria
-  const filteredParkingLots = parkingLots.filter(lot => {
-    // Vehicle type filter
-    if (filters?.vehicleType && filters.vehicleType !== 'both') {
-      if (filters.vehicleType === 'car' && lot.carSpaces === 0) return false;
-      if (filters.vehicleType === 'bike' && lot.bikeSpaces === 0) return false;
-    }
+  // Filter and process parking lots based on criteria
+  const filteredParkingLots = useMemo(() => {
+    return parkingLots
+      .map(lot => {
+        const distance = userLocation
+          ? calculateDistance(userLocation[0], userLocation[1], lot.latitude, lot.longitude)
+          : undefined;
+        return { ...lot, distance };
+      })
+      .filter(lot => {
+        // Vehicle type filter
+        if (filters?.vehicleType && filters.vehicleType !== 'both') {
+          if (filters.vehicleType === 'car' && lot.carSpaces === 0) return false;
+          if (filters.vehicleType === 'bike' && lot.bikeSpaces === 0) return false;
+        }
 
-    // Rating filter
-    if (filters?.minRating && lot.rating < filters.minRating) return false;
+        // Rating filter
+        if (filters?.minRating && lot.rating < filters.minRating) return false;
 
-    // Distance filter
-    if (filters?.maxDistance && userLocation) {
-      const distance = calculateDistance(
-        userLocation[0], userLocation[1],
-        lot.latitude, lot.longitude
-      );
-      if (distance > filters.maxDistance) return false;
-    }
+        // Distance filter
+        if (filters?.maxDistance && lot.distance !== undefined) {
+          if (lot.distance > filters.maxDistance) return false;
+        }
 
-    return true;
-  });
+        return true;
+      });
+  }, [parkingLots, userLocation, filters, calculateDistance]);
 
   // Get availability level for color coding
   const getAvailabilityLevel = (lot: ParkingLot): 'high' | 'medium' | 'low' => {
@@ -300,9 +305,7 @@ const MapView: React.FC<MapViewProps> = ({
 
           const availabilityLevel = getAvailabilityLevel(lot);
           const parkingType = getParkingType(lot);
-          const distance = userLocation 
-            ? calculateDistance(userLocation[0], userLocation[1], lot.latitude, lot.longitude)
-            : null;
+          const distance = lot.distance;
 
           return (
             <Marker
