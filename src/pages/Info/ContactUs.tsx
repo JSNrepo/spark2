@@ -35,7 +35,6 @@ const ContactUs: React.FC = () => {
     setLoading(true);
     try {
       // Simulate API call with form data
-      console.log('Submitting contact form:', formData);
       await new Promise(resolve => setTimeout(resolve, 2000));
       toast.success('Message sent successfully! We\'ll get back to you within 24 hours.');
       reset();
