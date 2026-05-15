@@ -22,6 +22,7 @@ export interface ParkingLot {
     close: string;
   };
   providerId: string; // Updated from ownerId to match database schema
+  distance?: number;
   rating: number;
   reviewCount: number;
   isActive: boolean;

@@ -52,7 +52,6 @@ const ProfilePage: React.FC = () => {
     setLoading(true);
     try {
       // In a real app, you'd update the user profile
-      console.log('Updating profile:', formData);
       await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
       toast.success('Profile updated successfully!');
     } catch {
@@ -66,7 +65,6 @@ const ProfilePage: React.FC = () => {
     setLoading(true);
     try {
       // In a real app, you'd update the password
-      console.log('Updating password for user:', formData.currentPassword ? 'verified' : 'missing current password');
       await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
       toast.success('Password updated successfully!');
       passwordForm.reset();
