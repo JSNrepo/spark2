@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from 'react';
 import { Upload, X } from 'lucide-react';
-import toast from 'react-hot-toast';
 
 interface ImageUploadProps {
   onImagesChange: (files: File[]) => void;
@@ -18,7 +17,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onImagesChange, maxImages = 5
 
     // Check max images
     if (selectedFiles.length + newFiles.length > maxImages) {
-      toast.error(`You can only upload up to ${maxImages} images.`);
+      alert(`You can only upload up to ${maxImages} images.`);
       return;
     }
 
@@ -31,7 +30,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onImagesChange, maxImages = 5
     setPreviewUrls(prev => [...prev, ...newPreviewUrls]);
   }, [selectedFiles, maxImages, onImagesChange]);
 
-  const removeImage = useCallback((index: number) => {
+  const removeImage = (index: number) => {
     const updatedFiles = selectedFiles.filter((_, i) => i !== index);
     const updatedUrls = previewUrls.filter((_, i) => i !== index);
 
@@ -41,7 +40,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onImagesChange, maxImages = 5
     setSelectedFiles(updatedFiles);
     setPreviewUrls(updatedUrls);
     onImagesChange(updatedFiles);
-  }, [selectedFiles, previewUrls, onImagesChange]);
+  };
 
   return (
     <div className="space-y-4">
