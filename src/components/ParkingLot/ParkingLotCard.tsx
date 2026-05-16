@@ -18,10 +18,13 @@ const ParkingLotCard: React.FC<ParkingLotCardProps> = ({ lot }) => {
     <Card className="overflow-hidden h-full flex flex-col" hover>
       {/* Image */}
       <div className="relative h-48">
+        {/* ⚡ Bolt Optimization: Lazy load off-screen images to improve page load performance and save bandwidth, especially on search result pages with many cards */}
         <img
           src={lot.images[0]}
           alt={lot.name}
           className="w-full h-full object-cover"
+          loading="lazy"
+          decoding="async"
         />
         <div className="absolute top-3 right-3 bg-white rounded-full px-2 py-1 text-sm font-medium">
           ${lot.hourlyRate}/hr
