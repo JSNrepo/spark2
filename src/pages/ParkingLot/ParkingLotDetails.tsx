@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { MapPin, Star, Car, Bike, Clock, Shield, Wifi, Camera, Phone, Calendar, Users } from 'lucide-react';
 import { ParkingLot, Review } from '../../types';
@@ -20,14 +20,7 @@ const ParkingLotDetails: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (id) {
-      loadParkingLotDetails();
-      loadReviews();
-    }
-  }, [id]);
-
-  const loadParkingLotDetails = async () => {
+  const loadParkingLotDetails = useCallback(async () => {
     if (!id) return;
     
     setLoading(true);
@@ -51,9 +44,9 @@ const ParkingLotDetails: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
 
-  const loadReviews = async () => {
+  const loadReviews = useCallback(async () => {
     if (!id) return;
     
     try {
@@ -66,7 +59,14 @@ const ParkingLotDetails: React.FC = () => {
     } catch (error) {
       console.error('Error loading reviews:', error);
     }
-  };
+  }, [id]);
+
+  useEffect(() => {
+    if (id) {
+      loadParkingLotDetails();
+      loadReviews();
+    }
+  }, [id, loadParkingLotDetails, loadReviews]);
 
   const handleBookNow = () => {
     if (!user) {
