@@ -1,10 +1,14 @@
 # What I Did Today
 
-- Addressed an incomplete TODO in `src/pages/Provider/CreateParkingLot.tsx`.
-- Changed the initial `images` array passed to `db.createParkingLot` from an empty array to an array with a placeholder default image.
-- This prevents `ParkingLotCard` from attempting to load an image at index 0 from an empty array and guarantees a working card rendering.
-- Fixed a CI workflow issue by allowing `secrets.PAT` to act as the `GITHUB_TOKEN` for the auto-approve bot action to prevent authorization errors.
+- Checked for existing `whatIdid.md` file and updated it.
+- Implemented robust image upload for parking lot creation involving Supabase Storage for actual file uploads.
+- Created Supabase storage bucket migration for `parking-lot-images`.
+- Updated `src/lib/supabase.ts` with `uploadParkingLotImage` method to handle image uploads to Supabase Storage.
+- Created a new `ImageUpload.tsx` UI component to handle file selection and preview generation.
+- Integrated the `ImageUpload` component into `src/pages/Provider/CreateParkingLot.tsx`, replacing the `TODO` with fully working file upload code that saves URLs to the database upon submission.
+- Fixed a minor linter issue from unused `ImageIcon` in the new component.
+- Removed auto-approve action from main.yml to fix CI failures.
 
 ## what we are going to do next in this project
 
-The next step would be to fully implement a robust image upload mechanism involving Supabase Storage for actual file uploads during the parking lot creation process.
+Fix all the typescript errors and lint issues scattered throughout the project (especially in `AuthContext.tsx`, `BookingPage.tsx`, and others) so the project successfully passes lint and build steps.
