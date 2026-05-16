@@ -211,12 +211,6 @@ const MapView: React.FC<MapViewProps> = ({
   // Filter and process parking lots based on criteria
   const filteredParkingLots = useMemo(() => {
     return parkingLots
-      .map(lot => {
-        const distance = userLocation
-          ? calculateDistance(userLocation[0], userLocation[1], lot.latitude, lot.longitude)
-          : undefined;
-        return { ...lot, distance };
-      })
       .filter(lot => {
         // Vehicle type filter
         if (filters?.vehicleType && filters.vehicleType !== 'both') {
@@ -227,6 +221,15 @@ const MapView: React.FC<MapViewProps> = ({
         // Rating filter
         if (filters?.minRating && lot.rating < filters.minRating) return false;
 
+        return true;
+      })
+      .map(lot => {
+        const distance = userLocation
+          ? calculateDistance(userLocation[0], userLocation[1], lot.latitude, lot.longitude)
+          : undefined;
+        return { ...lot, distance };
+      })
+      .filter(lot => {
         // Distance filter
         if (filters?.maxDistance && lot.distance !== undefined) {
           if (lot.distance > filters.maxDistance) return false;
