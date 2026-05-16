@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -55,17 +55,7 @@ const BookingPage: React.FC = () => {
 
   const watchedValues = watch();
 
-  useEffect(() => {
-    if (id) {
-      loadParkingLot();
-    }
-  }, [id]);
-
-  useEffect(() => {
-    calculateTotal();
-  }, [watchedValues.startDate, watchedValues.startTime, watchedValues.endDate, watchedValues.endTime, parkingLot]);
-
-  const loadParkingLot = async () => {
+  const loadParkingLot = useCallback(async () => {
     if (!id) return;
     
     setLoading(true);
@@ -89,9 +79,15 @@ const BookingPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
 
-  const calculateTotal = () => {
+  useEffect(() => {
+    if (id) {
+      loadParkingLot();
+    }
+  }, [id, loadParkingLot]);
+
+  const calculateTotal = useCallback(() => {
     if (!watchedValues.startDate || !watchedValues.startTime || !watchedValues.endDate || !watchedValues.endTime || !parkingLot) {
       return;
     }
@@ -112,7 +108,11 @@ const BookingPage: React.FC = () => {
       const amount = hours * parkingLot.hourlyRate;
       setTotalAmount(amount);
     }
-  };
+  }, [parkingLot, watchedValues.startDate, watchedValues.startTime, watchedValues.endDate, watchedValues.endTime]);
+
+  useEffect(() => {
+    calculateTotal();
+  }, [calculateTotal]);
 
   const onSubmit = async (data: BookingFormData) => {
     if (!user || !parkingLot) {
@@ -139,8 +139,8 @@ const BookingPage: React.FC = () => {
         endTime: endDateTime.toISOString(),
         totalHours,
         totalAmount,
-        status: 'pending' as 'pending',
-        paymentStatus: 'pending' as 'pending',
+        status: 'pending' as const,
+        paymentStatus: 'pending' as const,
       };
 
       const { data: booking, error } = await db.createBooking(bookingData);

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { MapPin, DollarSign, Clock, Car } from 'lucide-react';
+import { MapPin, DollarSign, Clock, Car, Image as ImageIcon } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -12,6 +12,7 @@ import Button from '../../components/UI/Button';
 import Input from '../../components/UI/Input';
 import LoadingSpinner from '../../components/UI/LoadingSpinner';
 import LocationSearch from '../../components/Map/LocationSearch';
+import ImageUpload from '../../components/UI/ImageUpload';
 import toast from 'react-hot-toast';
 
 const parkingLotSchema = z.object({
@@ -43,6 +44,7 @@ const CreateParkingLot: React.FC = () => {
     address: string;
   } | null>(null);
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
 
   const {
     register,
@@ -109,13 +111,25 @@ const CreateParkingLot: React.FC = () => {
 
     setLoading(true);
     try {
+      // Upload images first
+      const imageUrls: string[] = [];
+      for (const file of selectedImages) {
+        const { publicUrl, error } = await db.uploadParkingLotImage(file, 'parking-lot');
+        if (error) {
+          console.error('Failed to upload image:', error);
+          toast.error(`Failed to upload ${file.name}`);
+        } else if (publicUrl) {
+          imageUrls.push(publicUrl);
+        }
+      }
+
       const parkingLotData = {
         ...data,
         providerId: user?.id,
         latitude: selectedLocation.lat,
         longitude: selectedLocation.lng,
         availableSpaces: data.totalSpaces,
-        images: [], // TODO: Implement image upload
+        images: imageUrls,
         amenities: selectedAmenities,
         operatingHours: {
           open: data.openTime,
@@ -397,6 +411,22 @@ const CreateParkingLot: React.FC = () => {
                   />
                 </div>
               </div>
+            </Card>
+          </motion.div>
+
+          {/* Images */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.55 }}
+          >
+            <Card className="p-6">
+              <div className="flex items-center mb-6">
+                <ImageIcon className="h-6 w-6 text-blue-600 mr-2" />
+                <h2 className="text-xl font-semibold text-gray-900">Images</h2>
+              </div>
+
+              <ImageUpload onImagesChange={setSelectedImages} maxImages={5} />
             </Card>
           </motion.div>
 

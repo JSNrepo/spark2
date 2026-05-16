@@ -31,7 +31,7 @@ const ContactUs: React.FC = () => {
     resolver: zodResolver(contactSchema),
   });
 
-  const onSubmit = async (formData: ContactFormData) => {
+  const onSubmit = async (_formData: ContactFormData) => {
     setLoading(true);
     try {
       // Simulate API call with form data

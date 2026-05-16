@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { Calendar, Clock, MapPin, Car, CreditCard, Star, Plus, Filter } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -17,13 +17,7 @@ const Dashboard: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<'all' | 'active' | 'completed' | 'cancelled'>('all');
 
-  useEffect(() => {
-    if (user) {
-      loadBookings();
-    }
-  }, [user]);
-
-  const loadBookings = async () => {
+  const loadBookings = useCallback(async () => {
     if (!user) return;
     
     setLoading(true);
@@ -43,7 +37,13 @@ const Dashboard: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
+
+  useEffect(() => {
+    if (user) {
+      loadBookings();
+    }
+  }, [user, loadBookings]);
 
   const filteredBookings = bookings.filter(booking => 
     filter === 'all' || booking.status === filter

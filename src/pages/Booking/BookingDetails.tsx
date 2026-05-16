@@ -5,7 +5,6 @@ import { motion } from 'framer-motion';
 import { format } from 'date-fns';
 import { Booking } from '../../types';
 import { db } from '../../lib/supabase';
-import { useAuth } from '../../contexts/AuthContext';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
 import LoadingSpinner from '../../components/UI/LoadingSpinner';
@@ -13,7 +12,6 @@ import toast from 'react-hot-toast';
 
 const BookingDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const { user } = useAuth();
   const [booking, setBooking] = useState<Booking | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
