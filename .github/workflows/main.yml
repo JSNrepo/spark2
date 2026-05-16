@@ -12,7 +12,10 @@ jobs:
       contents: write
 
     steps:
-      # Step 2.2: Set the PR to automatically merge once status checks pass
+      - name: Auto Approve PR
+        uses: hmarr/auto-approve-action@v4
+        with:
+          github-token: ${{ secrets.PAT }}
       - name: Enable GitHub Auto-Merge
         run: gh pr merge --auto --squash "$PR_URL"
         env:
