@@ -411,11 +411,10 @@ export const db = {
     try {
       const fileExt = file.name.split('.').pop();
       const fileName = `${path}-${crypto.randomUUID()}.${fileExt}`;
-      const filePath = `${fileName}`;
 
       const { error: uploadError } = await supabase.storage
         .from('parking-lot-images')
-        .upload(filePath, file);
+        .upload(fileName, file);
 
       if (uploadError) {
         throw uploadError;
@@ -423,7 +422,7 @@ export const db = {
 
       const { data } = supabase.storage
         .from('parking-lot-images')
-        .getPublicUrl(filePath);
+        .getPublicUrl(fileName);
 
       return { publicUrl: data.publicUrl, error: null };
     } catch (err) {
