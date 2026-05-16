@@ -1,3 +1,3 @@
-## 2024-05-14 - Input Component Accessibility Improvements
-**Learning:** The `Input` component previously relied on generic layout for labels and lacked proper ARIA associations for helper text and error states. When modifying form components, using `React.useId()` provides a robust way to generate unique IDs and ensure screen readers correctly associate labels, helper text, and validation errors with the input element.
-**Action:** When updating or creating new UI form components, always leverage `useId` for `id` attribute generation. Explicitly connect labels via `htmlFor`, associate helper/error text with `aria-describedby`, apply `aria-invalid` based on state, and use `aria-live="polite"` for dynamic error messages to maintain a fully accessible UX.
+## 2024-05-15 - Interactive Icon Accessibility
+**Learning:** Icon-only interactive elements (like password visibility toggles and mobile hamburger menus) in this application lack basic accessibility attributes and keyboard focus states out-of-the-box.
+**Action:** Always ensure icon-only buttons include `aria-label`, `title`, and specific focus-visible styles (`focus:outline-none focus-visible:ring-2`) for keyboard navigation users.
