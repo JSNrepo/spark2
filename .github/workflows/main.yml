@@ -12,14 +12,11 @@ jobs:
       contents: write
 
     steps:
-      # Step 2.1: Automatically approve the Pull Request
       - name: Auto Approve PR
         uses: hmarr/auto-approve-action@v4
         with:
-          # Use a PAT instead of GITHUB_TOKEN to bypass branch protection rules that don't allow PR authors to approve
           github-token: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
 
-      # Step 2.2: Set the PR to automatically merge once status checks pass
       - name: Enable GitHub Auto-Merge
         run: gh pr merge --auto --squash "$PR_URL"
         env:
