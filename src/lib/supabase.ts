@@ -3,8 +3,15 @@ import { Booking, ParkingLot, User } from '../types';
 
 interface DbFilters {
   city?: string;
+  address?: string;
   minPrice?: number;
   maxPrice?: number;
+  covered?: boolean;
+  security?: boolean;
+  ev_charging?: boolean;
+  accessible?: boolean;
+  distance?: number;
+  availability?: string;
   vehicleType?: 'car' | 'bike' | 'both';
 }
 

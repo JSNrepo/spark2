@@ -52,7 +52,7 @@ const SearchPage: React.FC = () => {
         vehicleType: filters.vehicleType === 'any' ? undefined : filters.vehicleType as 'car' | 'bike' | 'both',
       };
 
-      const { data, error: queryError } = await db.getParkingLots(dbFilters);
+      const { data, error: queryError } = await db.searchParkingLots(dbFilters);
 
       if (queryError) throw queryError;
 
