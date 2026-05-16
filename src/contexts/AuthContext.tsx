@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { User as SupabaseUser, Session } from '@supabase/supabase-js';
 import { User } from '../types';
 import { auth, db } from '../lib/supabase';
 import toast from 'react-hot-toast';
@@ -37,56 +38,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return () => clearTimeout(timeoutId);
   }, [loading]);
 
-  // Helper to fetch complete user profile from database
-  const fetchUserProfile = async (supabaseUser: any): Promise<User | null> => {
-    const startTime = Date.now();
-    console.log(`fetchUserProfile called with: ${supabaseUser?.email} at ${new Date().toLocaleTimeString()}`);
-    if (!supabaseUser) {
-      console.log('fetchUserProfile: No supabase user, returning null');
-      return null;
-    }
-    
-    try {
-      console.log('fetchUserProfile: Getting user profile from database...');
-      const { data: profile, error } = await db.getUserProfile(supabaseUser.id);
-      const duration = Date.now() - startTime;
-      
-      console.log(`fetchUserProfile: Database query completed in ${duration}ms`, { profile, error });
-      
-      if (error) {
-        console.error(`Error fetching user profile (${duration}ms):`, error);
-        // Only create profile for specific "not found" errors
-        if ((error as any).code === 'PGRST116' || (error as any).message?.includes('No rows returned')) {
-          console.log('fetchUserProfile: User not found, creating new profile...');
-          return await createNewUserProfile(supabaseUser);
-        }
-        // For other errors, return a basic fallback profile without database creation
-        console.log('fetchUserProfile: Database error, returning basic fallback profile...');
-        return createBasicProfile(supabaseUser);
-      }
-      
-      if (profile) {
-        console.log(`fetchUserProfile: Found existing profile (${duration}ms):`, profile.email);
-        return profile;
-      } else {
-        console.log(`fetchUserProfile: No profile found (${duration}ms), creating new one...`);
-        return await createNewUserProfile(supabaseUser);
-      }
-    } catch (error) {
-      const duration = Date.now() - startTime;
-      console.error(`Error fetching user profile (${duration}ms):`, error);
-      
-      // Return basic profile without trying database operations
-      console.log('fetchUserProfile: Exception occurred, returning basic fallback profile...');
-      return createBasicProfile(supabaseUser);
-    }
-  };
-
   // Helper to create basic profile from auth data (no database)
-  const createBasicProfile = (supabaseUser: any): User => {
+  const createBasicProfile = useCallback((supabaseUser: SupabaseUser): User => {
     return {
       id: supabaseUser.id,
-      email: supabaseUser.email,
+      email: supabaseUser.email || '',
       firstName: supabaseUser.user_metadata?.firstName || '',
       lastName: supabaseUser.user_metadata?.lastName || '',
       phone: supabaseUser.user_metadata?.phone || '',
@@ -95,14 +51,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     } as User;
-  };
+  }, []);
 
   // Helper to create a new user profile (with error handling)
-  const createNewUserProfile = async (supabaseUser: any): Promise<User | null> => {
+  const createNewUserProfile = useCallback(async (supabaseUser: SupabaseUser): Promise<User | null> => {
     try {
       const newProfile: Partial<User> = {
         id: supabaseUser.id,
-        email: supabaseUser.email,
+        email: supabaseUser.email || '',
         firstName: supabaseUser.user_metadata?.firstName || '',
         lastName: supabaseUser.user_metadata?.lastName || '',
         phone: supabaseUser.user_metadata?.phone || '',
@@ -133,7 +89,55 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.log('createNewUserProfile: Exception occurred, returning basic profile');
       return createBasicProfile(supabaseUser);
     }
-  };
+  }, [createBasicProfile]);
+
+  // Helper to fetch complete user profile from database
+  const fetchUserProfile = useCallback(async (supabaseUser: SupabaseUser): Promise<User | null> => {
+    const startTime = Date.now();
+    console.log(`fetchUserProfile called with: ${supabaseUser?.email} at ${new Date().toLocaleTimeString()}`);
+    if (!supabaseUser) {
+      console.log('fetchUserProfile: No supabase user, returning null');
+      return null;
+    }
+
+    try {
+      console.log('fetchUserProfile: Getting user profile from database...');
+      const { data: profile, error } = await db.getUserProfile(supabaseUser.id);
+      const duration = Date.now() - startTime;
+
+      console.log(`fetchUserProfile: Database query completed in ${duration}ms`, { profile, error });
+
+      if (error) {
+        console.error(`Error fetching user profile (${duration}ms):`, error);
+        // Only create profile for specific "not found" errors
+        if (typeof error === 'object' && error !== null && ('code' in error || 'message' in error)) {
+          const err = error as { code?: string; message?: string };
+          if (err.code === 'PGRST116' || err.message?.includes('No rows returned')) {
+            console.log('fetchUserProfile: User not found, creating new profile...');
+            return await createNewUserProfile(supabaseUser);
+          }
+        }
+        // For other errors, return a basic fallback profile without database creation
+        console.log('fetchUserProfile: Database error, returning basic fallback profile...');
+        return createBasicProfile(supabaseUser);
+      }
+
+      if (profile) {
+        console.log(`fetchUserProfile: Found existing profile (${duration}ms):`, profile.email);
+        return profile;
+      } else {
+        console.log(`fetchUserProfile: No profile found (${duration}ms), creating new one...`);
+        return await createNewUserProfile(supabaseUser);
+      }
+    } catch (error) {
+      const duration = Date.now() - startTime;
+      console.error(`Error fetching user profile (${duration}ms):`, error);
+
+      // Return basic profile without trying database operations
+      console.log('fetchUserProfile: Exception occurred, returning basic fallback profile...');
+      return createBasicProfile(supabaseUser);
+    }
+  }, [createBasicProfile, createNewUserProfile]);
 
   useEffect(() => {
     let isMounted = true;
@@ -186,17 +190,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       try {
         if (!isMounted) return;
         
-        console.log('Auth state change:', event, (session as any)?.user?.email);
+        const authSession = session as Session | null;
+        console.log('Auth state change:', event, authSession?.user?.email);
         
         // Only handle specific events to avoid unnecessary calls
         if (event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED') {
-          if (event === 'SIGNED_OUT' || !(session as any)?.user) {
+          if (event === 'SIGNED_OUT' || !authSession?.user) {
             console.log('AuthContext: User signed out');
             setUser(null);
             setLoading(false);
-          } else if ((session as any)?.user) {
+          } else if (authSession?.user) {
             console.log('AuthContext: User signed in, fetching profile...');
-            const userProfile = await fetchUserProfile((session as any).user);
+            const userProfile = await fetchUserProfile(authSession.user);
             if (isMounted) {
               console.log('AuthContext: User profile from state change:', userProfile?.email);
               setUser(userProfile);
@@ -219,7 +224,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       isMounted = false;
       subscription.unsubscribe();
     };
-  }, []);
+  }, [fetchUserProfile]);
 
   const signIn = async (email: string, password: string): Promise<boolean> => {
     try {

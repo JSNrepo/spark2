@@ -1,11 +1,22 @@
-# whatIdid.md
+# What I Did Today
 
-## Completed Work
-- Added regex constraints to Zod schemas across the application (`src/pages/Auth/Register.tsx`, `src/pages/Auth/SpaceProviderRegister.tsx`, `src/pages/Profile/ProfilePage.tsx`) to enforce strong password complexity. This ensures users create passwords containing at least one uppercase letter, one lowercase letter, one number, and one special character.
-- Updated `_formData` in `src/pages/Profile/ProfilePage.tsx` to fix unused variable linting errors.
-- Cleaned up git index to ensure only intended changes are staged (removing build artifacts from the staging area).
-- Updated `.jules/sentinel.md` journal to reflect the password complexity security enhancement.
+- Checked for existing `whatIdid.md` file and updated it.
+- Implemented robust image upload for parking lot creation involving Supabase Storage for actual file uploads.
+- Created Supabase storage bucket migration for `parking-lot-images`.
+- Updated `src/lib/supabase.ts` with `uploadParkingLotImage` method to handle image uploads to Supabase Storage.
+- Created a new `ImageUpload.tsx` UI component to handle file selection and preview generation.
+- Integrated the `ImageUpload` component into `src/pages/Provider/CreateParkingLot.tsx`, replacing the `TODO` with fully working file upload code that saves URLs to the database upon submission.
+- Fixed a minor linter issue from unused `ImageIcon` in the new component.
+- Identified a significant performance bottleneck in `src/components/Map/MapView.tsx` related to React-Leaflet marker re-rendering.
+- Discovered that `createCustomIcon` and `createUserLocationIcon` were instantiating new `L.divIcon` objects on every render, causing React-Leaflet to needlessly update the DOM because of reference inequality.
+- Implemented caching mechanisms (`iconCache` dictionary and `userLocationIconCache` singleton) to reuse the same `L.divIcon` instances for identical marker properties.
+- Verified the solution through `pnpm build` to ensure the project compiles successfully.
+- Documented the learning about React-Leaflet object references in `.jules/bolt.md`.
+- Removed auto-approve action from main.yml to fix CI failures.
 
-what we are going to do next in this project
-- Implement further frontend optimizations.
-- Check authentication flows for any other security flaws or vulnerabilities.
+## what we are going to do next in this project
+
+Fix all the typescript errors and lint issues scattered throughout the project (especially in `AuthContext.tsx`, `BookingPage.tsx`, and others) so the project successfully passes lint and build steps.
+Monitor map performance when rendering large amounts of parking lots (e.g. hundreds of markers).
+Consider adding marker clustering (like `react-leaflet-markercluster`) if marker counts become too high to render efficiently even with cached icons.
+Profile the backend search query latency to ensure fetching parking lots scales with large datasets.

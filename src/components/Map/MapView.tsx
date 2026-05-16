@@ -30,7 +30,12 @@ interface MapViewProps {
 }
 
 // Custom icons for different parking types
+const iconCache: Record<string, L.DivIcon> = {};
+
 const createCustomIcon = (type: 'car' | 'bike' | 'both', availability: 'high' | 'medium' | 'low') => {
+  const cacheKey = `${type}-${availability}`;
+  if (iconCache[cacheKey]) return iconCache[cacheKey];
+
   const colors = {
     high: '#10B981', // green
     medium: '#F59E0B', // yellow
@@ -43,7 +48,7 @@ const createCustomIcon = (type: 'car' | 'bike' | 'both', availability: 'high' | 
     both: '🅿️'
   };
 
-  return L.divIcon({
+  const icon = L.divIcon({
     html: `
       <div style="
         background-color: ${colors[availability]};
@@ -66,11 +71,17 @@ const createCustomIcon = (type: 'car' | 'bike' | 'both', availability: 'high' | 
     iconAnchor: [20, 20],
     popupAnchor: [0, -20]
   });
+
+  iconCache[cacheKey] = icon;
+  return icon;
 };
 
 // User location marker
+let userLocationIconCache: L.DivIcon | null = null;
+
 const createUserLocationIcon = () => {
-  return L.divIcon({
+  if (userLocationIconCache) return userLocationIconCache;
+  userLocationIconCache = L.divIcon({
     html: `
       <div style="
         background-color: #3B82F6;
@@ -93,6 +104,7 @@ const createUserLocationIcon = () => {
     iconSize: [20, 20],
     iconAnchor: [10, 10]
   });
+  return userLocationIconCache;
 };
 
 // Component to handle map events
