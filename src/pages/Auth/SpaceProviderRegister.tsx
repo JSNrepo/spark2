@@ -14,7 +14,10 @@ import toast from 'react-hot-toast';
 
 const spaceProviderSchema = z.object({
   email: z.string().email('Invalid email address').max(255, 'Email is too long'),
-  password: z.string().min(8, 'Password must be at least 8 characters').max(255, 'Password is too long'),
+  password: z.string()
+    .min(8, 'Password must be at least 8 characters')
+    .max(255, 'Password is too long')
+    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/, 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'),
   confirmPassword: z.string().max(255, 'Password is too long'),
   firstName: z.string().min(2, 'First name is required').max(50, 'First name is too long'),
   lastName: z.string().min(2, 'Last name is required').max(50, 'Last name is too long'),
