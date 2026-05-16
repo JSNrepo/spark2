@@ -15,7 +15,10 @@ const registerSchema = z.object({
   lastName: z.string().min(2, 'Last name must be at least 2 characters').max(50, 'Last name is too long'),
   email: z.string().email('Please enter a valid email address').max(255, 'Email is too long'),
   phone: z.string().min(10, 'Please enter a valid phone number').max(20, 'Phone number is too long'),
-  password: z.string().min(6, 'Password must be at least 6 characters').max(255, 'Password is too long'),
+  password: z.string()
+    .min(6, 'Password must be at least 6 characters')
+    .max(255, 'Password is too long')
+    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{6,}$/, 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'),
   confirmPassword: z.string().max(255, 'Password is too long'),
   role: z.enum(['customer', 'owner']),
   terms: z.boolean().refine(val => val === true, 'You must accept the terms and conditions'),
