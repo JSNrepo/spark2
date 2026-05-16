@@ -7,23 +7,18 @@ on:
 jobs:
   automation:
     runs-on: ubuntu-latest
-    # Grants the workflow token authority to approve PRs and write contents
     permissions:
       pull-requests: write
       contents: write
 
     steps:
-      # Step 2.1: Automatically approve the Pull Request
-      # Note: GitHub Actions is not permitted to approve pull requests by default when using the built-in GITHUB_TOKEN
-      # If you encounter the error: "GitHub Actions is not permitted to approve pull requests"
-      # it means you are likely attempting to have the workflow approve a PR created by the workflow's user
-      # For now, we will skip the hmarr/auto-approve-action and let human or distinct bot reviewers approve.
-      # - name: Auto Approve PR
-      #   uses: hmarr/auto-approve-action@v4
-      #   with:
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
-
-      # Step 2.2: Set the PR to automatically merge once status checks pass
+      - name: Auto Approve PR
+        uses: hmarr/auto-approve-action@v4
+        if: github.actor != 'github-actions[bot]' && github.actor != 'dependabot[bot]'
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
       - name: Enable GitHub Auto-Merge
         run: gh pr merge --auto --squash "$PR_URL"
         env:

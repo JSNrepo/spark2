@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, MapPin, Car, DollarSign, Users, Eye, Edit, Trash2 } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -16,13 +16,7 @@ const ProviderDashboard: React.FC = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (user?.role === 'space_provider') {
-      loadProviderData();
-    }
-  }, [user]);
-
-  const loadProviderData = async () => {
+  const loadProviderData = useCallback(async () => {
     if (!user) return;
     
     setLoading(true);
@@ -51,7 +45,13 @@ const ProviderDashboard: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
+
+  useEffect(() => {
+    if (user?.role === 'space_provider') {
+      loadProviderData();
+    }
+  }, [user, loadProviderData]);
 
   const handleDeleteLot = async (lotId: string) => {
     if (!window.confirm('Are you sure you want to delete this parking lot?')) {
