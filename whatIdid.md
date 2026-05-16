@@ -7,7 +7,7 @@
 - Created a new `ImageUpload.tsx` UI component to handle file selection and preview generation.
 - Integrated the `ImageUpload` component into `src/pages/Provider/CreateParkingLot.tsx`, replacing the `TODO` with fully working file upload code that saves URLs to the database upon submission.
 - Fixed a minor linter issue from unused `ImageIcon` in the new component.
-- Removed auto-approve action from main.yml to fix CI failures.
+- Updated the CI workflow token handling for auto-approval and auto-merge compatibility.
 
 ## what we are going to do next in this project
 
