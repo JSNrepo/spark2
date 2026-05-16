@@ -410,7 +410,7 @@ export const db = {
   uploadParkingLotImage: async (file: File, path: string) => {
     try {
       const fileExt = file.name.split('.').pop();
-      const fileName = `${path}-${Math.random()}.${fileExt}`;
+      const fileName = `${path}-${crypto.randomUUID()}.${fileExt}`;
       const filePath = `${fileName}`;
 
       const { error: uploadError } = await supabase.storage
