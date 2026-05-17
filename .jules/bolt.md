@@ -1,3 +1,7 @@
 ## 2024-05-15 - [React-Leaflet Custom Icon Reference Thrashing]
 **Learning:** React-Leaflet heavily relies on referential equality to manage updates for Leaflet primitives. In the `MapView` component, custom icons (like `L.divIcon`) were being newly instantiated on every single render. Since the icon object reference was new every time, React-Leaflet believed the icon had changed and commanded Leaflet to do a full DOM teardown and replacement for the marker, creating significant main-thread latency and possible stuttering when panning/zooming.
 **Action:** Always memoize or cache Leaflet primitives (like Icons) when passing them as props to React-Leaflet components. A simple module-level dictionary caching the instances based on dynamic properties (e.g., parking type, availability) effectively stops the unnecessary DOM churn.
+
+## 2026-05-17 - [Range Sliders Triggering API Spam]
+**Learning:** In React applications, range sliders (like `<input type="range">`) emit continuous `onChange` events while being dragged. If these events update state that triggers a `useEffect` with network requests (like a database query), it can cause significant API spam and performance degradation.
+**Action:** Always debounce network requests triggered by rapid state changes, such as those from range sliders or text inputs. Wrapping the function call inside a `setTimeout` within the `useEffect` (and clearing it on cleanup) is an effective and simple way to mitigate this issue.
