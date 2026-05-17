@@ -65,7 +65,10 @@ const SearchPage: React.FC = () => {
   }, [searchParams, filters]);
 
   useEffect(() => {
-    loadParkingLots();
+    const timer = setTimeout(() => {
+      loadParkingLots();
+    }, 300);
+    return () => clearTimeout(timer);
   }, [loadParkingLots]);
 
   const handleSearch = (e: React.FormEvent) => {
