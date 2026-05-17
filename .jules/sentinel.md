@@ -6,3 +6,7 @@
 **Vulnerability:** Weak passwords could be set during user registration and profile updates.
 **Learning:** Relied only on minimum string length without enforcing password complexity rules using a regex constraint in the Zod schemas.
 **Prevention:** Always enforce complex password policies (uppercase, lowercase, number, special character) using `.regex()` with Zod or equivalent validation libraries across all password fields.
+## 2024-05-18 - Auth Error Message Leakage
+**Vulnerability:** Raw backend error messages (from Supabase auth) were being exposed directly to the user via toast notifications during sign-in and sign-up.
+**Learning:** Exposing raw error messages can leak sensitive backend details (like stack traces, database constraints, or specific validation rules) or facilitate user enumeration.
+**Prevention:** Always use safe, generic error messages for user-facing UI (e.g., "Invalid email or password", "Registration failed") and log the raw error objects internally for debugging.
