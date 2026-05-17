@@ -230,7 +230,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       const { error } = await auth.signIn(email, password);
       if (error) {
-        toast.error(error.message);
+        toast.error('Invalid email or password');
+        console.error('Sign in error:', error); // Log original error for debugging
         return false;
       }
       toast.success('Welcome back!');
@@ -246,7 +247,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       const { error } = await auth.signUp(email, password, userData);
       if (error) {
-        toast.error(error.message);
+        toast.error('Registration failed. Please check your details and try again.');
+        console.error('Sign up error:', error); // Log original error for debugging
         return false;
       }
       toast.success('Account created successfully!');
