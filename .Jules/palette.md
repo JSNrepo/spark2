@@ -5,3 +5,7 @@
 ## 2026-05-17 - Mobile Menu Toggle Accessibility Pattern
 **Learning:** When using Lucide React icons for stateful toggles (like Menu/X for mobile navigation), the state must be communicated via both `aria-expanded` on the button and dynamic `aria-label`s, while the SVG icons themselves should be hidden from screen readers.
 **Action:** For all stateful icon toggles: 1. Add `aria-expanded={isOpen}` to the button. 2. Use a dynamic `aria-label` (e.g., "Open menu"/"Close menu"). 3. Add `aria-hidden="true"` directly to the SVG icons to prevent redundant or confusing screen reader announcements.
+
+## 2026-05-18 - View Mode Toggle Accessibility
+**Learning:** Icon-only toggle buttons (like List/Grid/Map view switchers) require both stateful ARIA attributes (aria-pressed) and explicit focus indicators to be usable by screen readers and keyboard users.
+**Action:** Always add aria-label, aria-pressed={isActive}, aria-hidden="true" to the inner icon, and focus-visible:ring utility classes to icon-only toggle controls.
