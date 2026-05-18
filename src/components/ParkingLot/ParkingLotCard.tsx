@@ -9,7 +9,10 @@ interface ParkingLotCardProps {
   lot: ParkingLot;
 }
 
-const ParkingLotCard: React.FC<ParkingLotCardProps> = ({ lot }) => {
+// ⚡ Bolt Optimization: Wrap component in React.memo() to prevent O(N) re-renders.
+// When the SearchPage updates state (e.g. typing in the location search bar),
+// React.memo ensures these expensive card components only re-render if their specific 'lot' prop changes.
+const ParkingLotCard: React.FC<ParkingLotCardProps> = React.memo(({ lot }) => {
   const availabilityPercentage = (lot.availableSpaces / lot.totalSpaces) * 100;
   const availabilityColor = availabilityPercentage > 50 ? 'text-green-600' : 
                            availabilityPercentage > 20 ? 'text-yellow-600' : 'text-red-600';
@@ -125,6 +128,6 @@ const ParkingLotCard: React.FC<ParkingLotCardProps> = ({ lot }) => {
       </div>
     </Card>
   );
-};
+});
 
 export default ParkingLotCard;

@@ -5,3 +5,7 @@
 ## 2026-05-17 - [Range Sliders Triggering API Spam]
 **Learning:** In React applications, range sliders (like `<input type="range">`) emit continuous `onChange` events while being dragged. If these events update state that triggers a `useEffect` with network requests (like a database query), it can cause significant API spam and performance degradation.
 **Action:** Always debounce network requests triggered by rapid state changes, such as those from range sliders or text inputs. Wrapping the function call inside a `setTimeout` within the `useEffect` (and clearing it on cleanup) is an effective and simple way to mitigate this issue.
+
+## 2024-05-18 - [List View O(N) Re-renders from Parent Input State]
+**Learning:** In a list view architecture (like `SearchPage.tsx` rendering multiple `ParkingLotCard` components), if a child input component updates state in the parent on every keystroke, the entire parent re-renders. This forces all list items to re-render, creating an O(N) bottleneck and significant input lag.
+**Action:** When mapping over large lists of complex components, always consider wrapping the individual item components in `React.memo()`. This ensures that parent-level state updates (like search queries or filters) do not unnecessarily re-render list items whose specific props haven't changed.
