@@ -125,36 +125,42 @@ const SearchPage: React.FC = () => {
               <div className="flex bg-gray-100 rounded-lg p-1">
                 <button
                   onClick={() => setViewMode('list')}
-                  className={`p-2 rounded ${
+                  className={`p-2 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 ${
                     viewMode === 'list'
                       ? 'bg-white shadow text-blue-600'
                       : 'text-gray-600 hover:text-gray-900'
                   }`}
                   title="List View"
+                  aria-label="List View"
+                  aria-pressed={viewMode === 'list'}
                 >
-                  <List className="h-4 w-4" />
+                  <List className="h-4 w-4" aria-hidden="true" />
                 </button>
                 <button
                   onClick={() => setViewMode('grid')}
-                  className={`p-2 rounded ${
+                  className={`p-2 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 ${
                     viewMode === 'grid'
                       ? 'bg-white shadow text-blue-600'
                       : 'text-gray-600 hover:text-gray-900'
                   }`}
                   title="Grid View"
+                  aria-label="Grid View"
+                  aria-pressed={viewMode === 'grid'}
                 >
-                  <Grid className="h-4 w-4" />
+                  <Grid className="h-4 w-4" aria-hidden="true" />
                 </button>
                 <button
                   onClick={() => setViewMode('map')}
-                  className={`p-2 rounded ${
+                  className={`p-2 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 ${
                     viewMode === 'map'
                       ? 'bg-white shadow text-blue-600'
                       : 'text-gray-600 hover:text-gray-900'
                   }`}
                   title="Map View"
+                  aria-label="Map View"
+                  aria-pressed={viewMode === 'map'}
                 >
-                  <MapPin className="h-4 w-4" />
+                  <MapPin className="h-4 w-4" aria-hidden="true" />
                 </button>
               </div>
             </div>
