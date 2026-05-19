@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, MapPin, Car, DollarSign, Users, Eye, Edit, Trash2 } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -73,6 +73,30 @@ const ProviderDashboard: React.FC = () => {
     }
   };
 
+  // ⚡ Bolt Optimization: Use useMemo and a single pass reduce to compute dashboard stats efficiently, preventing multiple O(N) array iterations.
+  const stats = useMemo(() => {
+    const lotStats = parkingLots.reduce(
+      (acc, lot) => {
+        acc.totalLots += 1;
+        if (lot.isActive) acc.activeLots += 1;
+        acc.totalSpaces += lot.totalSpaces;
+        return acc;
+      },
+      { totalLots: 0, activeLots: 0, totalSpaces: 0 }
+    );
+
+    const bookingStats = bookings.reduce(
+      (acc, booking) => {
+        acc.totalBookings += 1;
+        if (booking.paymentStatus === 'paid') acc.monthlyRevenue += booking.totalAmount;
+        return acc;
+      },
+      { totalBookings: 0, monthlyRevenue: 0 }
+    );
+
+    return { ...lotStats, ...bookingStats };
+  }, [parkingLots, bookings]);
+
   if (user?.role !== 'space_provider') {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -96,16 +120,6 @@ const ProviderDashboard: React.FC = () => {
       </div>
     );
   }
-
-  const stats = {
-    totalLots: parkingLots.length,
-    activeLots: parkingLots.filter(lot => lot.isActive).length,
-    totalSpaces: parkingLots.reduce((sum, lot) => sum + lot.totalSpaces, 0),
-    totalBookings: bookings.length,
-    monthlyRevenue: bookings
-      .filter(booking => booking.paymentStatus === 'paid')
-      .reduce((sum, booking) => sum + booking.totalAmount, 0),
-  };
 
   return (
     <div className="min-h-screen bg-gray-50">

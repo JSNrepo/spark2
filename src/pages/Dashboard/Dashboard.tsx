@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Calendar, Clock, MapPin, Car, CreditCard, Star, Plus, Filter } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -49,12 +49,24 @@ const Dashboard: React.FC = () => {
     filter === 'all' || booking.status === filter
   );
 
-  const stats = {
-    totalBookings: bookings.length,
-    activeBookings: bookings.filter(b => b.status === 'active').length,
-    completedBookings: bookings.filter(b => b.status === 'completed').length,
-    totalSpent: bookings.reduce((sum, b) => sum + b.totalAmount, 0),
-  };
+  // ⚡ Bolt Optimization: Use useMemo and a single pass reduce to compute dashboard stats efficiently, preventing multiple O(N) array iterations.
+  const stats = useMemo(() => {
+    return bookings.reduce(
+      (acc, booking) => {
+        acc.totalBookings += 1;
+        if (booking.status === 'active') acc.activeBookings += 1;
+        if (booking.status === 'completed') acc.completedBookings += 1;
+        acc.totalSpent += booking.totalAmount;
+        return acc;
+      },
+      {
+        totalBookings: 0,
+        activeBookings: 0,
+        completedBookings: 0,
+        totalSpent: 0,
+      }
+    );
+  }, [bookings]);
 
   const getStatusColor = (status: string) => {
     switch (status) {
