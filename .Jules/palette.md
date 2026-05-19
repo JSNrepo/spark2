@@ -9,3 +9,7 @@
 ## 2026-05-18 - View Mode Toggle Accessibility
 **Learning:** Icon-only toggle buttons (like List/Grid/Map view switchers) require both stateful ARIA attributes (aria-pressed) and explicit focus indicators to be usable by screen readers and keyboard users.
 **Action:** Always add aria-label, aria-pressed={isActive}, aria-hidden="true" to the inner icon, and focus-visible:ring utility classes to icon-only toggle controls.
+
+## 2024-05-19 - File Input Accessibility Pattern
+**Learning:** Using `hidden` on a file input within a custom dropzone label prevents the input from receiving keyboard focus. Also, action buttons inside hover groups (`opacity-0 group-hover:opacity-100`) become invisible to keyboard-only users who navigate to them via Tab.
+**Action:** Always use `sr-only` instead of `hidden` for custom file inputs to maintain keyboard focusability, and add `focus-within` styles to the parent label. For buttons with hover-only visibility, ensure they become visible on focus (`focus:opacity-100`).
