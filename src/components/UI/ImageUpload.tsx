@@ -46,15 +46,15 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onImagesChange, maxImages = 5
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-center w-full">
-        <label className={`flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 ${selectedFiles.length >= maxImages ? 'opacity-50 cursor-not-allowed' : ''}`}>
+        <label className={`flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 transition-all ${selectedFiles.length >= maxImages ? 'opacity-50 cursor-not-allowed' : ''}`}>
           <div className="flex flex-col items-center justify-center pt-5 pb-6">
-            <Upload className="w-8 h-8 mb-3 text-gray-400" />
+            <Upload className="w-8 h-8 mb-3 text-gray-400" aria-hidden="true" />
             <p className="mb-2 text-sm text-gray-500"><span className="font-semibold">Click to upload</span> or drag and drop</p>
             <p className="text-xs text-gray-500">PNG, JPG or WEBP (MAX. {maxImages} images)</p>
           </div>
           <input
             type="file"
-            className="hidden"
+            className="sr-only"
             accept="image/png, image/jpeg, image/webp"
             multiple
             onChange={handleFileChange}
@@ -71,9 +71,11 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onImagesChange, maxImages = 5
               <button
                 type="button"
                 onClick={() => removeImage(index)}
-                className="absolute top-1 right-1 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                className="absolute top-1 right-1 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 focus:opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-1 transition-opacity"
+                aria-label={`Remove image ${index + 1}`}
+                title="Remove image"
               >
-                <X className="w-4 h-4" />
+                <X className="w-4 h-4" aria-hidden="true" />
               </button>
             </div>
           ))}
