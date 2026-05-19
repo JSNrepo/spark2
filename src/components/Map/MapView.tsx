@@ -209,34 +209,31 @@ const MapView: React.FC<MapViewProps> = ({
   }, []);
 
   // Filter and process parking lots based on criteria
+  // ⚡ Bolt Optimization: Use a single pass reduce to prevent O(3N) multiple array iterations.
   const filteredParkingLots = useMemo(() => {
-    return parkingLots
-      .filter(lot => {
-        // Vehicle type filter
-        if (filters?.vehicleType && filters.vehicleType !== 'both') {
-          if (filters.vehicleType === 'car' && lot.carSpaces === 0) return false;
-          if (filters.vehicleType === 'bike' && lot.bikeSpaces === 0) return false;
-        }
+    return parkingLots.reduce<ParkingLot[]>((acc, lot) => {
+      // Vehicle type filter
+      if (filters?.vehicleType && filters.vehicleType !== 'both') {
+        if (filters.vehicleType === 'car' && lot.carSpaces === 0) return acc;
+        if (filters.vehicleType === 'bike' && lot.bikeSpaces === 0) return acc;
+      }
 
-        // Rating filter
-        if (filters?.minRating && lot.rating < filters.minRating) return false;
+      // Rating filter
+      if (filters?.minRating && lot.rating < filters.minRating) return acc;
 
-        return true;
-      })
-      .map(lot => {
-        const distance = userLocation
-          ? calculateDistance(userLocation[0], userLocation[1], lot.latitude, lot.longitude)
-          : undefined;
-        return { ...lot, distance };
-      })
-      .filter(lot => {
-        // Distance filter
-        if (filters?.maxDistance && lot.distance !== undefined) {
-          if (lot.distance > filters.maxDistance) return false;
-        }
+      // Calculate distance
+      const distance = userLocation
+        ? calculateDistance(userLocation[0], userLocation[1], lot.latitude, lot.longitude)
+        : undefined;
 
-        return true;
-      });
+      // Distance filter
+      if (filters?.maxDistance && distance !== undefined) {
+        if (distance > filters.maxDistance) return acc;
+      }
+
+      acc.push({ ...lot, distance });
+      return acc;
+    }, []);
   }, [parkingLots, userLocation, filters, calculateDistance]);
 
   // Get availability level for color coding
