@@ -9,3 +9,7 @@
 ## 2024-05-18 - [List View O(N) Re-renders from Parent Input State]
 **Learning:** In a list view architecture (like `SearchPage.tsx` rendering multiple `ParkingLotCard` components), if a child input component updates state in the parent on every keystroke, the entire parent re-renders. This forces all list items to re-render, creating an O(N) bottleneck and significant input lag.
 **Action:** When mapping over large lists of complex components, always consider wrapping the individual item components in `React.memo()`. This ensures that parent-level state updates (like search queries or filters) do not unnecessarily re-render list items whose specific props haven't changed.
+
+## 2024-05-19 - [Multiple O(N) Array Iterations for Derived State]
+**Learning:** In dashboard components that calculate derived statistics (like `totalBookings`, `activeLots`, `totalSpent`) from large lists of data, chaining multiple `.filter()` and `.reduce()` operations causes redundant O(N) iterations on every render.
+**Action:** Always combine these multiple operations into a single-pass loop using `.reduce()`, and wrap the calculation in `useMemo()` so it only recomputes when the source array dependency changes. This prevents unnecessary and expensive computations during React component re-renders.
