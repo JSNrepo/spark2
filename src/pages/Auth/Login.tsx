@@ -87,13 +87,15 @@ const Login: React.FC = () => {
               />
               <button
                 type="button"
-                className="absolute right-3 top-8 text-gray-400 hover:text-gray-600"
+                className="absolute right-3 top-8 text-gray-400 hover:text-gray-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-full"
                 onClick={() => setShowPassword(!showPassword)}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                aria-pressed={showPassword}
               >
                 {showPassword ? (
-                  <EyeOff className="h-5 w-5" />
+                  <EyeOff className="h-5 w-5" aria-hidden="true" />
                 ) : (
-                  <Eye className="h-5 w-5" />
+                  <Eye className="h-5 w-5" aria-hidden="true" />
                 )}
               </button>
             </div>
