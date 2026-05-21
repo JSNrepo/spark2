@@ -155,8 +155,10 @@ const ParkingLotDetails: React.FC = () => {
                     <button
                       key={index}
                       onClick={() => setSelectedImage(index)}
-                      className={`w-3 h-3 rounded-full transition-colors ${
-                        selectedImage === index ? 'bg-white' : 'bg-white/50'
+                      aria-label={`View image ${index + 1}`}
+                      aria-current={selectedImage === index ? 'true' : undefined}
+                      className={`w-3 h-3 rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900 ${
+                        selectedImage === index ? 'bg-white' : 'bg-white/50 hover:bg-white/75'
                       }`}
                     />
                   ))}
@@ -168,13 +170,16 @@ const ParkingLotDetails: React.FC = () => {
                     <button
                       key={index}
                       onClick={() => setSelectedImage(index)}
-                      className={`relative h-20 rounded-lg overflow-hidden border-2 transition-colors ${
-                        selectedImage === index ? 'border-blue-500' : 'border-transparent'
+                      aria-label={`Select image ${index + 1}`}
+                      aria-current={selectedImage === index ? 'true' : undefined}
+                      className={`relative h-20 rounded-lg overflow-hidden border-2 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 ${
+                        selectedImage === index ? 'border-blue-500' : 'border-transparent hover:border-blue-300'
                       }`}
                     >
                       <img
                         src={image}
-                        alt={`View ${index + 1}`}
+                        alt=""
+                        aria-hidden="true"
                         className="w-full h-full object-cover"
                       />
                     </button>

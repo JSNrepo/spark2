@@ -13,3 +13,7 @@
 ## 2024-05-19 - File Input Accessibility Pattern
 **Learning:** Using `hidden` on a file input within a custom dropzone label prevents the input from receiving keyboard focus. Also, action buttons inside hover groups (`opacity-0 group-hover:opacity-100`) become invisible to keyboard-only users who navigate to them via Tab.
 **Action:** Always use `sr-only` instead of `hidden` for custom file inputs to maintain keyboard focusability, and add `focus-within` styles to the parent label. For buttons with hover-only visibility, ensure they become visible on focus (`focus:opacity-100`).
+
+## 2024-05-20 - Image Carousel Accessibility
+**Learning:** Custom image carousels with dot indicators and interactive thumbnails lack keyboard focus and screen reader context out-of-the-box.
+**Action:** Always add `aria-label` (e.g., "Select image 1"), `aria-current="true"` for the active item, explicit `focus-visible` styles (`focus-visible:ring-2`), and `aria-hidden="true"` to any decorative internal elements (like the thumbnail `<img>`) to custom carousel controls.
