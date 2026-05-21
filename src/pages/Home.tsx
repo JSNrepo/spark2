@@ -6,6 +6,54 @@ import Button from '../components/UI/Button';
 import Card from '../components/UI/Card';
 import Input from '../components/UI/Input';
 
+// ⚡ Bolt Optimization: Moved static arrays outside component body to prevent unnecessary memory re-allocation on every render
+const features = [
+  {
+    icon: <Search className="h-8 w-8 text-blue-600" />,
+    title: 'Easy Search',
+    description: 'Find parking spaces near your destination with our smart search feature.',
+  },
+  {
+    icon: <Clock className="h-8 w-8 text-blue-600" />,
+    title: 'Real-time Availability',
+    description: 'See live availability and book instantly without any waiting.',
+  },
+  {
+    icon: <Shield className="h-8 w-8 text-blue-600" />,
+    title: 'Secure Payments',
+    description: 'Safe and secure payment processing with multiple payment options.',
+  },
+  {
+    icon: <CreditCard className="h-8 w-8 text-blue-600" />,
+    title: 'Flexible Pricing',
+    description: 'Hourly, daily, or monthly rates to suit your parking needs.',
+  },
+];
+
+const testimonials = [
+  {
+    name: 'Sarah Johnson',
+    role: 'Business Professional',
+    content: 'This platform has made my daily commute so much easier. I can book parking in advance and never worry about finding a spot.',
+    rating: 5,
+    avatar: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?w=150&h=150&fit=crop&crop=face',
+  },
+  {
+    name: 'Mike Chen',
+    role: 'Frequent Commuter',
+    content: 'The app is incredibly user-friendly. I love being able to extend my parking time remotely when meetings run long.',
+    rating: 5,
+    avatar: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?w=150&h=150&fit=crop&crop=face',
+  },
+  {
+    name: 'Emily Rodriguez',
+    role: 'Space Provider',
+    content: 'As a parking lot owner, this platform has helped me maximize my revenue while providing excellent service to customers.',
+    rating: 5,
+    avatar: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?w=150&h=150&fit=crop&crop=face',
+  },
+];
+
 const Home: React.FC = () => {
   const [searchLocation, setSearchLocation] = useState('');
   const navigate = useNavigate();
@@ -17,52 +65,7 @@ const Home: React.FC = () => {
     }
   };
 
-  const features = [
-    {
-      icon: <Search className="h-8 w-8 text-blue-600" />,
-      title: 'Easy Search',
-      description: 'Find parking spaces near your destination with our smart search feature.',
-    },
-    {
-      icon: <Clock className="h-8 w-8 text-blue-600" />,
-      title: 'Real-time Availability',
-      description: 'See live availability and book instantly without any waiting.',
-    },
-    {
-      icon: <Shield className="h-8 w-8 text-blue-600" />,
-      title: 'Secure Payments',
-      description: 'Safe and secure payment processing with multiple payment options.',
-    },
-    {
-      icon: <CreditCard className="h-8 w-8 text-blue-600" />,
-      title: 'Flexible Pricing',
-      description: 'Hourly, daily, or monthly rates to suit your parking needs.',
-    },
-  ];
 
-  const testimonials = [
-    {
-      name: 'Sarah Johnson',
-      role: 'Business Professional', 
-      content: 'This platform has made my daily commute so much easier. I can book parking in advance and never worry about finding a spot.',
-      rating: 5,
-      avatar: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?w=150&h=150&fit=crop&crop=face',
-    },
-    {
-      name: 'Mike Chen',
-      role: 'Frequent Commuter',
-      content: 'The app is incredibly user-friendly. I love being able to extend my parking time remotely when meetings run long.',
-      rating: 5,
-      avatar: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?w=150&h=150&fit=crop&crop=face',
-    },
-    {
-      name: 'Emily Rodriguez',
-      role: 'Space Provider',
-      content: 'As a parking lot owner, this platform has helped me maximize my revenue while providing excellent service to customers.',
-      rating: 5,
-      avatar: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?w=150&h=150&fit=crop&crop=face',
-    },
-  ];
 
   return (
     <div className="min-h-screen">

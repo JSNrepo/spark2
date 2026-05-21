@@ -13,3 +13,6 @@
 ## 2024-05-19 - [Multiple O(N) Array Iterations for Derived State]
 **Learning:** In dashboard components that calculate derived statistics (like `totalBookings`, `activeLots`, `totalSpent`) from large lists of data, chaining multiple `.filter()` and `.reduce()` operations causes redundant O(N) iterations on every render.
 **Action:** Always combine these multiple operations into a single-pass loop using `.reduce()`, and wrap the calculation in `useMemo()` so it only recomputes when the source array dependency changes. This prevents unnecessary and expensive computations during React component re-renders.
+## 2024-05-21 - Component Static Array Allocation
+**Learning:** React components that define static arrays or objects inside their function body suffer from unnecessary memory re-allocation on every render. This was discovered in `Home.tsx` and `HowItWorks.tsx` where arrays of features, steps, and testimonials were being recreated each time the components rendered.
+**Action:** Always extract static configurations, arrays, and objects that do not depend on component state or props outside of the component body to the module level scope.
