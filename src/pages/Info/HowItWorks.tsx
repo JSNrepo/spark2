@@ -5,95 +5,99 @@ import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
 import { Link } from 'react-router-dom';
 
+// ⚡ Bolt Optimization: Moved static arrays outside component body to prevent unnecessary memory re-allocation on every render
+const steps = [
+  {
+    icon: <Search className="h-8 w-8 text-blue-600" />,
+    title: 'Search for Parking',
+    description: 'Enter your destination and browse available parking spots near you. Filter by price, vehicle type, and amenities.',
+    details: [
+      'Real-time availability updates',
+      'Filter by location, price, and amenities',
+      'View photos and detailed descriptions',
+      'Check ratings and reviews from other users'
+    ]
+  },
+  {
+    icon: <Calendar className="h-8 w-8 text-blue-600" />,
+    title: 'Select Date & Time',
+    description: 'Choose your preferred parking duration. Book for hours, days, or even months with flexible pricing options.',
+    details: [
+      'Flexible booking duration',
+      'Hourly, daily, and monthly rates',
+      'Instant booking confirmation',
+      'Modify or cancel bookings easily'
+    ]
+  },
+  {
+    icon: <CreditCard className="h-8 w-8 text-blue-600" />,
+    title: 'Secure Payment',
+    description: 'Pay safely with our encrypted payment system. Multiple payment methods accepted with instant confirmation.',
+    details: [
+      'Secure payment processing',
+      'Multiple payment methods',
+      'Instant booking confirmation',
+      'Digital receipts and invoices'
+    ]
+  },
+  {
+    icon: <QrCode className="h-8 w-8 text-blue-600" />,
+    title: 'Park & Go',
+    description: 'Show your QR code at the entrance, park your vehicle, and enjoy your day worry-free with 24/7 support.',
+    details: [
+      'QR code entry system',
+      'Mobile app access',
+      '24/7 customer support',
+      'Extend time remotely if needed'
+    ]
+  }
+];
+
+const features = [
+  {
+    icon: <Shield className="h-6 w-6 text-green-600" />,
+    title: 'Secure & Safe',
+    description: 'All parking locations are monitored with 24/7 security and CCTV surveillance.'
+  },
+  {
+    icon: <Clock className="h-6 w-6 text-blue-600" />,
+    title: 'Real-time Updates',
+    description: 'Get instant notifications about your booking status and availability changes.'
+  },
+  {
+    icon: <MapPin className="h-6 w-6 text-purple-600" />,
+    title: 'Prime Locations',
+    description: 'Access parking spots in the most convenient locations across the city.'
+  },
+  {
+    icon: <Car className="h-6 w-6 text-orange-600" />,
+    title: 'All Vehicle Types',
+    description: 'Whether you drive a car, bike, or motorcycle, we have spaces for everyone.'
+  }
+];
+
+const faqs = [
+  {
+    question: 'How do I cancel or modify my booking?',
+    answer: 'You can cancel or modify your booking through your dashboard up to 1 hour before your scheduled time. Cancellations made more than 24 hours in advance receive a full refund.'
+  },
+  {
+    question: 'What if I arrive late or need to extend my time?',
+    answer: 'You can extend your parking time directly through the mobile app, subject to availability. Late arrivals are accommodated within a 30-minute grace period.'
+  },
+  {
+    question: 'Is my vehicle safe in the parking lot?',
+    answer: 'Yes, all our partner parking lots have 24/7 security monitoring, CCTV surveillance, and are well-lit. We also provide insurance coverage for added peace of mind.'
+  },
+  {
+    question: 'What payment methods do you accept?',
+    answer: 'We accept all major credit cards, debit cards, PayPal, and digital wallets. All payments are processed securely with bank-level encryption.'
+  }
+];
+
 const HowItWorks: React.FC = () => {
-  const steps = [
-    {
-      icon: <Search className="h-8 w-8 text-blue-600" />,
-      title: 'Search for Parking',
-      description: 'Enter your destination and browse available parking spots near you. Filter by price, vehicle type, and amenities.',
-      details: [
-        'Real-time availability updates',
-        'Filter by location, price, and amenities',
-        'View photos and detailed descriptions',
-        'Check ratings and reviews from other users'
-      ]
-    },
-    {
-      icon: <Calendar className="h-8 w-8 text-blue-600" />,
-      title: 'Select Date & Time',
-      description: 'Choose your preferred parking duration. Book for hours, days, or even months with flexible pricing options.',
-      details: [
-        'Flexible booking duration',
-        'Hourly, daily, and monthly rates',
-        'Instant booking confirmation',
-        'Modify or cancel bookings easily'
-      ]
-    },
-    {
-      icon: <CreditCard className="h-8 w-8 text-blue-600" />,
-      title: 'Secure Payment',
-      description: 'Pay safely with our encrypted payment system. Multiple payment methods accepted with instant confirmation.',
-      details: [
-        'Secure payment processing',
-        'Multiple payment methods',
-        'Instant booking confirmation',
-        'Digital receipts and invoices'
-      ]
-    },
-    {
-      icon: <QrCode className="h-8 w-8 text-blue-600" />,
-      title: 'Park & Go',
-      description: 'Show your QR code at the entrance, park your vehicle, and enjoy your day worry-free with 24/7 support.',
-      details: [
-        'QR code entry system',
-        'Mobile app access',
-        '24/7 customer support',
-        'Extend time remotely if needed'
-      ]
-    }
-  ];
 
-  const features = [
-    {
-      icon: <Shield className="h-6 w-6 text-green-600" />,
-      title: 'Secure & Safe',
-      description: 'All parking locations are monitored with 24/7 security and CCTV surveillance.'
-    },
-    {
-      icon: <Clock className="h-6 w-6 text-blue-600" />,
-      title: 'Real-time Updates',
-      description: 'Get instant notifications about your booking status and availability changes.'
-    },
-    {
-      icon: <MapPin className="h-6 w-6 text-purple-600" />,
-      title: 'Prime Locations',
-      description: 'Access parking spots in the most convenient locations across the city.'
-    },
-    {
-      icon: <Car className="h-6 w-6 text-orange-600" />,
-      title: 'All Vehicle Types',
-      description: 'Whether you drive a car, bike, or motorcycle, we have spaces for everyone.'
-    }
-  ];
 
-  const faqs = [
-    {
-      question: 'How do I cancel or modify my booking?',
-      answer: 'You can cancel or modify your booking through your dashboard up to 1 hour before your scheduled time. Cancellations made more than 24 hours in advance receive a full refund.'
-    },
-    {
-      question: 'What if I arrive late or need to extend my time?',
-      answer: 'You can extend your parking time directly through the mobile app, subject to availability. Late arrivals are accommodated within a 30-minute grace period.'
-    },
-    {
-      question: 'Is my vehicle safe in the parking lot?',
-      answer: 'Yes, all our partner parking lots have 24/7 security monitoring, CCTV surveillance, and are well-lit. We also provide insurance coverage for added peace of mind.'
-    },
-    {
-      question: 'What payment methods do you accept?',
-      answer: 'We accept all major credit cards, debit cards, PayPal, and digital wallets. All payments are processed securely with bank-level encryption.'
-    }
-  ];
 
   return (
     <div className="min-h-screen bg-gray-50">
