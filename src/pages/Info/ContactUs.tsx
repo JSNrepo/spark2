@@ -10,11 +10,11 @@ import Input from '../../components/UI/Input';
 import toast from 'react-hot-toast';
 
 const contactSchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters'),
-  email: z.string().email('Please enter a valid email address'),
-  subject: z.string().min(5, 'Subject must be at least 5 characters'),
-  category: z.string().min(1, 'Please select a category'),
-  message: z.string().min(10, 'Message must be at least 10 characters'),
+  name: z.string().min(2, 'Name must be at least 2 characters').max(100, 'Name is too long'),
+  email: z.string().email('Please enter a valid email address').max(255, 'Email is too long'),
+  subject: z.string().min(5, 'Subject must be at least 5 characters').max(200, 'Subject is too long'),
+  category: z.string().min(1, 'Please select a category').max(50, 'Category is too long'),
+  message: z.string().min(10, 'Message must be at least 10 characters').max(2000, 'Message is too long'),
 });
 
 type ContactFormData = z.infer<typeof contactSchema>;
