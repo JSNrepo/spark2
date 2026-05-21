@@ -10,3 +10,8 @@
 **Vulnerability:** Raw backend error messages (from Supabase auth) were being exposed directly to the user via toast notifications during sign-in and sign-up.
 **Learning:** Exposing raw error messages can leak sensitive backend details (like stack traces, database constraints, or specific validation rules) or facilitate user enumeration.
 **Prevention:** Always use safe, generic error messages for user-facing UI (e.g., "Invalid email or password", "Registration failed") and log the raw error objects internally for debugging.
+
+## 2024-05-24 - Missing Input Length Limits in Zod Schemas
+**Vulnerability:** Found missing `.max()` constraints on string fields in Zod schemas (ContactUs, BookingPage, CreateParkingLot).
+**Learning:** Without explicit maximum length limits on user inputs (even seemingly innocuous ones like dates or times), the application is vulnerable to Denial of Service (DoS) attacks where maliciously large inputs consume server resources during validation or processing.
+**Prevention:** Always add a `.max()` constraint to `z.string()` definitions in all validation schemas, appropriate to the expected data size.

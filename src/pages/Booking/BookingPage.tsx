@@ -17,11 +17,11 @@ import toast from 'react-hot-toast';
 
 const bookingSchema = z.object({
   vehicleType: z.enum(['car', 'bike']),
-  vehiclePlate: z.string().min(3, 'Vehicle plate is required'),
-  startDate: z.string().min(1, 'Start date is required'),
-  startTime: z.string().min(1, 'Start time is required'),
-  endDate: z.string().min(1, 'End date is required'),
-  endTime: z.string().min(1, 'End time is required'),
+  vehiclePlate: z.string().min(3, 'Vehicle plate is required').max(20, 'Vehicle plate is too long'),
+  startDate: z.string().min(1, 'Start date is required').max(20, 'Start date is too long'),
+  startTime: z.string().min(1, 'Start time is required').max(20, 'Start time is too long'),
+  endDate: z.string().min(1, 'End date is required').max(20, 'End date is too long'),
+  endTime: z.string().min(1, 'End time is required').max(20, 'End time is too long'),
 });
 
 type BookingFormData = z.infer<typeof bookingSchema>;

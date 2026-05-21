@@ -28,8 +28,8 @@ const parkingLotSchema = z.object({
   hourlyRate: z.number().min(0, 'Hourly rate cannot be negative'),
   dailyRate: z.number().min(0, 'Daily rate cannot be negative'),
   monthlyRate: z.number().min(0, 'Monthly rate cannot be negative'),
-  openTime: z.string().min(1, 'Opening time is required'),
-  closeTime: z.string().min(1, 'Closing time is required'),
+  openTime: z.string().min(1, 'Opening time is required').max(20, 'Opening time is too long'),
+  closeTime: z.string().min(1, 'Closing time is required').max(20, 'Closing time is too long'),
 });
 
 type ParkingLotFormData = z.infer<typeof parkingLotSchema>;
