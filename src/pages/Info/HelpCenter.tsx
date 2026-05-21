@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Search, ChevronDown, ChevronRight, MessageCircle, Phone, Mail, Book } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Card from '../../components/UI/Card';
@@ -6,134 +6,142 @@ import Button from '../../components/UI/Button';
 import Input from '../../components/UI/Input';
 import { Link } from 'react-router-dom';
 
+const CATEGORIES = [
+  {
+    id: 'booking',
+    title: 'Booking & Reservations',
+    icon: <Book className="h-6 w-6" />,
+    description: 'Everything about making and managing bookings',
+    faqs: [
+      {
+        id: 'how-to-book',
+        question: 'How do I book a parking space?',
+        answer: 'To book a parking space: 1) Search for parking near your destination, 2) Select your preferred spot and time, 3) Enter your vehicle details, 4) Complete payment. You\'ll receive a confirmation email with your QR code.'
+      },
+      {
+        id: 'modify-booking',
+        question: 'Can I modify or cancel my booking?',
+        answer: 'Yes! You can modify or cancel your booking up to 1 hour before your scheduled time through your dashboard. Cancellations made 24+ hours in advance receive a full refund.'
+      },
+      {
+        id: 'extend-time',
+        question: 'How do I extend my parking time?',
+        answer: 'You can extend your parking time directly through the mobile app or website, subject to availability. Extensions are charged at the same hourly rate.'
+      },
+      {
+        id: 'late-arrival',
+        question: 'What if I arrive late?',
+        answer: 'We provide a 30-minute grace period for late arrivals. If you\'re running later, please contact us immediately to avoid losing your reservation.'
+      }
+    ]
+  },
+  {
+    id: 'payment',
+    title: 'Payment & Billing',
+    icon: <MessageCircle className="h-6 w-6" />,
+    description: 'Payment methods, billing, and refunds',
+    faqs: [
+      {
+        id: 'payment-methods',
+        question: 'What payment methods do you accept?',
+        answer: 'We accept all major credit cards (Visa, MasterCard, American Express), debit cards, PayPal, Apple Pay, and Google Pay. All payments are processed securely.'
+      },
+      {
+        id: 'refund-policy',
+        question: 'What is your refund policy?',
+        answer: 'Full refunds are available for cancellations made 24+ hours in advance. Cancellations within 24 hours receive a 50% refund. No refunds for no-shows.'
+      },
+      {
+        id: 'billing-issues',
+        question: 'I have a billing issue, what should I do?',
+        answer: 'Contact our support team immediately with your booking ID and payment details. We\'ll investigate and resolve billing issues within 24 hours.'
+      },
+      {
+        id: 'receipts',
+        question: 'How do I get a receipt?',
+        answer: 'Receipts are automatically emailed after payment. You can also download receipts from your dashboard under "Booking History".'
+      }
+    ]
+  },
+  {
+    id: 'account',
+    title: 'Account & Profile',
+    icon: <Phone className="h-6 w-6" />,
+    description: 'Managing your account and personal information',
+    faqs: [
+      {
+        id: 'create-account',
+        question: 'Do I need an account to book parking?',
+        answer: 'Yes, you need to create a free account to book parking. This allows us to manage your bookings, send confirmations, and provide customer support.'
+      },
+      {
+        id: 'forgot-password',
+        question: 'I forgot my password, how do I reset it?',
+        answer: 'Click "Forgot Password" on the login page, enter your email address, and we\'ll send you a password reset link within minutes.'
+      },
+      {
+        id: 'update-profile',
+        question: 'How do I update my profile information?',
+        answer: 'Go to your dashboard and click on "Profile Settings" to update your personal information, contact details, and preferences.'
+      },
+      {
+        id: 'delete-account',
+        question: 'How do I delete my account?',
+        answer: 'Contact our support team to request account deletion. Please note that this action is permanent and cannot be undone.'
+      }
+    ]
+  },
+  {
+    id: 'parking',
+    title: 'Parking & Access',
+    icon: <Mail className="h-6 w-6" />,
+    description: 'Accessing parking lots and using facilities',
+    faqs: [
+      {
+        id: 'qr-code',
+        question: 'How do I use the QR code to enter?',
+        answer: 'Show your QR code (from email or app) to the parking attendant or scan it at the automated gate. The code is valid for your entire booking period.'
+      },
+      {
+        id: 'lost-qr',
+        question: 'What if I lose my QR code?',
+        answer: 'You can always access your QR code from your dashboard or the mobile app. If you\'re having trouble, contact the parking lot directly or our support team.'
+      },
+      {
+        id: 'vehicle-size',
+        question: 'Are there vehicle size restrictions?',
+        answer: 'Each parking lot has specific size restrictions listed in the description. Standard car spaces accommodate vehicles up to 6.5 feet wide and 18 feet long.'
+      },
+      {
+        id: 'security',
+        question: 'How secure are the parking lots?',
+        answer: 'All our partner lots have security measures including CCTV monitoring, adequate lighting, and many have on-site security personnel. We also provide insurance coverage.'
+      }
+    ]
+  }
+];
+
 const HelpCenter: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
   const [expandedFaq, setExpandedFaq] = useState<string | null>(null);
 
-  const categories = [
-    {
-      id: 'booking',
-      title: 'Booking & Reservations',
-      icon: <Book className="h-6 w-6" />,
-      description: 'Everything about making and managing bookings',
-      faqs: [
-        {
-          id: 'how-to-book',
-          question: 'How do I book a parking space?',
-          answer: 'To book a parking space: 1) Search for parking near your destination, 2) Select your preferred spot and time, 3) Enter your vehicle details, 4) Complete payment. You\'ll receive a confirmation email with your QR code.'
-        },
-        {
-          id: 'modify-booking',
-          question: 'Can I modify or cancel my booking?',
-          answer: 'Yes! You can modify or cancel your booking up to 1 hour before your scheduled time through your dashboard. Cancellations made 24+ hours in advance receive a full refund.'
-        },
-        {
-          id: 'extend-time',
-          question: 'How do I extend my parking time?',
-          answer: 'You can extend your parking time directly through the mobile app or website, subject to availability. Extensions are charged at the same hourly rate.'
-        },
-        {
-          id: 'late-arrival',
-          question: 'What if I arrive late?',
-          answer: 'We provide a 30-minute grace period for late arrivals. If you\'re running later, please contact us immediately to avoid losing your reservation.'
-        }
-      ]
-    },
-    {
-      id: 'payment',
-      title: 'Payment & Billing',
-      icon: <MessageCircle className="h-6 w-6" />,
-      description: 'Payment methods, billing, and refunds',
-      faqs: [
-        {
-          id: 'payment-methods',
-          question: 'What payment methods do you accept?',
-          answer: 'We accept all major credit cards (Visa, MasterCard, American Express), debit cards, PayPal, Apple Pay, and Google Pay. All payments are processed securely.'
-        },
-        {
-          id: 'refund-policy',
-          question: 'What is your refund policy?',
-          answer: 'Full refunds are available for cancellations made 24+ hours in advance. Cancellations within 24 hours receive a 50% refund. No refunds for no-shows.'
-        },
-        {
-          id: 'billing-issues',
-          question: 'I have a billing issue, what should I do?',
-          answer: 'Contact our support team immediately with your booking ID and payment details. We\'ll investigate and resolve billing issues within 24 hours.'
-        },
-        {
-          id: 'receipts',
-          question: 'How do I get a receipt?',
-          answer: 'Receipts are automatically emailed after payment. You can also download receipts from your dashboard under "Booking History".'
-        }
-      ]
-    },
-    {
-      id: 'account',
-      title: 'Account & Profile',
-      icon: <Phone className="h-6 w-6" />,
-      description: 'Managing your account and personal information',
-      faqs: [
-        {
-          id: 'create-account',
-          question: 'Do I need an account to book parking?',
-          answer: 'Yes, you need to create a free account to book parking. This allows us to manage your bookings, send confirmations, and provide customer support.'
-        },
-        {
-          id: 'forgot-password',
-          question: 'I forgot my password, how do I reset it?',
-          answer: 'Click "Forgot Password" on the login page, enter your email address, and we\'ll send you a password reset link within minutes.'
-        },
-        {
-          id: 'update-profile',
-          question: 'How do I update my profile information?',
-          answer: 'Go to your dashboard and click on "Profile Settings" to update your personal information, contact details, and preferences.'
-        },
-        {
-          id: 'delete-account',
-          question: 'How do I delete my account?',
-          answer: 'Contact our support team to request account deletion. Please note that this action is permanent and cannot be undone.'
-        }
-      ]
-    },
-    {
-      id: 'parking',
-      title: 'Parking & Access',
-      icon: <Mail className="h-6 w-6" />,
-      description: 'Accessing parking lots and using facilities',
-      faqs: [
-        {
-          id: 'qr-code',
-          question: 'How do I use the QR code to enter?',
-          answer: 'Show your QR code (from email or app) to the parking attendant or scan it at the automated gate. The code is valid for your entire booking period.'
-        },
-        {
-          id: 'lost-qr',
-          question: 'What if I lose my QR code?',
-          answer: 'You can always access your QR code from your dashboard or the mobile app. If you\'re having trouble, contact the parking lot directly or our support team.'
-        },
-        {
-          id: 'vehicle-size',
-          question: 'Are there vehicle size restrictions?',
-          answer: 'Each parking lot has specific size restrictions listed in the description. Standard car spaces accommodate vehicles up to 6.5 feet wide and 18 feet long.'
-        },
-        {
-          id: 'security',
-          question: 'How secure are the parking lots?',
-          answer: 'All our partner lots have security measures including CCTV monitoring, adequate lighting, and many have on-site security personnel. We also provide insurance coverage.'
-        }
-      ]
-    }
-  ];
+  // ⚡ Bolt Optimization: Wrap derived state in useMemo and use a single-pass reduce
+  // to avoid multiple O(N) array iterations and intermediate memory allocations.
+  const filteredCategories = useMemo(() => {
+    return CATEGORIES.reduce((acc, category) => {
+      const filteredFaqs = category.faqs.filter(faq =>
+        searchQuery === '' ||
+        faq.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        faq.answer.toLowerCase().includes(searchQuery.toLowerCase())
+      );
 
-  const filteredCategories = categories.map(category => ({
-    ...category,
-    faqs: category.faqs.filter(faq => 
-      searchQuery === '' || 
-      faq.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      faq.answer.toLowerCase().includes(searchQuery.toLowerCase())
-    )
-  })).filter(category => category.faqs.length > 0);
+      if (filteredFaqs.length > 0) {
+        acc.push({ ...category, faqs: filteredFaqs });
+      }
+      return acc;
+    }, [] as typeof CATEGORIES);
+  }, [searchQuery]);
 
   return (
     <div className="min-h-screen bg-gray-50">
