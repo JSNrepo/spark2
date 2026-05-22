@@ -229,6 +229,7 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
           type="text"
           value={query}
           onChange={handleInputChange}
+          maxLength={200}
           placeholder={placeholder}
           className="pl-10 pr-20"
           onFocus={() => results.length > 0 && setShowResults(true)}

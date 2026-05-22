@@ -15,3 +15,4 @@
 **Vulnerability:** Found missing `.max()` constraints on string fields in Zod schemas (ContactUs, BookingPage, CreateParkingLot).
 **Learning:** Without explicit maximum length limits on user inputs (even seemingly innocuous ones like dates or times), the application is vulnerable to Denial of Service (DoS) attacks where maliciously large inputs consume server resources during validation or processing.
 **Prevention:** Always add a `.max()` constraint to `z.string()` definitions in all validation schemas, appropriate to the expected data size.
+## 2026-05-22 - Input Length Limits\n**Vulnerability:** Unbounded input fields in search components.\n**Learning:** Long string inputs can be passed to APIs or cause client-side performance issues if not constrained by the browser.\n**Prevention:** Always add a `maxLength` attribute to `<input>` or `<Input>` tags, especially for search queries.
