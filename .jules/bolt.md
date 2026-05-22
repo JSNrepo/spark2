@@ -16,3 +16,6 @@
 ## 2024-05-21 - Component Static Array Allocation
 **Learning:** React components that define static arrays or objects inside their function body suffer from unnecessary memory re-allocation on every render. This was discovered in `Home.tsx` and `HowItWorks.tsx` where arrays of features, steps, and testimonials were being recreated each time the components rendered.
 **Action:** Always extract static configurations, arrays, and objects that do not depend on component state or props outside of the component body to the module level scope.
+## 2024-05-24 - Large Main Bundle Bottleneck
+**Learning:** The Vite application bundled all React router pages into a single `index.js` file, resulting in an initial load size of over 800kB, which triggers Vite's chunk size warning limit. Since the application has many discrete pages, loading them all upfront is unnecessary for first paint.
+**Action:** Use `React.lazy` combined with `Suspense` wrapping the React Router `<Routes>` component to enable route-level code splitting. This breaks the large main bundle into smaller, dynamically loaded chunks (reducing main bundle size to ~350kB) and improves Time to Interactive.
