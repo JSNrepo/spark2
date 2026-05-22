@@ -99,6 +99,7 @@ const Home: React.FC = () => {
                       placeholder="Enter location (e.g., Downtown, Airport, Mall)"
                       value={searchLocation}
                       onChange={(e) => setSearchLocation(e.target.value)}
+                      maxLength={200}
                       className="text-gray-900 text-lg"
                     />
                   </div>

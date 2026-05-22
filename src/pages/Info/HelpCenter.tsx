@@ -168,6 +168,7 @@ const HelpCenter: React.FC = () => {
                 placeholder="Search for help articles..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                maxLength={200}
                 className="pl-12 py-4 text-lg bg-white text-gray-900"
               />
             </div>
