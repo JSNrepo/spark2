@@ -220,9 +220,9 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
       <div className="relative">
         <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
           {loading ? (
-            <Loader className="h-5 w-5 animate-spin" />
+            <Loader className="h-5 w-5 animate-spin" aria-hidden="true" />
           ) : (
-            <Search className="h-5 w-5" />
+            <Search className="h-5 w-5" aria-hidden="true" />
           )}
         </div>
         <Input
@@ -231,6 +231,7 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
           onChange={handleInputChange}
           maxLength={200}
           placeholder={placeholder}
+          aria-label={placeholder}
           className="pl-10 pr-20"
           onFocus={() => results.length > 0 && setShowResults(true)}
         />
@@ -238,10 +239,11 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
           {query && (
             <button
               onClick={clearSearch}
-              className="p-1 text-gray-400 hover:text-gray-600 rounded transition-colors"
+              className="p-1 text-gray-400 hover:text-gray-600 rounded-md transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
               title="Clear search"
+              aria-label="Clear search"
             >
-              <X className="h-4 w-4" />
+              <X className="h-4 w-4" aria-hidden="true" />
             </button>
           )}
           {showCurrentLocation && (
@@ -253,11 +255,12 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
               disabled={gettingLocation}
               className="p-1"
               title="Use current location"
+              aria-label="Use current location"
             >
               {gettingLocation ? (
-                <Loader className="h-4 w-4 animate-spin" />
+                <Loader className="h-4 w-4 animate-spin" aria-hidden="true" />
               ) : (
-                <Navigation className="h-4 w-4" />
+                <Navigation className="h-4 w-4" aria-hidden="true" />
               )}
             </Button>
           )}
@@ -276,7 +279,7 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
                 className="w-full px-4 py-3 text-left hover:bg-gray-50 border-b border-gray-100 last:border-b-0 focus:outline-none focus:bg-gray-50 transition-colors"
               >
                 <div className="flex items-start space-x-3">
-                  <MapPin className="h-4 w-4 text-gray-400 mt-1 flex-shrink-0" />
+                  <MapPin className="h-4 w-4 text-gray-400 mt-1 flex-shrink-0" aria-hidden="true" />
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-gray-900 truncate">
                       {formatted.main}
@@ -296,7 +299,7 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
       {loading && query.length >= 3 && (
         <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 p-4 text-center">
           <div className="flex items-center justify-center space-x-2">
-            <Loader className="h-4 w-4 animate-spin text-blue-600" />
+            <Loader className="h-4 w-4 animate-spin text-blue-600" aria-hidden="true" />
             <span className="text-sm text-gray-600">Searching locations...</span>
           </div>
         </div>
@@ -306,7 +309,7 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
       {showResults && !loading && results.length === 0 && query.length >= 3 && (
         <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 p-4 text-center">
           <div className="text-center">
-            <MapPin className="h-8 w-8 text-gray-300 mx-auto mb-2" />
+            <MapPin className="h-8 w-8 text-gray-300 mx-auto mb-2" aria-hidden="true" />
             <p className="text-sm text-gray-600 mb-2">No locations found</p>
             <p className="text-xs text-gray-500">Try searching for a city, mall, or landmark</p>
           </div>

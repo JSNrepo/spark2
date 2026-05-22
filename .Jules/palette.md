@@ -17,3 +17,6 @@
 ## 2024-05-20 - Image Carousel Accessibility
 **Learning:** Custom image carousels with dot indicators and interactive thumbnails lack keyboard focus and screen reader context out-of-the-box.
 **Action:** Always add `aria-label` (e.g., "Select image 1"), `aria-current="true"` for the active item, explicit `focus-visible` styles (`focus-visible:ring-2`), and `aria-hidden="true"` to any decorative internal elements (like the thumbnail `<img>`) to custom carousel controls.
+## 2025-05-22 - LocationSearch Accessibility Fixes
+**Learning:** Icon-only buttons (like "Clear search" and "Use current location") need explicit `aria-label` attributes and keyboard focus states (`focus-visible:ring-2`) to be usable for keyboard and screen reader users. Also, decorative elements like `lucide-react` icons should have `aria-hidden="true"` to prevent redundant screen reader announcements.
+**Action:** Always include `aria-label`, `aria-hidden`, and explicit focus styles (`focus:outline-none focus-visible:ring-2`) when implementing icon-only interactive elements in components.
