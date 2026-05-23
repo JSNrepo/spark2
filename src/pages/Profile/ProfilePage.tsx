@@ -57,7 +57,8 @@ const ProfilePage: React.FC = () => {
       // In a real app, you'd update the user profile
       await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
       toast.success('Profile updated successfully!');
-    } catch {
+    } catch (error) {
+      console.error('Error updating profile:', error);
       toast.error('Failed to update profile');
     } finally {
       setLoading(false);
@@ -71,7 +72,8 @@ const ProfilePage: React.FC = () => {
       await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
       toast.success('Password updated successfully!');
       passwordForm.reset();
-    } catch {
+    } catch (error) {
+      console.error('Error updating password:', error);
       toast.error('Failed to update password');
     } finally {
       setLoading(false);

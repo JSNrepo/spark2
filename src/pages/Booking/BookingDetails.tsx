@@ -81,7 +81,8 @@ const BookingDetails: React.FC = () => {
       // await db.updateBooking(booking.id, { status: 'cancelled' });
       toast.success('Booking cancelled successfully');
       setBooking({ ...booking, status: 'cancelled' });
-    } catch {
+    } catch (error) {
+      console.error('Error canceling booking:', error);
       toast.error('Failed to cancel booking');
     }
   };
