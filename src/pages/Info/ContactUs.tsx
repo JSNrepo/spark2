@@ -38,7 +38,8 @@ const ContactUs: React.FC = () => {
       await new Promise(resolve => setTimeout(resolve, 2000));
       toast.success('Message sent successfully! We\'ll get back to you within 24 hours.');
       reset();
-    } catch {
+    } catch (error) {
+      console.error('Error sending message:', error);
       toast.error('Failed to send message. Please try again.');
     } finally {
       setLoading(false);
