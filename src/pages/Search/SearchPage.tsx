@@ -58,7 +58,8 @@ const SearchPage: React.FC = () => {
 
       setParkingLots(data || []);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load parking lots');
+      console.error('Search error:', err);
+      setError('Failed to load parking lots. Please try again later.');
     } finally {
       setLoading(false);
     }
