@@ -45,9 +45,12 @@ const Dashboard: React.FC = () => {
     }
   }, [user, loadBookings]);
 
-  const filteredBookings = bookings.filter(booking => 
-    filter === 'all' || booking.status === filter
-  );
+  // ⚡ Bolt Optimization: Wrap derived state in useMemo to prevent O(N) array iteration and reallocation on every render.
+  const filteredBookings = useMemo(() => {
+    return bookings.filter(booking =>
+      filter === 'all' || booking.status === filter
+    );
+  }, [bookings, filter]);
 
   // ⚡ Bolt Optimization: Use useMemo and a single pass reduce to compute dashboard stats efficiently, preventing multiple O(N) array iterations.
   const stats = useMemo(() => {
