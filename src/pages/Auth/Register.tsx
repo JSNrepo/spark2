@@ -9,6 +9,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import Button from '../../components/UI/Button';
 import Input from '../../components/UI/Input';
 import Card from '../../components/UI/Card';
+import toast from 'react-hot-toast';
 
 const registerSchema = z.object({
   firstName: z.string().min(2, 'First name must be at least 2 characters').max(50, 'First name is too long'),
@@ -58,6 +59,9 @@ const Register: React.FC = () => {
       if (success) {
         navigate('/dashboard');
       }
+    } catch (error) {
+      console.error('Registration error:', error);
+      toast.error('An unexpected error occurred during registration. Please try again.');
     } finally {
       setIsLoading(false);
     }
