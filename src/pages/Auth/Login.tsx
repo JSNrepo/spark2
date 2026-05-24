@@ -9,6 +9,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import Button from '../../components/UI/Button';
 import Input from '../../components/UI/Input';
 import Card from '../../components/UI/Card';
+import toast from 'react-hot-toast';
 
 const loginSchema = z.object({
   email: z.string().email('Please enter a valid email address').max(255, 'Email is too long'),
@@ -41,6 +42,9 @@ const Login: React.FC = () => {
       if (success) {
         navigate(from, { replace: true });
       }
+    } catch (error) {
+      console.error('Login error:', error);
+      toast.error('An unexpected error occurred during login. Please try again.');
     } finally {
       setIsLoading(false);
     }
