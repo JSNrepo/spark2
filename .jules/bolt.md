@@ -19,3 +19,6 @@
 ## 2024-05-24 - Large Main Bundle Bottleneck
 **Learning:** The Vite application bundled all React router pages into a single `index.js` file, resulting in an initial load size of over 800kB, which triggers Vite's chunk size warning limit. Since the application has many discrete pages, loading them all upfront is unnecessary for first paint.
 **Action:** Use `React.lazy` combined with `Suspense` wrapping the React Router `<Routes>` component to enable route-level code splitting. This breaks the large main bundle into smaller, dynamically loaded chunks (reducing main bundle size to ~350kB) and improves Time to Interactive.
+## 2024-05-25 - [O(N) Reallocation in Render]
+**Learning:** Derived state (like a `filter` over an array) computed directly in the component body runs on every single render, allocating a new array reference and unnecessarily spending CPU cycles.
+**Action:** Always wrap derived array operations (`filter`, `map`, etc.) in `useMemo` hooks so they are only recomputed when their dependencies change. This improves render speed and maintains referential equality.
