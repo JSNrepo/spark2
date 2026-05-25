@@ -209,3 +209,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 **Note**: This application requires valid Supabase credentials and will not function with mock data. Ensure your environment is properly configured before development.
+
+## 📸 Screenshots & Demo Videos
+
+*(Add screenshots and demo videos here to showcase the platform's UI and UX improvements, including accessibility enhancements like focused states on icon-only buttons.)*

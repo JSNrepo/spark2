@@ -148,8 +148,12 @@ const ProfilePage: React.FC = () => {
                           <User className="h-12 w-12 text-blue-600" />
                         )}
                       </div>
-                      <button className="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-lg border border-gray-200 hover:bg-gray-50">
-                        <Camera className="h-4 w-4 text-gray-600" />
+                      <button
+                        className="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-lg border border-gray-200 hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                        aria-label="Change profile photo"
+                        title="Change profile photo"
+                      >
+                        <Camera className="h-4 w-4 text-gray-600" aria-hidden="true" />
                       </button>
                     </div>
                     <div>

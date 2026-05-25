@@ -20,3 +20,6 @@
 ## 2025-05-22 - LocationSearch Accessibility Fixes
 **Learning:** Icon-only buttons (like "Clear search" and "Use current location") need explicit `aria-label` attributes and keyboard focus states (`focus-visible:ring-2`) to be usable for keyboard and screen reader users. Also, decorative elements like `lucide-react` icons should have `aria-hidden="true"` to prevent redundant screen reader announcements.
 **Action:** Always include `aria-label`, `aria-hidden`, and explicit focus styles (`focus:outline-none focus-visible:ring-2`) when implementing icon-only interactive elements in components.
+## 2024-05-25 - Profile Photo Camera Button Accessibility
+**Learning:** Found an icon-only button (Camera icon) in the ProfilePage that lacked any ARIA labels or keyboard focus indicators. The standard a11y pattern for icon-only interactive elements needs to be strictly applied here.
+**Action:** Always use dynamic `aria-label` and `title` properties, add `aria-hidden="true"` to the decorative icon, and apply `focus:outline-none focus-visible:ring-2` for clear keyboard focus indicators.
