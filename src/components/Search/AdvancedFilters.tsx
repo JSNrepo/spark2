@@ -20,6 +20,14 @@ interface AdvancedFiltersProps {
   onFiltersChange: (filters: FilterState) => void;
 }
 
+// ⚡ Bolt Optimization: Moved static array outside component body to prevent unnecessary memory re-allocation on every render.
+const FEATURES_LIST = Object.entries({
+  covered: 'Covered Parking',
+  security: '24/7 Security',
+  ev_charging: 'EV Charging',
+  accessible: 'Wheelchair Accessible',
+});
+
 export const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({ onFiltersChange }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [filters, setFilters] = useState<FilterState>({
@@ -129,12 +137,7 @@ export const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({ onFiltersChang
                 Features
               </label>
               <div className="space-y-2">
-                {Object.entries({
-                  covered: 'Covered Parking',
-                  security: '24/7 Security',
-                  ev_charging: 'EV Charging',
-                  accessible: 'Wheelchair Accessible',
-                }).map(([key, label]) => (
+                {FEATURES_LIST.map(([key, label]) => (
                   <label key={key} className="flex items-center">
                     <input
                       type="checkbox"

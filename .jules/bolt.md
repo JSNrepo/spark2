@@ -22,3 +22,6 @@
 ## 2024-05-25 - [O(N) Reallocation in Render]
 **Learning:** Derived state (like a `filter` over an array) computed directly in the component body runs on every single render, allocating a new array reference and unnecessarily spending CPU cycles.
 **Action:** Always wrap derived array operations (`filter`, `map`, etc.) in `useMemo` hooks so they are only recomputed when their dependencies change. This improves render speed and maintains referential equality.
+## 2026-05-25 - AdvancedFilters Optimization
+**Learning:** Found an inline object being created and having `Object.entries` called on it within a component's render body, which creates unnecessary allocations on every render.
+**Action:** Extract static arrays and objects (and evaluated forms like `Object.entries(myObj)`) completely outside the React component scope to prevent unnecessary memory allocations during re-renders.
