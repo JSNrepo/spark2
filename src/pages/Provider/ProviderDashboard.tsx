@@ -21,8 +21,15 @@ const ProviderDashboard: React.FC = () => {
     
     setLoading(true);
     try {
-      // Load provider's parking lots
-      const { data: lots, error: lotsError } = await db.getProviderParkingLots(user.id);
+      // ⚡ Bolt Optimization: Batch independent API requests using Promise.all to reduce waterfall delays
+      const [
+        { data: lots, error: lotsError },
+        { data: providerBookings, error: bookingsError }
+      ] = await Promise.all([
+        db.getProviderParkingLots(user.id),
+        db.getProviderBookings(user.id)
+      ]);
+
       if (lotsError) {
         console.error('Error loading parking lots:', lotsError);
         toast.error('Failed to load parking lots');
@@ -30,8 +37,6 @@ const ProviderDashboard: React.FC = () => {
         setParkingLots(lots || []);
       }
 
-      // Load bookings for provider's lots
-      const { data: providerBookings, error: bookingsError } = await db.getProviderBookings(user.id);
       if (bookingsError) {
         console.error('Error loading bookings:', bookingsError);
         toast.error('Failed to load bookings');

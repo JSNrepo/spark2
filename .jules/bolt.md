@@ -25,3 +25,6 @@
 ## 2026-05-25 - AdvancedFilters Optimization
 **Learning:** Found an inline object being created and having `Object.entries` called on it within a component's render body, which creates unnecessary allocations on every render.
 **Action:** Extract static arrays and objects (and evaluated forms like `Object.entries(myObj)`) completely outside the React component scope to prevent unnecessary memory allocations during re-renders.
+## 2024-05-24 - Prevent Sequential API Request Waterfalls in Dashboards
+**Learning:** React dashboards often load multiple independent datasets (e.g., lots and bookings) sequentially, creating a network waterfall bottleneck that delays rendering.
+**Action:** Always wrap independent data-fetching promises in `Promise.all()` to fetch data concurrently. Destructure the results to handle errors individually, ensuring partial data can load if one request fails.
