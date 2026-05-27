@@ -28,3 +28,6 @@
 ## 2024-05-24 - Prevent Sequential API Request Waterfalls in Dashboards
 **Learning:** React dashboards often load multiple independent datasets (e.g., lots and bookings) sequentially, creating a network waterfall bottleneck that delays rendering.
 **Action:** Always wrap independent data-fetching promises in `Promise.all()` to fetch data concurrently. Destructure the results to handle errors individually, ensuring partial data can load if one request fails.
+## 2026-05-27 - Optimize: fix sequential API waterfall in ParkingLotDetails
+**Learning:** Sequential, independent API requests in React `useEffect` hooks create performance bottlenecks.
+**Action:** Use `Promise.all()` to batch independent API requests. Destructure the results to handle individual request errors, improving overall load times and rendering speed.

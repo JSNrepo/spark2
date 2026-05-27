@@ -20,22 +20,36 @@ const ParkingLotDetails: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
-  const loadParkingLotDetails = useCallback(async () => {
+  const loadData = useCallback(async () => {
     if (!id) return;
     
     setLoading(true);
     setError(null);
     try {
-      const { data, error: dbError } = await db.getParkingLot(id);
-      if (dbError) {
-        console.error('Error loading parking lot:', dbError);
+      // ⚡ Bolt Optimization: Batch independent API requests using Promise.all to reduce waterfall delays
+      const [
+        { data: parkingLotData, error: lotError },
+        { data: reviewsData, error: reviewsError }
+      ] = await Promise.all([
+        db.getParkingLot(id),
+        db.getParkingLotReviews(id)
+      ]);
+
+      if (lotError) {
+        console.error('Error loading parking lot:', lotError);
         setError('Failed to load parking lot details. Please try again.');
         toast.error('Failed to load parking lot details');
-      } else if (data) {
-        setParkingLot(data);
+      } else if (parkingLotData) {
+        setParkingLot(parkingLotData);
       } else {
         setError('Parking lot not found');
         toast.error('Parking lot not found');
+      }
+
+      if (reviewsError) {
+        console.error('Error loading reviews:', reviewsError);
+      } else {
+        setReviews(reviewsData || []);
       }
     } catch (err) {
       console.error('Database error:', err);
@@ -46,27 +60,11 @@ const ParkingLotDetails: React.FC = () => {
     }
   }, [id]);
 
-  const loadReviews = useCallback(async () => {
-    if (!id) return;
-    
-    try {
-      const { data, error } = await db.getParkingLotReviews(id);
-      if (error) {
-        console.error('Error loading reviews:', error);
-      } else {
-        setReviews(data || []);
-      }
-    } catch (error) {
-      console.error('Error loading reviews:', error);
-    }
-  }, [id]);
-
   useEffect(() => {
     if (id) {
-      loadParkingLotDetails();
-      loadReviews();
+      loadData();
     }
-  }, [id, loadParkingLotDetails, loadReviews]);
+  }, [id, loadData]);
 
   const handleBookNow = () => {
     if (!user) {
@@ -101,7 +99,7 @@ const ParkingLotDetails: React.FC = () => {
           <h2 className="text-2xl font-bold text-red-900 mb-4">Error Loading Parking Lot</h2>
           <p className="text-red-600 mb-6">{error}</p>
           <div className="space-y-3">
-            <Button onClick={loadParkingLotDetails} className="w-full">
+            <Button onClick={loadData} className="w-full">
               Try Again
             </Button>
             <Button variant="outline" onClick={() => navigate('/search')} className="w-full">
