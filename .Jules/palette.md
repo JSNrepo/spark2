@@ -23,3 +23,7 @@
 ## 2024-05-25 - Profile Photo Camera Button Accessibility
 **Learning:** Found an icon-only button (Camera icon) in the ProfilePage that lacked any ARIA labels or keyboard focus indicators. The standard a11y pattern for icon-only interactive elements needs to be strictly applied here.
 **Action:** Always use dynamic `aria-label` and `title` properties, add `aria-hidden="true"` to the decorative icon, and apply `focus:outline-none focus-visible:ring-2` for clear keyboard focus indicators.
+
+## 2024-05-27 - Accordion Accessibility Pattern
+**Learning:** For custom collapsible content like accordions in React applications (such as in Help Center or FAQs), using plain buttons with simple `onClick` handlers creates an accessibility trap for screen readers and keyboard users.
+**Action:** Always implement the `aria-expanded` and `aria-controls` properties on the toggle button (linked via ID to the content container), add `role="region"` to the content block, and ensure explicit focus indicators (`focus-visible:ring-2`) are present so keyboard users know where their focus lies.

@@ -242,7 +242,10 @@ const HelpCenter: React.FC = () => {
                       onClick={() => setExpandedCategory(
                         expandedCategory === category.id ? null : category.id
                       )}
-                      className="w-full p-6 text-left hover:bg-gray-50 transition-colors"
+                      className="w-full p-6 text-left hover:bg-gray-50 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500"
+                      aria-expanded={expandedCategory === category.id}
+                      aria-controls={`category-content-${category.id}`}
+                      id={`category-button-${category.id}`}
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center">
@@ -269,6 +272,9 @@ const HelpCenter: React.FC = () => {
                     <AnimatePresence>
                       {expandedCategory === category.id && (
                         <motion.div
+                          id={`category-content-${category.id}`}
+                          role="region"
+                          aria-labelledby={`category-button-${category.id}`}
                           initial={{ height: 0, opacity: 0 }}
                           animate={{ height: 'auto', opacity: 1 }}
                           exit={{ height: 0, opacity: 0 }}
@@ -282,7 +288,10 @@ const HelpCenter: React.FC = () => {
                                   onClick={() => setExpandedFaq(
                                     expandedFaq === faq.id ? null : faq.id
                                   )}
-                                  className="w-full p-4 text-left hover:bg-gray-50 transition-colors"
+                                  className="w-full p-4 text-left hover:bg-gray-50 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500 rounded-lg"
+                                  aria-expanded={expandedFaq === faq.id}
+                                  aria-controls={`faq-content-${faq.id}`}
+                                  id={`faq-button-${faq.id}`}
                                 >
                                   <div className="flex items-center justify-between">
                                     <h4 className="font-medium text-gray-900">
@@ -299,6 +308,9 @@ const HelpCenter: React.FC = () => {
                                 <AnimatePresence>
                                   {expandedFaq === faq.id && (
                                     <motion.div
+                                      id={`faq-content-${faq.id}`}
+                                      role="region"
+                                      aria-labelledby={`faq-button-${faq.id}`}
                                       initial={{ height: 0, opacity: 0 }}
                                       animate={{ height: 'auto', opacity: 1 }}
                                       exit={{ height: 0, opacity: 0 }}
