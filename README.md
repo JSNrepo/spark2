@@ -216,3 +216,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ![Help Center Accessibility Focus](public/help-center-focus.png)
 *Help Center Accordion Focus States*
+
+![Header Menu Focus](public/header-menu-focus.png)
+*Header User Menu Focus States*
+
+![Contact Owner Focus](public/contact-owner-focus.png)
+*Contact Owner Button Focus States*
