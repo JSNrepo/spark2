@@ -111,17 +111,21 @@ const CreateParkingLot: React.FC = () => {
 
     setLoading(true);
     try {
-      // Upload images first
-      const imageUrls: string[] = [];
-      for (const file of selectedImages) {
-        const { publicUrl, error } = await db.uploadParkingLotImage(file, 'parking-lot');
-        if (error) {
-          console.error('Failed to upload image:', error);
-          toast.error(`Failed to upload ${file.name}`);
-        } else if (publicUrl) {
-          imageUrls.push(publicUrl);
-        }
-      }
+      // ⚡ Bolt Optimization: Batch independent API requests using Promise.all to reduce waterfall delays
+      // Upload images concurrently instead of sequentially
+      const uploadPromises = selectedImages.map(file =>
+        db.uploadParkingLotImage(file, 'parking-lot').then(({ publicUrl, error }) => {
+          if (error) {
+            console.error('Failed to upload image:', error);
+            toast.error(`Failed to upload ${file.name}`);
+            return null;
+          }
+          return publicUrl;
+        })
+      );
+
+      const uploadResults = await Promise.all(uploadPromises);
+      const imageUrls = uploadResults.filter((url): url is string => url !== null);
 
       const parkingLotData = {
         ...data,
