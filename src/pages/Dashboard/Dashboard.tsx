@@ -11,6 +11,82 @@ import LoadingSpinner from '../../components/UI/LoadingSpinner';
 import { format } from 'date-fns';
 import toast from 'react-hot-toast';
 
+// ⚡ Bolt Optimization: Extracted complex list item into a React.memo component
+// to prevent O(N) re-render bottlenecks when parent state (like 'filter') changes.
+const BookingCard = React.memo(({
+  booking,
+  index,
+  getStatusColor,
+  getPaymentStatusColor
+}: {
+  booking: Booking;
+  index: number;
+  getStatusColor: (status: string) => string;
+  getPaymentStatusColor: (status: string) => string;
+}) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5, delay: index * 0.1 }}
+    className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow"
+  >
+    <div className="flex flex-col lg:flex-row lg:items-center justify-between">
+      <div className="flex-1">
+        <div className="flex items-center space-x-3 mb-2">
+          <h3 className="text-lg font-semibold text-gray-900">
+            Booking #{booking.id.slice(-6)}
+          </h3>
+          <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(booking.status)}`}>
+            {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
+          <div className="flex items-center">
+            <MapPin className="h-4 w-4 mr-2" />
+            <span>Downtown Plaza Parking</span>
+          </div>
+          <div className="flex items-center">
+            <Car className="h-4 w-4 mr-2" />
+            <span>{booking.vehicleType.toUpperCase()} - {booking.vehiclePlate}</span>
+          </div>
+          <div className="flex items-center">
+            <Calendar className="h-4 w-4 mr-2" />
+            <span>{format(new Date(booking.startTime), 'MMM dd, yyyy')}</span>
+          </div>
+          <div className="flex items-center">
+            <Clock className="h-4 w-4 mr-2" />
+            <span>
+              {format(new Date(booking.startTime), 'HH:mm')} - {format(new Date(booking.endTime), 'HH:mm')}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-4 lg:mt-0 lg:ml-6 flex flex-col items-end">
+        <div className="text-2xl font-bold text-gray-900 mb-1">
+          ${booking.totalAmount}
+        </div>
+        <div className={`text-sm font-medium ${getPaymentStatusColor(booking.paymentStatus)}`}>
+          Payment {booking.paymentStatus}
+        </div>
+        <div className="flex space-x-2 mt-3">
+          <Link to={`/booking/${booking.id}`}>
+            <Button size="sm" variant="outline">
+              View Details
+            </Button>
+          </Link>
+          {booking.status === 'active' && (
+            <Button size="sm">
+              Extend Time
+            </Button>
+          )}
+        </div>
+      </div>
+    </div>
+  </motion.div>
+));
+
 const Dashboard: React.FC = () => {
   const { user } = useAuth();
   const [bookings, setBookings] = useState<Booking[]>([]);
@@ -249,68 +325,13 @@ const Dashboard: React.FC = () => {
           ) : (
             <div className="space-y-4">
               {filteredBookings.map((booking, index) => (
-                <motion.div
+                <BookingCard
                   key={booking.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow"
-                >
-                  <div className="flex flex-col lg:flex-row lg:items-center justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center space-x-3 mb-2">
-                        <h3 className="text-lg font-semibold text-gray-900">
-                          Booking #{booking.id.slice(-6)}
-                        </h3>
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(booking.status)}`}>
-                          {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
-                        </span>
-                      </div>
-                      
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
-                        <div className="flex items-center">
-                          <MapPin className="h-4 w-4 mr-2" />
-                          <span>Downtown Plaza Parking</span>
-                        </div>
-                        <div className="flex items-center">
-                          <Car className="h-4 w-4 mr-2" />
-                          <span>{booking.vehicleType.toUpperCase()} - {booking.vehiclePlate}</span>
-                        </div>
-                        <div className="flex items-center">
-                          <Calendar className="h-4 w-4 mr-2" />
-                          <span>{format(new Date(booking.startTime), 'MMM dd, yyyy')}</span>
-                        </div>
-                        <div className="flex items-center">
-                          <Clock className="h-4 w-4 mr-2" />
-                          <span>
-                            {format(new Date(booking.startTime), 'HH:mm')} - {format(new Date(booking.endTime), 'HH:mm')}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="mt-4 lg:mt-0 lg:ml-6 flex flex-col items-end">
-                      <div className="text-2xl font-bold text-gray-900 mb-1">
-                        ${booking.totalAmount}
-                      </div>
-                      <div className={`text-sm font-medium ${getPaymentStatusColor(booking.paymentStatus)}`}>
-                        Payment {booking.paymentStatus}
-                      </div>
-                      <div className="flex space-x-2 mt-3">
-                        <Link to={`/booking/${booking.id}`}>
-                          <Button size="sm" variant="outline">
-                            View Details
-                          </Button>
-                        </Link>
-                        {booking.status === 'active' && (
-                          <Button size="sm">
-                            Extend Time
-                          </Button>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
+                  booking={booking}
+                  index={index}
+                  getStatusColor={getStatusColor}
+                  getPaymentStatusColor={getPaymentStatusColor}
+                />
               ))}
             </div>
           )}

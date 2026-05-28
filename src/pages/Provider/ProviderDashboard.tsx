@@ -10,6 +10,100 @@ import Button from '../../components/UI/Button';
 import LoadingSpinner from '../../components/UI/LoadingSpinner';
 import toast from 'react-hot-toast';
 
+// ⚡ Bolt Optimization: Extracted complex list item into a React.memo component
+// to prevent O(N) re-render bottlenecks when parent component updates.
+const ParkingLotItem = React.memo(({
+  lot,
+  index,
+  handleDeleteLot
+}: {
+  lot: ParkingLot;
+  index: number;
+  handleDeleteLot: (id: string) => void;
+}) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5, delay: index * 0.1 }}
+  >
+    <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+      {lot.images && lot.images.length > 0 ? (
+        <img
+          src={lot.images[0]}
+          alt={lot.name}
+          className="w-full h-48 object-cover"
+          loading="lazy"
+        />
+      ) : (
+        <div className="w-full h-48 bg-gray-200 flex items-center justify-center">
+          <MapPin className="h-12 w-12 text-gray-400" />
+        </div>
+      )}
+
+      <div className="p-6">
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="text-lg font-semibold text-gray-900 truncate">
+            {lot.name}
+          </h3>
+          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+            lot.isActive
+              ? 'bg-green-100 text-green-800'
+              : 'bg-gray-100 text-gray-800'
+          }`}>
+            {lot.isActive ? 'Active' : 'Inactive'}
+          </span>
+        </div>
+
+        <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+          {lot.address}, {lot.city}, {lot.state}
+        </p>
+
+        <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
+          <div>
+            <span className="text-gray-500">Spaces:</span>
+            <span className="font-medium ml-1">{lot.totalSpaces}</span>
+          </div>
+          <div>
+            <span className="text-gray-500">Rate:</span>
+            <span className="font-medium ml-1">${lot.hourlyRate}/hr</span>
+          </div>
+          <div>
+            <span className="text-gray-500">Available:</span>
+            <span className="font-medium ml-1">{lot.availableSpaces}</span>
+          </div>
+          <div>
+            <span className="text-gray-500">Rating:</span>
+            <span className="font-medium ml-1">{lot.rating.toFixed(1)} ⭐</span>
+          </div>
+        </div>
+
+        <div className="flex items-center space-x-2">
+          <Link to={`/parking-lot/${lot.id}`} className="flex-1">
+            <Button variant="outline" size="sm" className="w-full">
+              <Eye className="h-4 w-4 mr-1" />
+              View
+            </Button>
+          </Link>
+          <Link to={`/provider/parking-lot/${lot.id}/edit`} className="flex-1">
+            <Button variant="outline" size="sm" className="w-full">
+              <Edit className="h-4 w-4 mr-1" />
+              Edit
+            </Button>
+          </Link>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => handleDeleteLot(lot.id)}
+            className="px-3"
+          >
+            <Trash2 className="h-4 w-4 text-red-500" />
+          </Button>
+        </div>
+      </div>
+    </Card>
+  </motion.div>
+));
+
 const ProviderDashboard: React.FC = () => {
   const { user } = useAuth();
   const [parkingLots, setParkingLots] = useState<ParkingLot[]>([]);
@@ -267,87 +361,12 @@ const ProviderDashboard: React.FC = () => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {parkingLots.map((lot, index) => (
-                <motion.div
+                <ParkingLotItem
                   key={lot.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                >
-                  <Card className="overflow-hidden hover:shadow-lg transition-shadow">
-                    {lot.images && lot.images.length > 0 ? (
-                      <img
-                        src={lot.images[0]}
-                        alt={lot.name}
-                        className="w-full h-48 object-cover"
-                      />
-                    ) : (
-                      <div className="w-full h-48 bg-gray-200 flex items-center justify-center">
-                        <MapPin className="h-12 w-12 text-gray-400" />
-                      </div>
-                    )}
-                    
-                    <div className="p-6">
-                      <div className="flex items-center justify-between mb-2">
-                        <h3 className="text-lg font-semibold text-gray-900 truncate">
-                          {lot.name}
-                        </h3>
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          lot.isActive 
-                            ? 'bg-green-100 text-green-800' 
-                            : 'bg-gray-100 text-gray-800'
-                        }`}>
-                          {lot.isActive ? 'Active' : 'Inactive'}
-                        </span>
-                      </div>
-                      
-                      <p className="text-gray-600 text-sm mb-4 line-clamp-2">
-                        {lot.address}, {lot.city}, {lot.state}
-                      </p>
-                      
-                      <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
-                        <div>
-                          <span className="text-gray-500">Spaces:</span>
-                          <span className="font-medium ml-1">{lot.totalSpaces}</span>
-                        </div>
-                        <div>
-                          <span className="text-gray-500">Rate:</span>
-                          <span className="font-medium ml-1">${lot.hourlyRate}/hr</span>
-                        </div>
-                        <div>
-                          <span className="text-gray-500">Available:</span>
-                          <span className="font-medium ml-1">{lot.availableSpaces}</span>
-                        </div>
-                        <div>
-                          <span className="text-gray-500">Rating:</span>
-                          <span className="font-medium ml-1">{lot.rating.toFixed(1)} ⭐</span>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-center space-x-2">
-                        <Link to={`/parking-lot/${lot.id}`} className="flex-1">
-                          <Button variant="outline" size="sm" className="w-full">
-                            <Eye className="h-4 w-4 mr-1" />
-                            View
-                          </Button>
-                        </Link>
-                        <Link to={`/provider/parking-lot/${lot.id}/edit`} className="flex-1">
-                          <Button variant="outline" size="sm" className="w-full">
-                            <Edit className="h-4 w-4 mr-1" />
-                            Edit
-                          </Button>
-                        </Link>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleDeleteLot(lot.id)}
-                          className="px-3"
-                        >
-                          <Trash2 className="h-4 w-4 text-red-500" />
-                        </Button>
-                      </div>
-                    </div>
-                  </Card>
-                </motion.div>
+                  lot={lot}
+                  index={index}
+                  handleDeleteLot={handleDeleteLot}
+                />
               ))}
             </div>
           )}
