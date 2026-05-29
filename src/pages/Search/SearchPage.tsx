@@ -33,7 +33,7 @@ const SearchPage: React.FC = () => {
     vehicleType: 'any',
   });
 
-  const loadParkingLots = useCallback(async () => {
+  const loadParkingLots = useCallback(async (signal?: AbortSignal) => {
     try {
       setLoading(true);
       setError(null);
@@ -50,14 +50,25 @@ const SearchPage: React.FC = () => {
         distance: filters.distance,
         availability: filters.availability,
         vehicleType: filters.vehicleType === 'any' ? undefined : filters.vehicleType as 'car' | 'bike' | 'both',
+        abortSignal: signal,
       };
 
       const { data, error: queryError } = await db.searchParkingLots(dbFilters);
 
-      if (queryError) throw queryError;
+      if (queryError) {
+        if (queryError.name === 'AbortError' || queryError.message?.includes('AbortError')) {
+          console.log('Search request aborted');
+          return;
+        }
+        throw queryError;
+      }
 
       setParkingLots(data || []);
-    } catch (err) {
+    } catch (err: unknown) {
+      if (err instanceof Error && (err.name === 'AbortError' || err.message.includes('AbortError'))) {
+        console.log('Search request aborted');
+        return;
+      }
       console.error('Search error:', err);
       setError('Failed to load parking lots. Please try again later.');
     } finally {
@@ -66,10 +77,14 @@ const SearchPage: React.FC = () => {
   }, [searchParams, filters]);
 
   useEffect(() => {
+    const controller = new AbortController();
     const timer = setTimeout(() => {
-      loadParkingLots();
+      loadParkingLots(controller.signal);
     }, 300);
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      controller.abort();
+    };
   }, [loadParkingLots]);
 
   const handleSearch = (e: React.FormEvent) => {

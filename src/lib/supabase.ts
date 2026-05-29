@@ -13,6 +13,7 @@ interface DbFilters {
   distance?: number;
   availability?: string;
   vehicleType?: 'car' | 'bike' | 'both';
+  abortSignal?: AbortSignal;
 }
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
@@ -102,6 +103,10 @@ export const db = {
       }
 
       query = query.order('createdAt', { ascending: false });
+
+      if (filters.abortSignal) {
+        query = query.abortSignal(filters.abortSignal);
+      }
 
       const { data, error } = await query;
       

@@ -1,0 +1,7 @@
+💡 What: Added `AbortController` to the debounced `loadParkingLots` fetch request in `SearchPage.tsx` and propagated the signal to the `searchParkingLots` database function in `supabase.ts`.
+
+🎯 Why: Resolves a performance inefficiency and race condition where multiple search queries (triggered by fast typing in the location search bar or rapid filter changes) would result in uncancelled in-flight requests. Without this, slower older requests could resolve after newer ones, overwriting the state with stale search results.
+
+📊 Impact: Reduces unnecessary server load by cancelling stale requests and ensures UI data correctness.
+
+🔬 Measurement: Observe network requests in DevTools while rapidly changing filters or typing in the search box; older `/rest/v1/parking_lots` requests will now show as "Canceled".
