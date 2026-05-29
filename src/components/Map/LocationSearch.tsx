@@ -36,6 +36,7 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
   const [gettingLocation, setGettingLocation] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<NodeJS.Timeout>();
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
     if (value !== undefined) {
@@ -61,6 +62,12 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
     }
 
     setLoading(true);
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+    const currentController = new AbortController();
+    abortControllerRef.current = currentController;
+
     try {
       // Enhanced search query for better parking-related results
       const enhancedQuery = searchQuery.toLowerCase().includes('parking') 
@@ -76,7 +83,8 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
           addressdetails: '1',
           extratags: '1',
           namedetails: '1'
-        })
+        }),
+        { signal: currentController.signal }
       );
 
       if (!response.ok) {
@@ -94,10 +102,15 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
       setResults(sortedResults);
       setShowResults(true);
     } catch (error) {
+      if (error instanceof Error && error.name === 'AbortError') {
+        return; // Ignore abort errors
+      }
       console.error('Error searching location:', error);
       setResults([]);
     } finally {
-      setLoading(false);
+      if (!currentController.signal.aborted) {
+        setLoading(false);
+      }
     }
   };
 
