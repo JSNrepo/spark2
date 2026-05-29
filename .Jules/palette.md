@@ -27,3 +27,7 @@
 ## 2024-05-27 - Accordion Accessibility Pattern
 **Learning:** For custom collapsible content like accordions in React applications (such as in Help Center or FAQs), using plain buttons with simple `onClick` handlers creates an accessibility trap for screen readers and keyboard users.
 **Action:** Always implement the `aria-expanded` and `aria-controls` properties on the toggle button (linked via ID to the content container), add `role="region"` to the content block, and ensure explicit focus indicators (`focus-visible:ring-2`) are present so keyboard users know where their focus lies.
+
+## 2024-11-20 - Grouped Input Form Labels
+**Learning:** Found unassociated `label` elements used as visual headings for grouped input blocks (Price Range, Features), which causes screen reader confusion as they lack a `for` attribute. Furthermore, explicitly mapping focus outlines is essential for accessibility but often omitted on inputs wrapped in generic containers.
+**Action:** Replace pseudo-labels with semantic `div` elements, assign explicit accessible names directly to inner inputs via `aria-label`, and always apply `focus-visible:ring-2` to nested interactive elements in custom filter components.

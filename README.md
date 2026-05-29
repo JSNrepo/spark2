@@ -105,6 +105,9 @@ VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 - **Variant System**: Multiple visual variants with Tailwind CSS
 - **Error Handling**: User-friendly error messages with react-hot-toast
 
+![Advanced Filters Focus State](public/filters-panel-focus.png)
+*Advanced Filters Focus States and Semantic Labels*
+
 ### Form Patterns
 ```typescript
 // Standard form validation pattern
