@@ -31,3 +31,7 @@
 ## 2026-05-27 - Optimize: fix sequential API waterfall in ParkingLotDetails
 **Learning:** Sequential, independent API requests in React `useEffect` hooks create performance bottlenecks.
 **Action:** Use `Promise.all()` to batch independent API requests. Destructure the results to handle individual request errors, improving overall load times and rendering speed.
+
+## "2026-05-29" - [Debounced Searches Missing AbortController]
+**Learning:** Even when searches are debounced (like with `setTimeout`), it's possible for an older, slower request to finish *after* a newer, faster request. If the results are directly applied to state without an `AbortController`, it causes a race condition leading to stale UI data.
+**Action:** Always use an `AbortController` on `fetch` calls triggered by rapid or debounced user input. Cancel the previous controller before instantiating a new one, and handle the `AbortError` correctly in the catch block.
