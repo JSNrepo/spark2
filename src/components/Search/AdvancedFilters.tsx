@@ -62,6 +62,8 @@ export const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({ onFiltersChang
       <Button
         variant="outline"
         onClick={() => setIsOpen(!isOpen)}
+        aria-expanded={isOpen}
+        aria-controls="filters-panel"
         className="flex items-center gap-2"
       >
         <SlidersHorizontal className="h-4 w-4" />
@@ -76,6 +78,7 @@ export const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({ onFiltersChang
       <AnimatePresence>
         {isOpen && (
           <motion.div
+            id="filters-panel"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
@@ -83,13 +86,14 @@ export const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({ onFiltersChang
           >
             {/* Price Range */}
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <div className="block text-sm font-medium text-gray-700 mb-2">
                 Price Range (per hour)
-              </label>
+              </div>
               <div className="flex items-center gap-2">
                 <input
                   type="number"
                   min="0"
+                  aria-label="Minimum price"
                   value={filters.priceRange[0]}
                   onChange={(e) =>
                     handleFilterChange('priceRange', [
@@ -97,12 +101,13 @@ export const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({ onFiltersChang
                       filters.priceRange[1],
                     ])
                   }
-                  className="w-20 px-2 py-1 border rounded"
+                  className="w-20 px-2 py-1 border rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                 />
                 <span>to</span>
                 <input
                   type="number"
                   min="0"
+                  aria-label="Maximum price"
                   value={filters.priceRange[1]}
                   onChange={(e) =>
                     handleFilterChange('priceRange', [
@@ -110,20 +115,21 @@ export const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({ onFiltersChang
                       parseInt(e.target.value),
                     ])
                   }
-                  className="w-20 px-2 py-1 border rounded"
+                  className="w-20 px-2 py-1 border rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                 />
               </div>
             </div>
 
             {/* Vehicle Type */}
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="vehicle-type" className="block text-sm font-medium text-gray-700 mb-2">
                 Vehicle Type
               </label>
               <select
+                id="vehicle-type"
                 value={filters.vehicleType}
                 onChange={(e) => handleFilterChange('vehicleType', e.target.value)}
-                className="w-full px-3 py-2 border rounded-md"
+                className="w-full px-3 py-2 border rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
               >
                 <option value="any">Any Vehicle</option>
                 <option value="car">Car</option>
@@ -133,9 +139,9 @@ export const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({ onFiltersChang
 
             {/* Features */}
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <div className="block text-sm font-medium text-gray-700 mb-2">
                 Features
-              </label>
+              </div>
               <div className="space-y-2">
                 {FEATURES_LIST.map(([key, label]) => (
                   <label key={key} className="flex items-center">
@@ -143,7 +149,7 @@ export const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({ onFiltersChang
                       type="checkbox"
                       checked={filters.features[key as keyof typeof filters.features]}
                       onChange={() => handleFeatureChange(key)}
-                      className="mr-2"
+                      className="mr-2 rounded border-gray-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                     />
                     {label}
                   </label>
@@ -153,29 +159,31 @@ export const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({ onFiltersChang
 
             {/* Distance */}
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="distance-range" className="block text-sm font-medium text-gray-700 mb-2">
                 Maximum Distance (km)
               </label>
               <input
+                id="distance-range"
                 type="range"
                 min="1"
                 max="20"
                 value={filters.distance}
                 onChange={(e) => handleFilterChange('distance', parseInt(e.target.value))}
-                className="w-full"
+                className="w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
               />
               <div className="text-sm text-gray-500">{filters.distance} km</div>
             </div>
 
             {/* Availability */}
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="availability" className="block text-sm font-medium text-gray-700 mb-2">
                 Availability
               </label>
               <select
+                id="availability"
                 value={filters.availability}
                 onChange={(e) => handleFilterChange('availability', e.target.value)}
-                className="w-full px-3 py-2 border rounded-md"
+                className="w-full px-3 py-2 border rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
               >
                 <option value="any">Any time</option>
                 <option value="now">Available now</option>
