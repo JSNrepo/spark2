@@ -35,3 +35,9 @@
 ## "2026-05-29" - [Debounced Searches Missing AbortController]
 **Learning:** Even when searches are debounced (like with `setTimeout`), it's possible for an older, slower request to finish *after* a newer, faster request. If the results are directly applied to state without an `AbortController`, it causes a race condition leading to stale UI data.
 **Action:** Always use an `AbortController` on `fetch` calls triggered by rapid or debounced user input. Cancel the previous controller before instantiating a new one, and handle the `AbortError` correctly in the catch block.
+## 2024-05-17 - Uncancelled API Requests on Map Filters / Search
+**Learning:** React search pages with debounced location searches or filters (like `SearchPage.tsx`) can trigger multiple network requests. Without an `AbortController`, a slower earlier request could resolve after a faster newer one, overwriting the state with stale search results.
+**Action:** Use an `AbortController` in the `useEffect` that triggers API requests, aborting the previous request when the effect re-runs (due to new filter/search params).
+## 2024-05-17 - Uncancelled API Requests on Map Filters / Search
+**Learning:** React search pages with debounced location searches or filters (like `SearchPage.tsx`) can trigger multiple network requests. Without an `AbortController`, a slower earlier request could resolve after a faster newer one, overwriting the state with stale search results.
+**Action:** Use an `AbortController` in the `useEffect` that triggers API requests, aborting the previous request when the effect re-runs (due to new filter/search params).
