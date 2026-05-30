@@ -8,7 +8,7 @@ import { motion } from 'framer-motion';
 import { addHours, format, differenceInHours } from 'date-fns';
 import { ParkingLot } from '../../types';
 import { db } from '../../lib/supabase';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
 import Input from '../../components/UI/Input';

@@ -56,7 +56,13 @@ const SearchPage: React.FC = () => {
       const { data, error: queryError } = await db.searchParkingLots(dbFilters);
 
       if (queryError) {
-        if (queryError.name === 'AbortError' || queryError.message?.includes('AbortError')) {
+        if (queryError instanceof Error && (queryError.name === 'AbortError' || queryError.message?.includes('AbortError'))) {
+          console.log('Search request aborted');
+          return;
+        }
+        // Also handle PostgrestError or Supabase error format if needed, but instance of Error is standard for AbortError.
+        const err = queryError as any;
+        if (err && (err.name === 'AbortError' || err.message?.includes('AbortError'))) {
           console.log('Search request aborted');
           return;
         }
