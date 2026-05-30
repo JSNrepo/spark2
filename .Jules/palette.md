@@ -31,3 +31,6 @@
 ## 2024-11-20 - Grouped Input Form Labels
 **Learning:** Found unassociated `label` elements used as visual headings for grouped input blocks (Price Range, Features), which causes screen reader confusion as they lack a `for` attribute. Furthermore, explicitly mapping focus outlines is essential for accessibility but often omitted on inputs wrapped in generic containers.
 **Action:** Replace pseudo-labels with semantic `div` elements, assign explicit accessible names directly to inner inputs via `aria-label`, and always apply `focus-visible:ring-2` to nested interactive elements in custom filter components.
+## 2026-05-30 - Custom Radio Card Focus Accessibility
+**Learning:** When using custom card-style radio inputs where the native input is visually hidden (`sr-only`), the elements lose their visible focus state for keyboard users, making the form inaccessible.
+**Action:** Always wrap custom radio inputs in a `<fieldset>` with a `<legend>` for screen readers, and add `focus-within:ring-2` (or similar) to the parent `<label>` wrapper so the custom UI card correctly displays the focus indicator when the hidden input receives focus.

@@ -217,6 +217,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ### Accessibility Enhancements
 
+![Custom Radio Card Focus](public/radio-focus-screenshot.png)
+*Space Provider Custom Radio Focus States*
+
 ![Help Center Accessibility Focus](public/help-center-focus.png)
 *Help Center Accordion Focus States*
 

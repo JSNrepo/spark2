@@ -179,15 +179,15 @@ const SpaceProviderRegister: React.FC = () => {
                 />
               </div>
 
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+              <fieldset className="mb-4">
+                <legend className="block text-sm font-medium text-gray-700 mb-2">
                   Organization Type
-                </label>
+                </legend>
                 <div className="grid grid-cols-2 gap-3">
                   {organizationTypes.map((type) => {
                     const Icon = type.icon;
                     return (
-                      <label key={type.value} className="relative">
+                      <label key={type.value} className="relative focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 rounded-lg">
                         <input
                           type="radio"
                           value={type.value}
@@ -217,7 +217,7 @@ const SpaceProviderRegister: React.FC = () => {
                 {errors.organizationType && (
                   <p className="text-red-600 text-sm mt-1">{errors.organizationType.message}</p>
                 )}
-              </div>
+              </fieldset>
 
               {organizationType === 'business' && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
