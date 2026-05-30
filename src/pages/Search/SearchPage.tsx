@@ -61,7 +61,7 @@ const SearchPage: React.FC = () => {
           return;
         }
         // Also handle PostgrestError or Supabase error format if needed, but instance of Error is standard for AbortError.
-        const err = queryError as any;
+        const err = queryError as { name?: string; message?: string };
         if (err && (err.name === 'AbortError' || err.message?.includes('AbortError'))) {
           console.log('Search request aborted');
           return;
