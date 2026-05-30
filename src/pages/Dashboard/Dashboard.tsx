@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Calendar, Clock, MapPin, Car, CreditCard, Star, Plus, Filter } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 import { Booking } from '../../types';
 import { db } from '../../lib/supabase';
 import Card from '../../components/UI/Card';

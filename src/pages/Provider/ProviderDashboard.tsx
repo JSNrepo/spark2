@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, MapPin, Car, DollarSign, Users, Eye, Edit, Trash2 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 import { ParkingLot, Booking } from '../../types';
 import { db } from '../../lib/supabase';
 import Card from '../../components/UI/Card';

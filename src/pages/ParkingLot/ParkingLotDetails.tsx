@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { MapPin, Star, Car, Bike, Clock, Shield, Wifi, Camera, Phone, Calendar, Users } from 'lucide-react';
 import { ParkingLot, Review } from '../../types';
 import { db } from '../../lib/supabase';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
 import LoadingSpinner from '../../components/UI/LoadingSpinner';
