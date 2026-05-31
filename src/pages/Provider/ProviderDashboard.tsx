@@ -152,7 +152,7 @@ const ProviderDashboard: React.FC = () => {
     }
   }, [user, loadProviderData]);
 
-  const handleDeleteLot = async (lotId: string) => {
+  const handleDeleteLot = useCallback(async (lotId: string) => {
     if (!window.confirm('Are you sure you want to delete this parking lot?')) {
       return;
     }
@@ -170,7 +170,7 @@ const ProviderDashboard: React.FC = () => {
       console.error('Error deleting parking lot:', error);
       toast.error('Failed to delete parking lot');
     }
-  };
+  }, [loadProviderData]);
 
   // ⚡ Bolt Optimization: Use useMemo and a single pass reduce to compute dashboard stats efficiently, preventing multiple O(N) array iterations.
   const stats = useMemo(() => {

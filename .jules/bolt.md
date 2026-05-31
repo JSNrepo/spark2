@@ -41,3 +41,6 @@
 ## 2024-05-17 - Uncancelled API Requests on Map Filters / Search
 **Learning:** React search pages with debounced location searches or filters (like `SearchPage.tsx`) can trigger multiple network requests. Without an `AbortController`, a slower earlier request could resolve after a faster newer one, overwriting the state with stale search results.
 **Action:** Use an `AbortController` in the `useEffect` that triggers API requests, aborting the previous request when the effect re-runs (due to new filter/search params).
+## 2026-05-30 - Fix Broken React.memo() by Stabilizing Function Props
+**Learning:** If a child component is wrapped in `React.memo()` (like `BookingCard` or `ParkingLotItem`), but the parent component passes down inline functions or functions defined inside its render body (like `getStatusColor` or `handleDeleteLot`), the functions are recreated on every parent render. This changes the prop reference, completely defeating `React.memo` and causing O(N) re-renders when unrelated parent state changes (like applying a filter).
+**Action:** Always stabilize function props passed to memoized components. If the function is pure (doesn't depend on component state), move it entirely outside the component body (to module scope). If it depends on state/props, wrap it in `useCallback()` with an exhaustive dependency array.

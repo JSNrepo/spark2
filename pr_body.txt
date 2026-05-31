@@ -1,3 +1,0 @@
-💡 What: Added fieldset/legend semantics and focus-within states to the Organization Type custom radio cards.
-🎯 Why: To ensure keyboard users can see which option is focused and screen readers correctly group the choices.
-♿ Accessibility: Improved keyboard navigation focus visibility for visually-hidden `sr-only` inputs, and improved screen reader semantics.
