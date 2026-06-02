@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Building, User, MapPin, CreditCard } from 'lucide-react';
+import { Building, User, MapPin, CreditCard, Eye, EyeOff } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAuth } from '../../hooks/useAuth';
 import Card from '../../components/UI/Card';
@@ -36,6 +36,8 @@ type SpaceProviderFormData = z.infer<typeof spaceProviderSchema>;
 const SpaceProviderRegister: React.FC = () => {
   const navigate = useNavigate();
   const { signUp } = useAuth();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const {
@@ -148,20 +150,52 @@ const SpaceProviderRegister: React.FC = () => {
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Account Security</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <Input
-                    label="Password"
-                    type="password"
-                    {...register('password')}
-                    error={errors.password?.message}
-                  />
+                  <div className="relative">
+                    <Input
+                      label="Password"
+                      type={showPassword ? 'text' : 'password'}
+                      autoComplete="new-password"
+                      {...register('password')}
+                      error={errors.password?.message}
+                    />
+                    <button
+                      type="button"
+                      className="absolute right-3 top-8 text-gray-400 hover:text-gray-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-full"
+                      onClick={() => setShowPassword(!showPassword)}
+                      aria-label={showPassword ? "Hide password" : "Show password"}
+                      aria-pressed={showPassword}
+                    >
+                      {showPassword ? (
+                        <EyeOff className="h-5 w-5" aria-hidden="true" />
+                      ) : (
+                        <Eye className="h-5 w-5" aria-hidden="true" />
+                      )}
+                    </button>
+                  </div>
                 </div>
                 <div>
-                  <Input
-                    label="Confirm Password"
-                    type="password"
-                    {...register('confirmPassword')}
-                    error={errors.confirmPassword?.message}
-                  />
+                  <div className="relative">
+                    <Input
+                      label="Confirm Password"
+                      type={showConfirmPassword ? 'text' : 'password'}
+                      autoComplete="new-password"
+                      {...register('confirmPassword')}
+                      error={errors.confirmPassword?.message}
+                    />
+                    <button
+                      type="button"
+                      className="absolute right-3 top-8 text-gray-400 hover:text-gray-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-full"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                      aria-pressed={showConfirmPassword}
+                    >
+                      {showConfirmPassword ? (
+                        <EyeOff className="h-5 w-5" aria-hidden="true" />
+                      ) : (
+                        <Eye className="h-5 w-5" aria-hidden="true" />
+                      )}
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
