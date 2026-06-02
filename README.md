@@ -228,3 +228,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ![Contact Owner Focus](public/contact-owner-focus.png)
 *Contact Owner Button Focus States*
+
+
+## Screenshots & Demo Videos
+- `public/space-provider-password-toggle.png` - Visual verification of the password visibility toggle in the Space Provider Registration page.

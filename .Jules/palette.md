@@ -34,3 +34,7 @@
 ## 2026-05-30 - Custom Radio Card Focus Accessibility
 **Learning:** When using custom card-style radio inputs where the native input is visually hidden (`sr-only`), the elements lose their visible focus state for keyboard users, making the form inaccessible.
 **Action:** Always wrap custom radio inputs in a `<fieldset>` with a `<legend>` for screen readers, and add `focus-within:ring-2` (or similar) to the parent `<label>` wrapper so the custom UI card correctly displays the focus indicator when the hidden input receives focus.
+
+## 2025-06-02 - Missing Password Visibility Toggles in Registration Form
+**Learning:** Inconsistent implementation of UX patterns across different authentication forms. While `Login.tsx` and `Register.tsx` correctly included password visibility toggles with proper aria labels, the specialized `SpaceProviderRegister.tsx` form lacked this critical accessibility feature, forcing users to type complex passwords (requiring upper, lower, numbers, and special characters) blindly.
+**Action:** Always verify that newly created specialized variants of standard forms inherit the same accessibility features (like show/hide password toggles) as their standard counterparts.
