@@ -91,13 +91,13 @@ const Register: React.FC = () => {
         <Card className="p-8">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             {/* Role Selection */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-3">
+            <fieldset>
+              <legend className="block text-sm font-medium text-gray-700 mb-3">
                 I want to:
-              </label>
+              </legend>
               <div className="grid grid-cols-2 gap-3">
                 <label className={`
-                  relative flex cursor-pointer rounded-lg border p-4 focus:outline-none
+                  relative flex cursor-pointer rounded-lg border p-4 focus:outline-none focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2
                   ${selectedRole === 'customer' 
                     ? 'border-blue-600 bg-blue-50 text-blue-900' 
                     : 'border-gray-300 bg-white text-gray-900 hover:bg-gray-50'
@@ -115,7 +115,7 @@ const Register: React.FC = () => {
                   </div>
                 </label>
                 <label className={`
-                  relative flex cursor-pointer rounded-lg border p-4 focus:outline-none
+                  relative flex cursor-pointer rounded-lg border p-4 focus:outline-none focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2
                   ${selectedRole === 'owner' 
                     ? 'border-blue-600 bg-blue-50 text-blue-900' 
                     : 'border-gray-300 bg-white text-gray-900 hover:bg-gray-50'
@@ -146,7 +146,7 @@ const Register: React.FC = () => {
                   </Link>
                 </div>
               )}
-            </div>
+            </fieldset>
 
             <div className="grid grid-cols-2 gap-4">
               <Input
