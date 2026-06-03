@@ -9,6 +9,7 @@ import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
 import Input from '../../components/UI/Input';
 import toast from 'react-hot-toast';
+import { db } from '../../lib/supabase';
 
 const profileSchema = z.object({
   firstName: z.string().min(2, 'First name must be at least 2 characters').max(50, 'First name is too long'),
@@ -51,11 +52,16 @@ const ProfilePage: React.FC = () => {
     resolver: zodResolver(passwordSchema),
   });
 
-  const onProfileSubmit = async (_formData: ProfileFormData) => {
+  const onProfileSubmit = async (formData: ProfileFormData) => {
+    if (!user) return;
     setLoading(true);
     try {
-      // In a real app, you'd update the user profile
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+      const { error } = await db.updateUserProfile(user.id, {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        phone: formData.phone,
+      });
+      if (error) throw error;
       toast.success('Profile updated successfully!');
     } catch (error) {
       console.error('Error updating profile:', error);
