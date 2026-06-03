@@ -1,0 +1,17 @@
+💡 What: Refactored `totalAmount` and `totalHours` in `src/pages/Booking/BookingPage.tsx` from using `useState` and `useEffect` to a single `useMemo` computation.
+
+🎯 Why: To solve a performance anti-pattern. Previously, whenever the user typed in the date or time fields (or when the `parkingLot` data loaded), the form would re-render. Then the `useEffect` would fire, update the `totalHours` and `totalAmount` state variables, triggering a *second*, unnecessary re-render.
+
+📊 Impact: Eliminates the secondary re-render bottleneck when users are filling out the booking form, making the UI noticeably more responsive.
+
+🔬 Measurement: Check the React DevTools profiler while manipulating the start/end date and time inputs. The component should now only render once per input change, instead of twice.
+
+### Agent Log
+# Scout
+Discovered that `src/pages/Booking/BookingPage.tsx` was computing derived state (`totalAmount`, `totalHours`) using `useState` and `useEffect`, causing unnecessary secondary re-renders when form inputs changed.
+
+# Execute
+Replaced the derived state `useState` variables and the synchronization `useEffect` with a single `useMemo` hook returning an object containing both values. This optimizes performance by calculating derived state synchronously during the render cycle.
+
+# Next Recommended Target
+Investigate `src/pages/Dashboard/Dashboard.tsx` for potential optimizations around how filtering handles large amounts of booking data, ensuring `useMemo` is used effectively.

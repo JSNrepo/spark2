@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -33,8 +33,6 @@ const BookingPage: React.FC = () => {
   const [parkingLot, setParkingLot] = useState<ParkingLot | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-  const [totalAmount, setTotalAmount] = useState(0);
-  const [totalHours, setTotalHours] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
   const {
@@ -87,32 +85,24 @@ const BookingPage: React.FC = () => {
     }
   }, [id, loadParkingLot]);
 
-  const calculateTotal = useCallback(() => {
+  // ⚡ Bolt Optimization: Replace useState and useEffect for derived state with useMemo to prevent unnecessary secondary re-renders
+  const { totalHours, totalAmount } = useMemo(() => {
     if (!watchedValues.startDate || !watchedValues.startTime || !watchedValues.endDate || !watchedValues.endTime || !parkingLot) {
-      return;
+      return { totalHours: 0, totalAmount: 0 };
     }
 
     const startDateTime = new Date(`${watchedValues.startDate}T${watchedValues.startTime}`);
     const endDateTime = new Date(`${watchedValues.endDate}T${watchedValues.endTime}`);
     
     if (endDateTime <= startDateTime) {
-      setTotalHours(0);
-      setTotalAmount(0);
-      return;
+      return { totalHours: 0, totalAmount: 0 };
     }
 
     const hours = differenceInHours(endDateTime, startDateTime);
-    setTotalHours(hours);
+    const amount = hours * parkingLot.hourlyRate;
     
-    if (parkingLot) {
-      const amount = hours * parkingLot.hourlyRate;
-      setTotalAmount(amount);
-    }
+    return { totalHours: hours, totalAmount: amount };
   }, [parkingLot, watchedValues.startDate, watchedValues.startTime, watchedValues.endDate, watchedValues.endTime]);
-
-  useEffect(() => {
-    calculateTotal();
-  }, [calculateTotal]);
 
   const onSubmit = async (data: BookingFormData) => {
     if (!user || !parkingLot) {
