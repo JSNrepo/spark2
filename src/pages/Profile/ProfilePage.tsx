@@ -33,6 +33,14 @@ const passwordSchema = z.object({
 type ProfileFormData = z.infer<typeof profileSchema>;
 type PasswordFormData = z.infer<typeof passwordSchema>;
 
+// ⚡ Bolt Optimization: Moved static array outside component body to prevent unnecessary memory re-allocation on every render.
+const tabs = [
+  { id: 'profile', label: 'Profile', icon: User },
+  { id: 'security', label: 'Security', icon: Key },
+  { id: 'notifications', label: 'Notifications', icon: Bell },
+  { id: 'billing', label: 'Billing', icon: CreditCard },
+];
+
 const ProfilePage: React.FC = () => {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState<'profile' | 'security' | 'notifications' | 'billing'>('profile');
@@ -85,13 +93,6 @@ const ProfilePage: React.FC = () => {
       setLoading(false);
     }
   };
-
-  const tabs = [
-    { id: 'profile', label: 'Profile', icon: User },
-    { id: 'security', label: 'Security', icon: Key },
-    { id: 'notifications', label: 'Notifications', icon: Bell },
-    { id: 'billing', label: 'Billing', icon: CreditCard },
-  ];
 
   return (
     <div className="min-h-screen bg-gray-50">
