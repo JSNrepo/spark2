@@ -1,14 +1,4 @@
-## Description
-
-### What you discovered
-The `SpaceProviderRegister.tsx` component, used for provider registration, lacked "Show/Hide Password" toggle buttons in both the "Password" and "Confirm Password" input fields. These toggles were present in other authentication pages (`Login.tsx`, `Register.tsx`) but missed here. This is an accessibility and UX issue as users need to verify complex passwords.
-
-### What you fixed/added
-Added `showPassword` and `showConfirmPassword` state variables to `SpaceProviderRegister.tsx`.
-Imported the `Eye` and `EyeOff` icons from `lucide-react`.
-Wrapped the "Password" and "Confirm Password" inputs in `div` containers with `relative` classes.
-Added toggle buttons for both fields with proper `aria-label` and `aria-pressed` attributes matching the pattern used in `Register.tsx`.
-Updated `README.md` to reference the new screenshot.
-
-### Next Recommended Target
-Investigate the `CreateParkingLot.tsx` component to ensure all form inputs (especially nested or complex ones) have adequate helper text and accessible labels.
+💡 What: Extract the static `tabs` array outside of the `ProfilePage` functional component body to the module scope.
+🎯 Why: When static arrays or objects that do not depend on component state or props are defined inside the render body, they are re-allocated in memory on every single render. This triggers unnecessary garbage collection and degrades performance, particularly during typing (as seen in the form inputs within the tabs) or when switching tabs.
+📊 Impact: Eliminates the O(1) per-render memory reallocation bottleneck for the tabs configuration, slightly improving the responsiveness of input fields and tab switching within the `ProfilePage`.
+🔬 Measurement: Verify by typing into the profile form fields or switching tabs; React DevTools profiling will show reduced memory allocation during renders.

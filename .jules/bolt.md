@@ -47,3 +47,6 @@
 ## 2024-05-31 - [Prevent Secondary Re-renders on Derived State]
 **Learning:** Using `useState` and `useEffect` to synchronize derived state (such as computing totals dynamically based on complex form inputs or props like `parkingLot` and dates) triggers a secondary, unnecessary re-render after every input change. The first render updates the main state, the effect runs, sets the derived state, and the component renders a second time.
 **Action:** Replace `useState` and `useEffect` hooks for derived state with a single `useMemo` hook. This ensures the computed value is evaluated synchronously during the main render cycle, completely eliminating the secondary re-render bottleneck and making user input feel much more responsive.
+## 2024-06-04 - Static Array Reallocation Bottleneck in ProfilePage
+**Learning:** Arrays or objects that do not depend on props or state, when defined inside a functional component body (like `tabs` in `ProfilePage.tsx`), are re-created in memory on every single render. This triggers unnecessary garbage collection cycles and degrades overall performance, particularly during typing or tab switching.
+**Action:** Always move static arrays, configurations, and objects outside the component body (to module scope) to ensure they are allocated only once during module initialization.
