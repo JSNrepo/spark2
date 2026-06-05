@@ -85,10 +85,10 @@ export const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({ onFiltersChang
             className="absolute top-full left-0 mt-2 w-80 bg-white rounded-lg shadow-lg border p-4 z-50"
           >
             {/* Price Range */}
-            <div className="mb-4">
-              <div className="block text-sm font-medium text-gray-700 mb-2">
+            <fieldset className="mb-4">
+              <legend className="block text-sm font-medium text-gray-700 mb-2">
                 Price Range (per hour)
-              </div>
+              </legend>
               <div className="flex items-center gap-2">
                 <input
                   type="number"
@@ -118,7 +118,7 @@ export const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({ onFiltersChang
                   className="w-20 px-2 py-1 border rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                 />
               </div>
-            </div>
+            </fieldset>
 
             {/* Vehicle Type */}
             <div className="mb-4">
@@ -138,10 +138,10 @@ export const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({ onFiltersChang
             </div>
 
             {/* Features */}
-            <div className="mb-4">
-              <div className="block text-sm font-medium text-gray-700 mb-2">
+            <fieldset className="mb-4">
+              <legend className="block text-sm font-medium text-gray-700 mb-2">
                 Features
-              </div>
+              </legend>
               <div className="space-y-2">
                 {FEATURES_LIST.map(([key, label]) => (
                   <label key={key} className="flex items-center">
@@ -155,7 +155,7 @@ export const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({ onFiltersChang
                   </label>
                 ))}
               </div>
-            </div>
+            </fieldset>
 
             {/* Distance */}
             <div className="mb-4">
