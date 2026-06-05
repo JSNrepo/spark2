@@ -42,3 +42,6 @@
 ## 2026-06-03 - Custom Radio Card Focus Accessibility
 **Learning:** Custom card-style radio buttons using `sr-only` hidden inputs drop visible focus styles unless specifically configured. Also, standard `<div>` containers with pseudo-labels lack screen reader semantics for groupings.
 **Action:** Always wrap custom radio button groups in a `<fieldset>` with a `<legend>`, and apply `focus-within:ring-2` (or similar utilities) to the visual card parent elements to correctly trigger focus outlines from the hidden inputs.
+## 2026-06-05 - Semantic Grouping in React Filters
+**Learning:** React components often use `div` elements for styling group headings (like "Price Range" or "Features") next to their respective inputs, which breaks the semantic association for screen readers. Grouped interactive elements must use `<fieldset>` and `<legend>` for proper accessibility.
+**Action:** When reviewing custom forms or filter panels in this app, check for visually grouped inputs and replace the parent `div` containers and pseudo-labels with `<fieldset className="mb-4">` and `<legend className="block text-sm font-medium text-gray-700 mb-2">`.
