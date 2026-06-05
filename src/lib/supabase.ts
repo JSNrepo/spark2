@@ -111,13 +111,23 @@ export const db = {
       const { data, error } = await query;
       
       if (error) {
+        // Handle AbortError from Supabase error object
+        const errObj = error as { name?: string; message?: string };
+        if (errObj && (errObj.name === 'AbortError' || errObj.message?.includes('AbortError'))) {
+          console.log('searchParkingLots: Request aborted');
+          return { data: null, error: null };
+        }
         console.error('searchParkingLots error:', error);
         return { data: null, error };
       }
       
       console.log('searchParkingLots success:', data?.length, 'results');
       return { data, error: null };
-    } catch (err) {
+    } catch (err: unknown) {
+      if (err instanceof Error && (err.name === 'AbortError' || err.message.includes('AbortError'))) {
+        console.log('searchParkingLots: Request aborted');
+        return { data: null, error: null };
+      }
       console.error('Database error in searchParkingLots:', err);
       return { data: null, error: err };
     }
