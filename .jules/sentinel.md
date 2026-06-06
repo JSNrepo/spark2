@@ -16,3 +16,7 @@
 **Learning:** Without explicit maximum length limits on user inputs (even seemingly innocuous ones like dates or times), the application is vulnerable to Denial of Service (DoS) attacks where maliciously large inputs consume server resources during validation or processing.
 **Prevention:** Always add a `.max()` constraint to `z.string()` definitions in all validation schemas, appropriate to the expected data size.
 ## 2026-05-22 - Input Length Limits\n**Vulnerability:** Unbounded input fields in search components.\n**Learning:** Long string inputs can be passed to APIs or cause client-side performance issues if not constrained by the browser.\n**Prevention:** Always add a `maxLength` attribute to `<input>` or `<Input>` tags, especially for search queries.
+## 2024-05-24 - Insecure File Upload Vulnerability
+**Vulnerability:** The Supabase storage upload function (`uploadParkingLotImage`) relied solely on frontend file pickers for validation, leaving the API vulnerable to arbitrary file uploads (e.g., `.html`, `.svg` containing XSS, or malware).
+**Learning:** Depending entirely on HTML `<input type="file" accept="...">` or bucket policies (which might be misconfigured) is insufficient. The backend/API integration layer must strictly validate both the MIME type and the file extension before executing the upload.
+**Prevention:** Always implement explicit checks for `file.type` and `file.name` extensions against a strict allowlist of expected formats before uploading files to storage.
