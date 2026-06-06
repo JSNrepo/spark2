@@ -156,7 +156,7 @@ const CreateParkingLot: React.FC = () => {
 
       toast.success('Parking lot created successfully!');
       navigate('/provider/dashboard');
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Error creating parking lot:', error);
       toast.error('An error occurred while creating the parking lot');
     } finally {

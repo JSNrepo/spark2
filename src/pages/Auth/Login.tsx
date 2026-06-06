@@ -42,7 +42,7 @@ const Login: React.FC = () => {
       if (success) {
         navigate(from, { replace: true });
       }
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Login error:', error);
       toast.error('An unexpected error occurred during login. Please try again.');
     } finally {

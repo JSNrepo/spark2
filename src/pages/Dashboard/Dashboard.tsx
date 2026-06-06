@@ -125,7 +125,7 @@ const Dashboard: React.FC = () => {
       } else {
         setBookings(data || []);
       }
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Error loading bookings:', error);
       toast.error('Failed to load bookings');
       setBookings([]);

@@ -34,7 +34,7 @@ const BookingDetails: React.FC = () => {
         setError('Booking not found');
         toast.error('Booking not found');
       }
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('Database error:', err);
       setError('Unable to connect to database. Please check your connection.');
       toast.error('Connection error. Please try again.');
@@ -81,7 +81,7 @@ const BookingDetails: React.FC = () => {
       // await db.updateBooking(booking.id, { status: 'cancelled' });
       toast.success('Booking cancelled successfully');
       setBooking({ ...booking, status: 'cancelled' });
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Error canceling booking:', error);
       toast.error('Failed to cancel booking');
     }

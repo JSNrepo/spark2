@@ -71,7 +71,7 @@ const ProfilePage: React.FC = () => {
       });
       if (error) throw error;
       toast.success('Profile updated successfully!');
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Error updating profile:', error);
       toast.error('Failed to update profile');
     } finally {
@@ -86,7 +86,7 @@ const ProfilePage: React.FC = () => {
       await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
       toast.success('Password updated successfully!');
       passwordForm.reset();
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Error updating password:', error);
       toast.error('Failed to update password');
     } finally {

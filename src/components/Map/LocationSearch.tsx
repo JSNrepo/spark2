@@ -101,7 +101,7 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
 
       setResults(sortedResults);
       setShowResults(true);
-    } catch (error) {
+    } catch (error: unknown) {
       if (error instanceof Error && error.name === 'AbortError') {
         return; // Ignore abort errors
       }
@@ -173,7 +173,7 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
             setQuery('Current Location');
             onLocationSelect(latitude, longitude, address);
           }
-        } catch (error) {
+        } catch (error: unknown) {
           console.error('Error getting address:', error);
           setQuery('Current Location');
           onLocationSelect(latitude, longitude, 'Current Location');

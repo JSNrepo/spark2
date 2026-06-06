@@ -65,7 +65,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
       console.log('Successfully created new profile:', createdProfile?.email);
       return createdProfile || createBasicProfile(supabaseUser);
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Error creating user profile:', error);
       
       // Return basic profile as fallback
@@ -112,7 +112,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         console.log(`fetchUserProfile: No profile found (${duration}ms), creating new one...`);
         return await createNewUserProfile(supabaseUser);
       }
-    } catch (error) {
+    } catch (error: unknown) {
       const duration = Date.now() - startTime;
       console.error(`Error fetching user profile (${duration}ms):`, error);
 
@@ -156,7 +156,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           setUser(null);
           setLoading(false);
         }
-      } catch (error) {
+      } catch (error: unknown) {
         console.error('Error initializing auth:', error);
         if (isMounted) {
           setUser(null);
@@ -193,7 +193,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             }
           }
         }
-      } catch (error) {
+      } catch (error: unknown) {
         console.error('Error handling auth state change:', error);
         if (isMounted) {
           setUser(null);
@@ -219,7 +219,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
       toast.success('Welcome back!');
       return true;
-    } catch (error) {
+    } catch (error: unknown) {
       toast.error('An error occurred during sign in');
       console.error('Sign in error:', error);
       return false;
@@ -236,7 +236,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
       toast.success('Account created successfully!');
       return true;
-    } catch (error) {
+    } catch (error: unknown) {
       toast.error('An error occurred during sign up');
       console.error('Sign up error:', error);
       return false;
@@ -248,7 +248,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       await auth.signOut();
       setUser(null);
       toast.success('Signed out successfully');
-    } catch (error) {
+    } catch (error: unknown) {
       toast.error('Error signing out');
       console.error('Sign out error:', error);
     }

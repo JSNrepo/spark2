@@ -138,7 +138,7 @@ const ProviderDashboard: React.FC = () => {
         setBookings(providerBookings || []);
       }
       
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Error loading provider data:', error);
       toast.error('Failed to load dashboard data');
     } finally {
@@ -166,7 +166,7 @@ const ProviderDashboard: React.FC = () => {
         toast.success('Parking lot deleted successfully');
         loadProviderData(); // Reload data
       }
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Error deleting parking lot:', error);
       toast.error('Failed to delete parking lot');
     }

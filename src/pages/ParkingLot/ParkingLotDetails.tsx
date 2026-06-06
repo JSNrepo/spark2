@@ -51,7 +51,7 @@ const ParkingLotDetails: React.FC = () => {
       } else {
         setReviews(reviewsData || []);
       }
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('Database error:', err);
       setError('Unable to connect to database. Please check your connection.');
       toast.error('Connection error. Please try again.');
