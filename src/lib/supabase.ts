@@ -431,7 +431,18 @@ export const db = {
   // Storage
   uploadParkingLotImage: async (file: File, path: string) => {
     try {
-      const fileExt = file.name.split('.').pop();
+      // Security Enhancement: Validate file type before upload
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+      if (!allowedTypes.includes(file.type)) {
+        throw new Error('Invalid file type. Only JPEG, PNG, and WebP images are allowed.');
+      }
+
+      const fileExt = file.name.split('.').pop()?.toLowerCase();
+      const allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+      if (!fileExt || !allowedExtensions.includes(fileExt)) {
+        throw new Error('Invalid file extension.');
+      }
+
       const fileName = `${path}-${crypto.randomUUID()}.${fileExt}`;
 
       const { error: uploadError } = await supabase.storage

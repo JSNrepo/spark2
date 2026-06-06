@@ -1,13 +1,10 @@
-## 🎨 Palette: Grouped Input Accessibility Fix
+## 🛡️ Sentinel: [HIGH] Fix insecure file upload in Supabase storage
 
-### 💡 What:
-Replaced generic `<div>` wrappers with semantic `<fieldset>` and `<legend>` tags for the "Price Range" and "Features" filter groups in `AdvancedFilters.tsx`.
+🚨 Severity: HIGH
+💡 Vulnerability: The `uploadParkingLotImage` function in `src/lib/supabase.ts` lacked strict MIME type and file extension validation on the backend/API integration layer. It relied solely on the HTML file picker, which could easily be bypassed to upload arbitrary, potentially malicious files (e.g., HTML containing XSS or executables) to the storage bucket.
+🎯 Impact: Attackers could upload and host malware or execute Stored XSS attacks via the parking lot images bucket.
+🔧 Fix: Implemented strict validation checks for both the MIME type (`file.type`) and the file extension against a safe list (`jpg`, `jpeg`, `png`, `webp`) before proceeding with the upload. Also added this architectural insight to `.jules/sentinel.md` to ensure future storage implementations strictly validate file formats at the backend layer.
+✅ Verification: Tested against `pnpm build` and `pnpm lint`. The new logic explicitly rejects uploads where the file type or extension is invalid.
 
-### 🎯 Why:
-Screen readers struggle with visually grouped inputs (like a set of checkboxes) when they are wrapped in plain `<div>` elements with pseudo-labels. By using native `<fieldset>` and `<legend>` elements, we ensure that assistive technologies correctly associate the group title (e.g., "Features") with each individual input within the group, making the filter panel fully accessible.
-
-### 📸 Before/After:
-(Visually identical due to Tailwind reset - see screenshot attached in README.md)
-
-### ♿ Accessibility:
-- Fixed missing semantic grouping for multi-input filter categories.
+### Agent Run Logs
+See `.agent_logs/` for complete details.
