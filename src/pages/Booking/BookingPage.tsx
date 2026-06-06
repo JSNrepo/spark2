@@ -70,7 +70,7 @@ const BookingPage: React.FC = () => {
         setError('Parking lot not found');
         toast.error('Parking lot not found');
       }
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('Database error:', err);
       setError('Unable to connect to database. Please check your connection.');
       toast.error('Connection error. Please try again.');
@@ -142,7 +142,7 @@ const BookingPage: React.FC = () => {
         toast.success('Booking created successfully!');
         navigate(`/booking/${booking.id}`);
       }
-    } catch (error) {
+    } catch (error: unknown) {
       toast.error('An error occurred while creating the booking');
       console.error('Booking error:', error);
     } finally {

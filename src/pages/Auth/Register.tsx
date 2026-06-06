@@ -59,7 +59,7 @@ const Register: React.FC = () => {
       if (success) {
         navigate('/dashboard');
       }
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Registration error:', error);
       toast.error('An unexpected error occurred during registration. Please try again.');
     } finally {

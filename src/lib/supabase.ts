@@ -28,7 +28,7 @@ let supabase: SupabaseClient;
 try {
   supabase = createClient(supabaseUrl, supabaseAnonKey);
   console.log('Supabase initialized successfully');
-} catch (error) {
+} catch (error: unknown) {
   console.error('Failed to initialize Supabase:', error);
   throw new Error('Failed to initialize Supabase client');
 }
@@ -144,7 +144,7 @@ export const db = {
 
       console.log('getParkingLot result:', { data, error });
       return { data, error };
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('Database error in getParkingLot:', err);
       return { data: null, error: err };
     }
@@ -158,7 +158,7 @@ export const db = {
         .single();
         
       return { data, error };
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('Database error:', err);
       return { data: null, error: err };
     }
@@ -174,7 +174,7 @@ export const db = {
         .single();
         
       return { data, error };
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('Database error:', err);
       return { data: null, error: err };
     }
@@ -191,7 +191,7 @@ export const db = {
         
       console.log('getProviderParkingLots result:', { data, error });
       return { data, error };
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('Database error in getProviderParkingLots:', err);
       return { data: null, error: err };
     }
@@ -207,7 +207,7 @@ export const db = {
         .single();
         
       return { data, error };
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('Database error:', err);
       return { data: null, error: err };
     }
@@ -231,7 +231,7 @@ export const db = {
         .single();
         
       return { data, error };
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('Database error:', err);
       return { data: null, error: err };
     }
@@ -256,7 +256,7 @@ export const db = {
         
       console.log('getUserBookings result:', { data, error });
       return { data, error };
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('Database error in getUserBookings:', err);
       return { data: null, error: err };
     }
@@ -272,7 +272,7 @@ export const db = {
         .single();
         
       return { data, error };
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('Database error:', err);
       return { data: null, error: err };
     }
@@ -288,7 +288,7 @@ export const db = {
         .single();
         
       return { data, error };
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('Database error:', err);
       return { data: null, error: err };
     }
@@ -304,7 +304,7 @@ export const db = {
         .single();
         
       return { data, error };
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('Database error:', err);
       return { data: null, error: err };
     }
@@ -321,7 +321,7 @@ export const db = {
         
       console.log(`getUserProfile: Query result - data:`, data, 'error:', error);
       return { data, error };
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('Database error in getUserProfile:', err);
       return { data: null, error: err };
     }
@@ -344,7 +344,7 @@ export const db = {
         .order('createdAt', { ascending: false });
         
       return { data, error };
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('Database error:', err);
       return { data: null, error: err };
     }
@@ -359,7 +359,7 @@ export const db = {
         .single();
         
       return { data, error };
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('Database error:', err);
       return { data: null, error: err };
     }
@@ -390,7 +390,7 @@ export const db = {
         
       console.log('getProviderBookings result:', { data, error });
       return { data, error };
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('Database error in getProviderBookings:', err);
       return { data: null, error: err };
     }
@@ -406,7 +406,7 @@ export const db = {
         .single();
         
       return { data, error };
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('Database error:', err);
       return { data: null, error: err };
     }
@@ -422,7 +422,7 @@ export const db = {
         .single();
         
       return { data, error };
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('Database error:', err);
       return { data: null, error: err };
     }
@@ -458,7 +458,7 @@ export const db = {
         .getPublicUrl(fileName);
 
       return { publicUrl: data.publicUrl, error: null };
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('Storage error:', err);
       return { publicUrl: null, error: err };
     }

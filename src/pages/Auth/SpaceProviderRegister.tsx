@@ -74,7 +74,7 @@ const SpaceProviderRegister: React.FC = () => {
         toast.success('Registration successful! Please check your email to verify your account.');
         navigate('/login');
       }
-    } catch (error) {
+    } catch (error: unknown) {
       toast.error('Registration failed. Please try again.');
       console.error('Registration error:', error);
     } finally {
