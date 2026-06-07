@@ -253,13 +253,13 @@ const BookingPage: React.FC = () => {
 
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 {/* Vehicle Type */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-3">
+                <fieldset>
+                  <legend className="block text-sm font-medium text-gray-700 mb-3">
                     Vehicle Type
-                  </label>
+                  </legend>
                   <div className="grid grid-cols-2 gap-3">
                     <label className={`
-                      relative flex cursor-pointer rounded-lg border p-4 focus:outline-none
+                      relative flex cursor-pointer rounded-lg border p-4 focus:outline-none focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2
                       ${watchedValues.vehicleType === 'car' 
                         ? 'border-blue-600 bg-blue-50 text-blue-900' 
                         : 'border-gray-300 bg-white text-gray-900 hover:bg-gray-50'
@@ -282,7 +282,7 @@ const BookingPage: React.FC = () => {
                       </div>
                     </label>
                     <label className={`
-                      relative flex cursor-pointer rounded-lg border p-4 focus:outline-none
+                      relative flex cursor-pointer rounded-lg border p-4 focus:outline-none focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2
                       ${watchedValues.vehicleType === 'bike' 
                         ? 'border-blue-600 bg-blue-50 text-blue-900' 
                         : 'border-gray-300 bg-white text-gray-900 hover:bg-gray-50'
@@ -305,7 +305,7 @@ const BookingPage: React.FC = () => {
                       </div>
                     </label>
                   </div>
-                </div>
+                </fieldset>
 
                 {/* Vehicle Plate */}
                 <Input

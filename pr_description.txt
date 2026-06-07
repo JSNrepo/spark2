@@ -1,10 +1,6 @@
-## 🛡️ Sentinel: [HIGH] Fix insecure file upload in Supabase storage
+💡 What: Added semantic `<fieldset>` and `<legend>` grouping to the custom radio card inputs for "Vehicle Type" and applied `focus-within` styles to the parent wrappers.
+🎯 Why: Hidden native radio inputs (`sr-only`) lose visible keyboard focus, making it inaccessible for keyboard users to identify their current selection. Without `<fieldset>`, screen readers also miss the context of the grouped inputs.
+📸 Before/After: Screenshots captured visually verifying focus rings on keyboard navigation for the modified components.
+♿ Accessibility: Ensures WCAG compliance for focus visibility (2.4.7) and semantic form structures (3.3.2).
 
-🚨 Severity: HIGH
-💡 Vulnerability: The `uploadParkingLotImage` function in `src/lib/supabase.ts` lacked strict MIME type and file extension validation on the backend/API integration layer. It relied solely on the HTML file picker, which could easily be bypassed to upload arbitrary, potentially malicious files (e.g., HTML containing XSS or executables) to the storage bucket.
-🎯 Impact: Attackers could upload and host malware or execute Stored XSS attacks via the parking lot images bucket.
-🔧 Fix: Implemented strict validation checks for both the MIME type (`file.type`) and the file extension against a safe list (`jpg`, `jpeg`, `png`, `webp`) before proceeding with the upload. Also added this architectural insight to `.jules/sentinel.md` to ensure future storage implementations strictly validate file formats at the backend layer.
-✅ Verification: Tested against `pnpm build` and `pnpm lint`. The new logic explicitly rejects uploads where the file type or extension is invalid.
-
-### Agent Run Logs
-See `.agent_logs/` for complete details.
+Includes journal entry logged in `.Jules/palette.md` detailing the focus management pattern for custom card inputs.

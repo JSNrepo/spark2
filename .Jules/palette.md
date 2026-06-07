@@ -45,3 +45,6 @@
 ## 2026-06-05 - Semantic Grouping in React Filters
 **Learning:** React components often use `div` elements for styling group headings (like "Price Range" or "Features") next to their respective inputs, which breaks the semantic association for screen readers. Grouped interactive elements must use `<fieldset>` and `<legend>` for proper accessibility.
 **Action:** When reviewing custom forms or filter panels in this app, check for visually grouped inputs and replace the parent `div` containers and pseudo-labels with `<fieldset className="mb-4">` and `<legend className="block text-sm font-medium text-gray-700 mb-2">`.
+## 2024-06-07 - Semantic grouping and focus for hidden radio buttons
+**Learning:** In custom card-style radio inputs where the native `<input type="radio">` is visually hidden (e.g., using `sr-only`), it inherently loses visible focus. Additionally, wrapping grouped interactive elements like these in a generic `<label>` or `<div>` removes semantic grouping for screen readers.
+**Action:** Wrap the group in `<fieldset>` and `<legend>` for semantics, and add a `focus-within` styling class (like `focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2`) to the parent `<label>` wrapper to ensure keyboard users see a clear focus indicator on the card itself when the inner native radio is focused.
