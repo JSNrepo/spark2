@@ -50,3 +50,6 @@
 ## 2024-06-04 - Static Array Reallocation Bottleneck in ProfilePage
 **Learning:** Arrays or objects that do not depend on props or state, when defined inside a functional component body (like `tabs` in `ProfilePage.tsx`), are re-created in memory on every single render. This triggers unnecessary garbage collection cycles and degrades overall performance, particularly during typing or tab switching.
 **Action:** Always move static arrays, configurations, and objects outside the component body (to module scope) to ensure they are allocated only once during module initialization.
+## $(date +%Y-%m-%d) - Unstabilized Function Prop Breaking React.memo
+**Learning:** Passing an unstabilized function (like `handleFiltersChange` created inline or without `useCallback`) as a prop to a child component (like `AdvancedFilters`) breaks `React.memo()` memoization because the function reference changes on every parent render.
+**Action:** Always wrap state-dependent callback functions in `useCallback()` when passing them as props to memoized child components to preserve the O(N) performance benefits of memoization and prevent unnecessary child re-renders.
