@@ -18,6 +18,8 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ size = 'md', className 
       className={`${sizeClasses[size]} ${className}`}
       animate={{ rotate: 360 }}
       transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+      role="status"
+      aria-label="Loading"
     >
       <div className="w-full h-full border-2 border-blue-200 border-t-blue-600 rounded-full"></div>
     </motion.div>

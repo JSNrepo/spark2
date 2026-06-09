@@ -220,6 +220,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ![Register Role Selection Focus](public/register_focus.png)
 *Register Page Custom Radio Focus States*
 
+![Header Menu Accessibility Focus](public/header-accessibility-fix.png)
+*Header User Menu Accessibility Focus States*
+
 ![Custom Radio Card Focus](public/radio-focus-screenshot.png)
 *Space Provider Custom Radio Focus States*
 

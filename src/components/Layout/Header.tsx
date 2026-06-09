@@ -56,10 +56,13 @@ const Header: React.FC = () => {
               <div className="relative">
                 <button
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                  aria-expanded={isUserMenuOpen}
+                  aria-haspopup="true"
+                  aria-label="User menu"
                   className="flex items-center space-x-2 bg-gray-100 rounded-full px-3 py-2 hover:bg-gray-200 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                 >
                   <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-                    <User className="h-4 w-4 text-white" />
+                    <User className="h-4 w-4 text-white" aria-hidden="true" />
                   </div>
                   <span className="text-sm font-medium text-gray-700">
                     {user.firstName || user.email}
