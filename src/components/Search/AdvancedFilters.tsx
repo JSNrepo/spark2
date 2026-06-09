@@ -28,7 +28,7 @@ const FEATURES_LIST = Object.entries({
   accessible: 'Wheelchair Accessible',
 });
 
-export const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({ onFiltersChange }) => {
+export const AdvancedFilters: React.FC<AdvancedFiltersProps> = React.memo(({ onFiltersChange }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [filters, setFilters] = useState<FilterState>({
     priceRange: [0, 50],
@@ -224,4 +224,4 @@ export const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({ onFiltersChang
       </AnimatePresence>
     </div>
   );
-};
+});

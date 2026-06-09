@@ -106,9 +106,9 @@ const SearchPage: React.FC = () => {
     setSelectedCoordinates({ lat, lng });
   };
 
-  const handleFiltersChange = (newFilters: FilterState) => {
+  const handleFiltersChange = useCallback((newFilters: FilterState) => {
     setFilters(newFilters);
-  };
+  }, []);
 
   if (loading) {
     return (
