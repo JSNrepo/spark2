@@ -20,3 +20,7 @@
 **Vulnerability:** The Supabase storage upload function (`uploadParkingLotImage`) relied solely on frontend file pickers for validation, leaving the API vulnerable to arbitrary file uploads (e.g., `.html`, `.svg` containing XSS, or malware).
 **Learning:** Depending entirely on HTML `<input type="file" accept="...">` or bucket policies (which might be misconfigured) is insufficient. The backend/API integration layer must strictly validate both the MIME type and the file extension before executing the upload.
 **Prevention:** Always implement explicit checks for `file.type` and `file.name` extensions against a strict allowlist of expected formats before uploading files to storage.
+## 2024-05-24 - Content Security Policy missing in Vite App
+**Vulnerability:** The application was not using any CSP headers or meta tags, leaving it vulnerable to XSS and clickjacking.
+**Learning:** For SPAs and static sites (like those built with Vite/React that don't have a backend node server running), a CSP must be implemented via the `<meta http-equiv="Content-Security-Policy">` tag in `index.html`.
+**Prevention:** Always implement a strict Content Security Policy meta tag early in development for frontend projects, explicitly allowing only necessary external domains (like APIs and map providers).

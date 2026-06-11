@@ -1,13 +1,22 @@
-# Agent Run Log - 2026-06-06 18:48
+🚨 **Severity:** ENHANCEMENT
+💡 **Vulnerability:** The application was serving static HTML without any Content Security Policy (CSP) headers or meta tags, leaving it more susceptible to Cross-Site Scripting (XSS) or data injection attacks.
+🎯 **Impact:** Malicious actors could potentially inject unauthorized scripts or resources if other vulnerabilities existed, as there was no defense-in-depth mechanism restricting resource loading.
+🔧 **Fix:** Added a strict CSP `<meta>` tag directly to `index.html`. Configured CSP directives to only allow internal resources (`'self'`) and explicitly trusted external connections (Supabase API/Auth/Storage and OpenStreetMap).
+✅ **Verification:** Verified that the CSP tag exists in the `<head>` of `index.html` and that the application builds and bundles successfully via Vite.
 
-## What you discovered
-The codebase was missing explicit type hints in exception handling (`catch` blocks). The memory bank rules strictly enforce that ESLint rule `@typescript-eslint/no-explicit-any` should be followed, and specifically that `catch (err: unknown)` or `catch (error: unknown)` must be used when handling exceptions.
+---
+### Log Report:
+```markdown
+# Sentinel Run Report
+**Date**: 2024-05-24
 
-## What you fixed/added
-- Updated multiple files across `src/` to explicitly type catch block variables as `unknown`.
-- Modified instances of `catch (err)` to `catch (err: unknown)`.
-- Modified instances of `catch (error)` to `catch (error: unknown)`.
-- Verified that all these variables were already handled correctly within the `catch` blocks or simply logged, maintaining TypeScript strict mode compliance without introducing new errors.
+## What I discovered
+- The application was serving static HTML without any Content Security Policy (CSP) headers or meta tags, leaving it slightly more susceptible to Cross-Site Scripting (XSS) or data injection attacks.
+
+## What I fixed/added
+- Added a strict CSP `<meta>` tag directly to `index.html`.
+- Configured CSP directives to only allow internal resources and explicit trusted external connections to Supabase (`https://*.supabase.co`, `wss://*.supabase.co`) and OpenStreetMap (`https://nominatim.openstreetmap.org`) for maps.
 
 ## Next Recommended Target
-Investigate whether there are any "inefficient algorithms" in the codebase, particularly reviewing data transformations, nested map/filter operations, or unmemoized large lists rendering in `src/components/`.
+- Ensure all forms have proper rate limiting on the backend, specifically authentication and booking endpoints.
+```
