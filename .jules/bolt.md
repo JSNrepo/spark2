@@ -53,3 +53,7 @@
 ## $(date +%Y-%m-%d) - Unstabilized Function Prop Breaking React.memo
 **Learning:** Passing an unstabilized function (like `handleFiltersChange` created inline or without `useCallback`) as a prop to a child component (like `AdvancedFilters`) breaks `React.memo()` memoization because the function reference changes on every parent render.
 **Action:** Always wrap state-dependent callback functions in `useCallback()` when passing them as props to memoized child components to preserve the O(N) performance benefits of memoization and prevent unnecessary child re-renders.
+
+## 2024-05-24 - Component Memory Re-allocation
+**Learning:** Static arrays or objects defined inside a functional component body are re-allocated in memory on every render. Even if the array content is completely static, the memory reference changes, causing unnecessary garbage collection and potentially triggering re-renders in child components that receive them as props.
+**Action:** Always extract completely static arrays or objects (like static config tabs, notification item lists, or static feature lists) outside the React component body to the module scope to prevent unnecessary memory allocations.

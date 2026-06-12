@@ -54,6 +54,28 @@ const testimonials = [
   },
 ];
 
+// ⚡ Bolt Optimization: Moved static array outside component body to prevent unnecessary memory re-allocation on every render.
+const howItWorksSteps = [
+  {
+    step: '1',
+    title: 'Search & Select',
+    description: 'Enter your destination and browse available parking spots near you.',
+    image: 'https://images.pexels.com/photos/1181354/pexels-photo-1181354.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop',
+  },
+  {
+    step: '2',
+    title: 'Book & Pay',
+    description: 'Choose your preferred spot, select duration, and pay securely online.',
+    image: 'https://images.pexels.com/photos/4386321/pexels-photo-4386321.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop',
+  },
+  {
+    step: '3',
+    title: 'Park & Go',
+    description: 'Show your QR code, park your vehicle, and enjoy your day worry-free.',
+    image: 'https://images.pexels.com/photos/1545743/pexels-photo-1545743.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop',
+  },
+];
+
 const Home: React.FC = () => {
   const [searchLocation, setSearchLocation] = useState('');
   const navigate = useNavigate();
@@ -216,26 +238,7 @@ const Home: React.FC = () => {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                step: '1',
-                title: 'Search & Select',
-                description: 'Enter your destination and browse available parking spots near you.',
-                image: 'https://images.pexels.com/photos/1181354/pexels-photo-1181354.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop',
-              },
-              {
-                step: '2',
-                title: 'Book & Pay',
-                description: 'Choose your preferred spot, select duration, and pay securely online.',
-                image: 'https://images.pexels.com/photos/4386321/pexels-photo-4386321.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop',
-              },
-              {
-                step: '3',
-                title: 'Park & Go',
-                description: 'Show your QR code, park your vehicle, and enjoy your day worry-free.',
-                image: 'https://images.pexels.com/photos/1545743/pexels-photo-1545743.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop',
-              },
-            ].map((step, index) => (
+            {howItWorksSteps.map((step, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 50 }}
