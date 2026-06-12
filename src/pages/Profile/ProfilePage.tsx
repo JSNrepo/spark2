@@ -41,6 +41,25 @@ const tabs = [
   { id: 'billing', label: 'Billing', icon: CreditCard },
 ];
 
+// ⚡ Bolt Optimization: Moved static arrays outside component body to prevent unnecessary memory re-allocation on every render.
+const emailNotifications = [
+  { id: 'booking-confirmations', label: 'Booking confirmations', description: 'Get notified when your booking is confirmed' },
+  { id: 'booking-reminders', label: 'Booking reminders', description: 'Receive reminders before your parking time starts' },
+  { id: 'payment-receipts', label: 'Payment receipts', description: 'Get email receipts for all payments' },
+  { id: 'promotional', label: 'Promotional emails', description: 'Receive updates about new features and offers' },
+];
+
+const pushNotifications = [
+  { id: 'push-booking', label: 'Booking updates', description: 'Get push notifications for booking status changes' },
+  { id: 'push-reminders', label: 'Time reminders', description: 'Receive push notifications before your time expires' },
+];
+
+const billingHistory = [
+  { date: '2024-01-15', amount: '$64.00', description: 'Downtown Plaza Parking', status: 'Paid' },
+  { date: '2024-01-10', amount: '$32.00', description: 'Airport Express Parking', status: 'Paid' },
+  { date: '2024-01-05', amount: '$48.00', description: 'University District Parking', status: 'Paid' },
+];
+
 const ProfilePage: React.FC = () => {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState<'profile' | 'security' | 'notifications' | 'billing'>('profile');
@@ -278,12 +297,7 @@ const ProfilePage: React.FC = () => {
                     <div>
                       <h3 className="text-lg font-medium text-gray-900 mb-4">Email Notifications</h3>
                       <div className="space-y-3">
-                        {[
-                          { id: 'booking-confirmations', label: 'Booking confirmations', description: 'Get notified when your booking is confirmed' },
-                          { id: 'booking-reminders', label: 'Booking reminders', description: 'Receive reminders before your parking time starts' },
-                          { id: 'payment-receipts', label: 'Payment receipts', description: 'Get email receipts for all payments' },
-                          { id: 'promotional', label: 'Promotional emails', description: 'Receive updates about new features and offers' },
-                        ].map((item) => (
+                        {emailNotifications.map((item) => (
                           <div key={item.id} className="flex items-start">
                             <input
                               id={item.id}
@@ -305,10 +319,7 @@ const ProfilePage: React.FC = () => {
                     <div>
                       <h3 className="text-lg font-medium text-gray-900 mb-4">Push Notifications</h3>
                       <div className="space-y-3">
-                        {[
-                          { id: 'push-booking', label: 'Booking updates', description: 'Get push notifications for booking status changes' },
-                          { id: 'push-reminders', label: 'Time reminders', description: 'Receive push notifications before your time expires' },
-                        ].map((item) => (
+                        {pushNotifications.map((item) => (
                           <div key={item.id} className="flex items-start">
                             <input
                               id={item.id}
@@ -381,11 +392,7 @@ const ProfilePage: React.FC = () => {
                   <h2 className="text-xl font-semibold text-gray-900 mb-6">Billing History</h2>
                   
                   <div className="space-y-4">
-                    {[
-                      { date: '2024-01-15', amount: '$64.00', description: 'Downtown Plaza Parking', status: 'Paid' },
-                      { date: '2024-01-10', amount: '$32.00', description: 'Airport Express Parking', status: 'Paid' },
-                      { date: '2024-01-05', amount: '$48.00', description: 'University District Parking', status: 'Paid' },
-                    ].map((transaction, index) => (
+                    {billingHistory.map((transaction, index) => (
                       <div key={index} className="flex items-center justify-between py-3 border-b border-gray-200 last:border-b-0">
                         <div>
                           <p className="font-medium text-gray-900">{transaction.description}</p>
