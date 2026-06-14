@@ -33,6 +33,14 @@ const spaceProviderSchema = z.object({
 
 type SpaceProviderFormData = z.infer<typeof spaceProviderSchema>;
 
+// ⚡ Bolt Optimization: Moved static array outside component body to prevent unnecessary memory re-allocation on every render.
+const organizationTypes = [
+  { value: 'individual', label: 'Individual/Personal', icon: User },
+  { value: 'business', label: 'Business/Company', icon: Building },
+  { value: 'government', label: 'Government Entity', icon: MapPin },
+  { value: 'nonprofit', label: 'Non-Profit Organization', icon: CreditCard },
+];
+
 const SpaceProviderRegister: React.FC = () => {
   const navigate = useNavigate();
   const { signUp } = useAuth();
@@ -81,13 +89,6 @@ const SpaceProviderRegister: React.FC = () => {
       setLoading(false);
     }
   };
-
-  const organizationTypes = [
-    { value: 'individual', label: 'Individual/Personal', icon: User },
-    { value: 'business', label: 'Business/Company', icon: Building },
-    { value: 'government', label: 'Government Entity', icon: MapPin },
-    { value: 'nonprofit', label: 'Non-Profit Organization', icon: CreditCard },
-  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">

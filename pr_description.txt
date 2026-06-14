@@ -1,10 +1,13 @@
-# What you discovered.
-In `src/pages/Search/SearchPage.tsx`, the `handleFiltersChange` function was passed as a prop (`onFiltersChange`) to the `AdvancedFilters` component, but it was recreated on every render of the `SearchPage`. When the user interacted with the search page (e.g., typing in the search bar or receiving continuous network updates), `SearchPage` would re-render, passing a new `handleFiltersChange` reference. This unstabilized function prop would break any memoization attempt on the `AdvancedFilters` component, leading to unnecessary re-allocations and re-renders of the filters panel and its inner static elements.
+💡 What:
+Moved the static `organizationTypes` and `amenityOptions` arrays outside of their respective React component bodies (`SpaceProviderRegister` and `CreateParkingLot`).
 
-# What you fixed/added.
-- Wrapped `handleFiltersChange` in `src/pages/Search/SearchPage.tsx` with `useCallback` to stabilize the function reference.
-- Wrapped the `AdvancedFilters` component in `src/components/Search/AdvancedFilters.tsx` with `React.memo()` to prevent O(N) re-render bottlenecks when unrelated parent state changes occur on the Search Page.
-- Verified changes using `pnpm lint`, `pnpm tsc -p tsconfig.app.json --noEmit`, and `pnpm build`, resolving the performance issue without breaking existing functionality.
+🎯 Why:
+Defining static arrays inside a functional component body causes the array to be re-allocated in memory on every render. Even if the array content is completely static, the memory reference changes, causing unnecessary garbage collection and degrading overall rendering performance, especially during form input keystrokes.
 
-# Next Recommended Target
-Investigate `src/pages/Booking/BookingPage.tsx` to verify that `onSubmit` and derived states correctly handle React re-renders and use memoization if there are nested components, as there are multiple state updates handling form submissions.
+📊 Impact:
+Reduces unnecessary memory allocations to exactly once per module load, improving rendering speed and input latency.
+
+🔬 Measurement:
+1. Start the dev server (`pnpm dev`).
+2. Navigate to `/register/space-provider` or `/provider/parking-lot/new`.
+3. Type into any of the text inputs and observe improved input response times. Profiling the component will show that the arrays are no longer re-created on each keystroke.
