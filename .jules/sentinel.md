@@ -24,3 +24,8 @@
 **Vulnerability:** The application was not using any CSP headers or meta tags, leaving it vulnerable to XSS and clickjacking.
 **Learning:** For SPAs and static sites (like those built with Vite/React that don't have a backend node server running), a CSP must be implemented via the `<meta http-equiv="Content-Security-Policy">` tag in `index.html`.
 **Prevention:** Always implement a strict Content Security Policy meta tag early in development for frontend projects, explicitly allowing only necessary external domains (like APIs and map providers).
+
+## 2026-06-14 - PII Console Leakage
+**Vulnerability:** User email addresses were being logged in plain text via `console.log` statements in the authentication context during the sign-in and profile-fetching processes.
+**Learning:** Client-side logs are often exposed to end-users or retained in browser developer tools, making the logging of Personally Identifiable Information (PII) a privacy violation and security risk.
+**Prevention:** Avoid logging sensitive data (such as emails or passwords) in `console.log` statements. Instead, use opaque identifiers, such as user IDs, for client-side debugging logs.
