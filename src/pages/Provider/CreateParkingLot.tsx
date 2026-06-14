@@ -34,6 +34,18 @@ const parkingLotSchema = z.object({
 
 type ParkingLotFormData = z.infer<typeof parkingLotSchema>;
 
+// ⚡ Bolt Optimization: Moved static array outside component body to prevent unnecessary memory re-allocation on every render.
+const amenityOptions = [
+  'Covered Parking',
+  'Security Cameras',
+  'EV Charging',
+  'Wheelchair Accessible',
+  '24/7 Access',
+  'Valet Service',
+  'Car Wash',
+  'Security Guard',
+];
+
 const CreateParkingLot: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -70,17 +82,6 @@ const CreateParkingLot: React.FC = () => {
     navigate('/dashboard');
     return null;
   }
-
-  const amenityOptions = [
-    'Covered Parking',
-    'Security Cameras',
-    'EV Charging',
-    'Wheelchair Accessible',
-    '24/7 Access',
-    'Valet Service',
-    'Car Wash',
-    'Security Guard',
-  ];
 
   const handleLocationSelect = (lat: number, lng: number, address: string) => {
     setSelectedLocation({ lat, lng, address });
