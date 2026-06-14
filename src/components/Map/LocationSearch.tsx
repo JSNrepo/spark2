@@ -172,6 +172,8 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
             const address = data.display_name || 'Current Location';
             setQuery('Current Location');
             onLocationSelect(latitude, longitude, address);
+          } else {
+            throw new Error('Reverse geocoding failed');
           }
         } catch (error: unknown) {
           console.error('Error getting address:', error);
