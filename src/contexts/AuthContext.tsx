@@ -53,7 +53,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         updatedAt: new Date().toISOString(),
       };
       
-      console.log('Creating new profile for:', newProfile.email);
+      console.log('Creating new profile for user ID:', newProfile.id);
       const { data: createdProfile, error: createError } = await db.createUserProfile(newProfile);
       
       if (createError) {
@@ -63,7 +63,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return createBasicProfile(supabaseUser);
       }
       
-      console.log('Successfully created new profile:', createdProfile?.email);
+      console.log('Successfully created new profile for user ID:', createdProfile?.id);
       return createdProfile || createBasicProfile(supabaseUser);
     } catch (error: unknown) {
       console.error('Error creating user profile:', error);
@@ -77,7 +77,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Helper to fetch complete user profile from database
   const fetchUserProfile = useCallback(async (supabaseUser: SupabaseUser): Promise<User | null> => {
     const startTime = Date.now();
-    console.log(`fetchUserProfile called with: ${supabaseUser?.email} at ${new Date().toLocaleTimeString()}`);
+    console.log(`fetchUserProfile called for user ID: ${supabaseUser?.id} at ${new Date().toLocaleTimeString()}`);
     if (!supabaseUser) {
       console.log('fetchUserProfile: No supabase user, returning null');
       return null;
@@ -106,7 +106,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
 
       if (profile) {
-        console.log(`fetchUserProfile: Found existing profile (${duration}ms):`, profile.email);
+        console.log(`fetchUserProfile: Found existing profile (${duration}ms) for user ID:`, profile.id);
         return profile;
       } else {
         console.log(`fetchUserProfile: No profile found (${duration}ms), creating new one...`);
@@ -143,10 +143,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
 
         if (supabaseUser) {
-          console.log('AuthContext: Fetching user profile...', supabaseUser.email);
+          console.log('AuthContext: Fetching user profile for user ID:', supabaseUser.id);
           const userProfile = await fetchUserProfile(supabaseUser);
           if (isMounted) {
-            console.log('AuthContext: User profile fetched:', userProfile?.email);
+            console.log('AuthContext: User profile fetched for user ID:', userProfile?.id);
             setUser(userProfile);
             setLoading(false);
             console.log('AuthContext: Loading set to false (success case)');
@@ -174,7 +174,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (!isMounted) return;
         
         const authSession = session as Session | null;
-        console.log('Auth state change:', event, authSession?.user?.email);
+        console.log('Auth state change:', event, 'user ID:', authSession?.user?.id);
         
         // Only handle specific events to avoid unnecessary calls
         if (event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED') {
@@ -186,7 +186,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             console.log('AuthContext: User signed in, fetching profile...');
             const userProfile = await fetchUserProfile(authSession.user);
             if (isMounted) {
-              console.log('AuthContext: User profile from state change:', userProfile?.email);
+              console.log('AuthContext: User profile from state change for user ID:', userProfile?.id);
               setUser(userProfile);
               setLoading(false);
               console.log('AuthContext: Loading set to false (state change)');
