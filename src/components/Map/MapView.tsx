@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -154,6 +154,33 @@ const FitBounds: React.FC<{
   return null;
 };
 
+// ⚡ Bolt Optimization: Moved pure functions outside component body (module scope)
+// to prevent unnecessary memory reallocation and recreation on every render.
+const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
+  const R = 6371; // Radius of the Earth in kilometers
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a =
+    Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLon/2) * Math.sin(dLon/2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  return R * c;
+};
+
+const getAvailabilityLevel = (lot: ParkingLot): 'high' | 'medium' | 'low' => {
+  const percentage = (lot.availableSpaces / lot.totalSpaces) * 100;
+  if (percentage > 50) return 'high';
+  if (percentage > 20) return 'medium';
+  return 'low';
+};
+
+const getParkingType = (lot: ParkingLot): 'car' | 'bike' | 'both' => {
+  if (lot.carSpaces > 0 && lot.bikeSpaces > 0) return 'both';
+  if (lot.bikeSpaces > 0) return 'bike';
+  return 'car';
+};
+
 const MapView: React.FC<MapViewProps> = ({
   parkingLots,
   center = [37.7749, -122.4194], // Default to San Francisco
@@ -195,19 +222,6 @@ const MapView: React.FC<MapViewProps> = ({
     }
   }, [showUserLocation]);
 
-  // Calculate distance between two points
-  const calculateDistance = useCallback((lat1: number, lon1: number, lat2: number, lon2: number): number => {
-    const R = 6371; // Radius of the Earth in kilometers
-    const dLat = (lat2 - lat1) * Math.PI / 180;
-    const dLon = (lon2 - lon1) * Math.PI / 180;
-    const a = 
-      Math.sin(dLat/2) * Math.sin(dLat/2) +
-      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
-      Math.sin(dLon/2) * Math.sin(dLon/2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-    return R * c;
-  }, []);
-
   // Filter and process parking lots based on criteria
   // ⚡ Bolt Optimization: Use a single pass reduce to prevent O(3N) multiple array iterations.
   const filteredParkingLots = useMemo(() => {
@@ -234,22 +248,7 @@ const MapView: React.FC<MapViewProps> = ({
       acc.push({ ...lot, distance });
       return acc;
     }, []);
-  }, [parkingLots, userLocation, filters, calculateDistance]);
-
-  // Get availability level for color coding
-  const getAvailabilityLevel = (lot: ParkingLot): 'high' | 'medium' | 'low' => {
-    const percentage = (lot.availableSpaces / lot.totalSpaces) * 100;
-    if (percentage > 50) return 'high';
-    if (percentage > 20) return 'medium';
-    return 'low';
-  };
-
-  // Get parking type for icon
-  const getParkingType = (lot: ParkingLot): 'car' | 'bike' | 'both' => {
-    if (lot.carSpaces > 0 && lot.bikeSpaces > 0) return 'both';
-    if (lot.bikeSpaces > 0) return 'bike';
-    return 'car';
-  };
+  }, [parkingLots, userLocation, filters]);
 
   // Error boundary for map rendering
   if (mapError) {

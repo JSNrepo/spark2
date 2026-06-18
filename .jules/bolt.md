@@ -57,3 +57,9 @@
 ## 2024-05-24 - Component Memory Re-allocation
 **Learning:** Static arrays or objects defined inside a functional component body are re-allocated in memory on every render. Even if the array content is completely static, the memory reference changes, causing unnecessary garbage collection and potentially triggering re-renders in child components that receive them as props.
 **Action:** Always extract completely static arrays or objects (like static config tabs, notification item lists, or static feature lists) outside the React component body to the module scope to prevent unnecessary memory allocations.
+## 2026-06-18 - Prevent Context API Re-render Avalanches
+**Learning:** Returning a newly created object as the `value` in a React Context Provider (e.g., `return <Context.Provider value={{ a, b }}>`) causes every consuming component to re-render whenever the Provider re-renders, regardless of whether the actual values inside changed.
+**Action:** Always wrap the Provider's `value` object in `useMemo` with the appropriate state variables as dependencies to stabilize the reference.
+## 2026-06-18 - Hooks and Dependencies in Context
+**Learning:** When passing functions to a `useMemo` block or as `value` in a Context, ensure they are wrapped in `useCallback`. Omitting them from the dependency array will cause linting errors and possible stale closures, but failing to wrap them in `useCallback` will cause them to be recreated on every render, thus invalidating the `useMemo` optimization.
+**Action:** Always wrap functions destined for Context Values or `useMemo` arrays in `useCallback`.
