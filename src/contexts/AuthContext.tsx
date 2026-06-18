@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { User as SupabaseUser, Session } from '@supabase/supabase-js';
 import { User } from '../types';
 import { auth, db } from '../lib/supabase';
@@ -209,7 +209,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
   }, [fetchUserProfile]);
 
-  const signIn = async (email: string, password: string): Promise<boolean> => {
+  const signIn = useCallback(async (email: string, password: string): Promise<boolean> => {
     try {
       const { error } = await auth.signIn(email, password);
       if (error) {
@@ -224,9 +224,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.error('Sign in error:', error);
       return false;
     }
-  };
+  }, []);
 
-  const signUp = async (email: string, password: string, userData: Record<string, unknown>): Promise<boolean> => {
+  const signUp = useCallback(async (email: string, password: string, userData: Record<string, unknown>): Promise<boolean> => {
     try {
       const { error } = await auth.signUp(email, password, userData);
       if (error) {
@@ -241,9 +241,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.error('Sign up error:', error);
       return false;
     }
-  };
+  }, []);
 
-  const signOut = async (): Promise<void> => {
+  const signOut = useCallback(async (): Promise<void> => {
     try {
       await auth.signOut();
       setUser(null);
@@ -252,15 +252,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       toast.error('Error signing out');
       console.error('Sign out error:', error);
     }
-  };
+  }, []);
 
-  const value = {
+  // ⚡ Bolt Optimization: Wrap context value in useMemo to prevent unnecessary re-renders in all consumers
+  const value = useMemo(() => ({
     user,
     loading,
     signIn,
     signUp,
     signOut,
-  };
+  }), [user, loading, signIn, signUp, signOut]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
