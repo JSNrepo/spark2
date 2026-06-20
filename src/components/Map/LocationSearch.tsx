@@ -183,7 +183,7 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
           setGettingLocation(false);
         }
       },
-      (error) => {
+      (error: GeolocationPositionError) => {
         console.error('Error getting location:', error);
         let errorMessage = 'Unable to get your current location.';
         
