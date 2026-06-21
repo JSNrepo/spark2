@@ -235,6 +235,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ![Contact Owner Focus](public/contact-owner-focus.png)
 *Contact Owner Button Focus States*
 
+![Contact Owner Focus Aria](public/contact-owner-focus-aria.png)
+*Added aria-hidden to decorative phone icon in Contact Owner Button*
+
 
 ## Screenshots & Demo Videos
 - `public/space-provider-password-toggle.png` - Visual verification of the password visibility toggle in the Space Provider Registration page.

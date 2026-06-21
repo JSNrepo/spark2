@@ -327,7 +327,7 @@ const ParkingLotDetails: React.FC = () => {
 
               <div className="text-center">
                 <button className="text-blue-600 hover:text-blue-700 text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 rounded px-2 py-1">
-                  <Phone className="h-4 w-4 inline mr-1" />
+                  <Phone className="h-4 w-4 inline mr-1" aria-hidden="true" />
                   Contact Owner
                 </button>
               </div>
