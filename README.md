@@ -235,6 +235,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ![Contact Owner Focus](public/contact-owner-focus.png)
 *Contact Owner Button Focus States*
 
+![Footer Social Link Focus](public/footer-social-focus.png)
+*Footer Social Link Focus States and Semantic Labels*
+
 ![Contact Owner Focus Aria](public/contact-owner-focus-aria.png)
 *Added aria-hidden to decorative phone icon in Contact Owner Button*
 

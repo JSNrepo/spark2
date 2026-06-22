@@ -48,3 +48,7 @@
 ## 2024-06-07 - Semantic grouping and focus for hidden radio buttons
 **Learning:** In custom card-style radio inputs where the native `<input type="radio">` is visually hidden (e.g., using `sr-only`), it inherently loses visible focus. Additionally, wrapping grouped interactive elements like these in a generic `<label>` or `<div>` removes semantic grouping for screen readers.
 **Action:** Wrap the group in `<fieldset>` and `<legend>` for semantics, and add a `focus-within` styling class (like `focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2`) to the parent `<label>` wrapper to ensure keyboard users see a clear focus indicator on the card itself when the inner native radio is focused.
+
+## 2024-06-22 - Icon-Only Link Accessibility
+**Learning:** Icon-only links (like social media links) often lack accessible names, making them difficult to interact with for screen reader users. Furthermore, missing focus indicators makes them invisible for keyboard navigation users.
+**Action:** Always provide an explicit accessible name using `aria-label` or `title`, hide the decorative inner icon element with `aria-hidden="true"`, and apply distinct focus styles such as `focus:outline-none focus-visible:ring-2` to all interactive icon-only elements.
