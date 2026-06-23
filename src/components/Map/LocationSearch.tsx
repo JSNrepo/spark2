@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Search, MapPin, Navigation, X, Loader } from 'lucide-react';
+import toast from 'react-hot-toast';
 import Input from '../UI/Input';
 import Button from '../UI/Button';
 
@@ -106,6 +107,7 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
         return; // Ignore abort errors
       }
       console.error('Error searching location:', error);
+      toast.error('Failed to search location. Please try again.');
       setResults([]);
     } finally {
       if (!currentController.signal.aborted) {
@@ -177,6 +179,7 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
           }
         } catch (error: unknown) {
           console.error('Error getting address:', error);
+          toast.error('Failed to retrieve current location address.');
           setQuery('Current Location');
           onLocationSelect(latitude, longitude, 'Current Location');
         } finally {
@@ -199,7 +202,7 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
             break;
         }
         
-        alert(errorMessage);
+        toast.error(errorMessage);
         setGettingLocation(false);
       },
       {
