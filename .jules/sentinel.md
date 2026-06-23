@@ -29,3 +29,7 @@
 **Vulnerability:** User email addresses were being logged in plain text via `console.log` statements in the authentication context during the sign-in and profile-fetching processes.
 **Learning:** Client-side logs are often exposed to end-users or retained in browser developer tools, making the logging of Personally Identifiable Information (PII) a privacy violation and security risk.
 **Prevention:** Avoid logging sensitive data (such as emails or passwords) in `console.log` statements. Instead, use opaque identifiers, such as user IDs, for client-side debugging logs.
+## 2026-06-23 - PII Leakage in Database Queries
+**Vulnerability:** Full database rows (profiles, bookings, parking lots) containing sensitive user details (emails, phone numbers, vehicle plates) were being exposed in plaintext client-side via `console.log` statements for debugging.
+**Learning:** Logging entire response objects from APIs or database calls can inadvertently expose Personally Identifiable Information (PII) to end-users and malicious actors inspecting the client console, violating privacy standards.
+**Prevention:** Avoid logging complete data objects in production or client-facing environments. When debugging is necessary, log only structural metadata like aggregate counts (`data?.length`) or opaque identifiers (`data?.id`) instead of the full payload.

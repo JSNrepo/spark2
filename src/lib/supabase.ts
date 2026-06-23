@@ -142,7 +142,7 @@ export const db = {
         .eq('isActive', true)
         .single();
 
-      console.log('getParkingLot result:', { data, error });
+      console.log('getParkingLot result:', { id: data?.id, error });
       return { data, error };
     } catch (err: unknown) {
       console.error('Database error in getParkingLot:', err);
@@ -189,7 +189,7 @@ export const db = {
         .eq('providerId', providerId)
         .order('createdAt', { ascending: false });
         
-      console.log('getProviderParkingLots result:', { data, error });
+      console.log('getProviderParkingLots result:', { count: data?.length, error });
       return { data, error };
     } catch (err: unknown) {
       console.error('Database error in getProviderParkingLots:', err);
@@ -254,7 +254,7 @@ export const db = {
         .eq('userId', userId)
         .order('createdAt', { ascending: false });
         
-      console.log('getUserBookings result:', { data, error });
+      console.log('getUserBookings result:', { count: data?.length, error });
       return { data, error };
     } catch (err: unknown) {
       console.error('Database error in getUserBookings:', err);
@@ -319,7 +319,7 @@ export const db = {
         .eq('id', id)
         .single();
         
-      console.log(`getUserProfile: Query result - data:`, data, 'error:', error);
+      console.log(`getUserProfile: Query result - profileId:`, data?.id, 'error:', error);
       return { data, error };
     } catch (err: unknown) {
       console.error('Database error in getUserProfile:', err);
@@ -388,7 +388,7 @@ export const db = {
         .eq('parking_lots.providerId', providerId)
         .order('createdAt', { ascending: false });
         
-      console.log('getProviderBookings result:', { data, error });
+      console.log('getProviderBookings result:', { count: data?.length, error });
       return { data, error };
     } catch (err: unknown) {
       console.error('Database error in getProviderBookings:', err);
