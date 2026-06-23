@@ -88,7 +88,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const { data: profile, error } = await db.getUserProfile(supabaseUser.id);
       const duration = Date.now() - startTime;
 
-      console.log(`fetchUserProfile: Database query completed in ${duration}ms`, { profile, error });
+      console.log(`fetchUserProfile: Database query completed in ${duration}ms`, { profileId: profile?.id, error });
 
       if (error) {
         console.error(`Error fetching user profile (${duration}ms):`, error);
