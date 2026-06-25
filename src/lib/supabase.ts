@@ -13,6 +13,8 @@ interface DbFilters {
   distance?: number;
   availability?: string;
   vehicleType?: 'car' | 'bike' | 'both';
+  sortBy?: 'price' | 'rating' | 'distance';
+  sortOrder?: 'asc' | 'desc';
   abortSignal?: AbortSignal;
 }
 
@@ -102,7 +104,19 @@ export const db = {
         }
       }
 
-      query = query.order('createdAt', { ascending: false });
+      if (filters.sortBy) {
+        if (filters.sortBy === 'price') {
+          query = query.order('hourlyRate', { ascending: filters.sortOrder === 'asc' });
+        } else if (filters.sortBy === 'rating') {
+          query = query.order('rating', { ascending: filters.sortOrder === 'asc' });
+        } else if (filters.sortBy === 'distance') {
+          // Distance sorting requires PostGIS, which might not be set up in the database.
+          // By default, fallback to order by createdAt if it's not supported or handle client side.
+          query = query.order('createdAt', { ascending: false });
+        }
+      } else {
+        query = query.order('createdAt', { ascending: false });
+      }
 
       if (filters.abortSignal) {
         query = query.abortSignal(filters.abortSignal);

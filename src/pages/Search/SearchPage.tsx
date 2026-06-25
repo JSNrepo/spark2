@@ -32,6 +32,7 @@ const SearchPage: React.FC = () => {
     availability: 'any',
     vehicleType: 'any',
   });
+  const [sortOption, setSortOption] = useState<string>('relevance');
 
   const loadParkingLots = useCallback(async (signal?: AbortSignal) => {
     try {
@@ -39,6 +40,33 @@ const SearchPage: React.FC = () => {
       setError(null);
 
       const location = searchParams.get('location');
+
+      let sortBy: 'price' | 'rating' | 'distance' | undefined;
+      let sortOrder: 'asc' | 'desc' | undefined;
+
+      switch (sortOption) {
+        case 'price-asc':
+          sortBy = 'price';
+          sortOrder = 'asc';
+          break;
+        case 'price-desc':
+          sortBy = 'price';
+          sortOrder = 'desc';
+          break;
+        case 'distance':
+          sortBy = 'distance';
+          sortOrder = 'asc';
+          break;
+        case 'rating':
+          sortBy = 'rating';
+          sortOrder = 'desc';
+          break;
+        case 'relevance':
+        default:
+          sortBy = undefined;
+          sortOrder = undefined;
+      }
+
       const dbFilters = {
         address: location ?? undefined,
         minPrice: filters.priceRange[0],
@@ -50,6 +78,8 @@ const SearchPage: React.FC = () => {
         distance: filters.distance,
         availability: filters.availability,
         vehicleType: filters.vehicleType === 'any' ? undefined : filters.vehicleType as 'car' | 'bike' | 'both',
+        sortBy,
+        sortOrder,
         abortSignal: signal,
       };
 
@@ -80,7 +110,7 @@ const SearchPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }, [searchParams, filters]);
+  }, [searchParams, filters, sortOption]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -194,12 +224,16 @@ const SearchPage: React.FC = () => {
               {parkingLots.length} parking {parkingLots.length === 1 ? 'space' : 'spaces'} found
               {searchParams.get('location') && ` near "${searchParams.get('location')}"`}
             </span>
-            <select className="border rounded px-3 py-1">
-              <option>Sort by: Relevance</option>
-              <option>Sort by: Price (Low to High)</option>
-              <option>Sort by: Price (High to Low)</option>
-              <option>Sort by: Distance</option>
-              <option>Sort by: Rating</option>
+            <select
+              className="border rounded px-3 py-1"
+              value={sortOption}
+              onChange={(e) => setSortOption(e.target.value)}
+            >
+              <option value="relevance">Sort by: Relevance</option>
+              <option value="price-asc">Sort by: Price (Low to High)</option>
+              <option value="price-desc">Sort by: Price (High to Low)</option>
+              <option value="distance">Sort by: Distance</option>
+              <option value="rating">Sort by: Rating</option>
             </select>
           </div>
         </div>
