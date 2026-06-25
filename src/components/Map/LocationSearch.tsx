@@ -45,7 +45,15 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
     }
   }, [value]);
 
-    useEffect(() => {
+  useEffect(() => {
+    return () => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
         setShowResults(false);
