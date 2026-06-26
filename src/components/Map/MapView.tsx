@@ -181,9 +181,12 @@ const getParkingType = (lot: ParkingLot): 'car' | 'bike' | 'both' => {
   return 'car';
 };
 
-const MapView: React.FC<MapViewProps> = ({
+// ⚡ Bolt Optimization: Wrap the MapView component in React.memo() to protect this heavy component
+// from unnecessary re-renders when the parent component (e.g., SearchPage) frequently updates its state
+// (like during text input keystrokes in LocationSearch).
+const MapView: React.FC<MapViewProps> = React.memo(({
   parkingLots,
-  center = [37.7749, -122.4194], // Default to San Francisco
+  center = [37.7749, -122.4194] as [number, number], // Default to San Francisco
   zoom = 13,
   onLocationSelect,
   showUserLocation = false,
@@ -431,6 +434,6 @@ const MapView: React.FC<MapViewProps> = ({
       </div>
     </div>
   );
-};
+});
 
 export default MapView;

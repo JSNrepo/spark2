@@ -63,3 +63,6 @@
 ## 2026-06-18 - Hooks and Dependencies in Context
 **Learning:** When passing functions to a `useMemo` block or as `value` in a Context, ensure they are wrapped in `useCallback`. Omitting them from the dependency array will cause linting errors and possible stale closures, but failing to wrap them in `useCallback` will cause them to be recreated on every render, thus invalidating the `useMemo` optimization.
 **Action:** Always wrap functions destined for Context Values or `useMemo` arrays in `useCallback`.
+## 2024-06-26 - Protect Heavy Components with React.memo()
+**Learning:** Heavy components like maps (`MapView` utilizing `react-leaflet`) can cause significant performance degradation (input lag) if they are re-rendered on every keystroke when their parent component (e.g., `SearchPage`) updates state to capture user input from search bars.
+**Action:** Wrap heavy child components in `React.memo()` to protect them from unnecessary re-renders when the parent component frequently updates its state. Ensure that all props passed to these components are properly stabilized (e.g., using `useCallback` or `useMemo`).
