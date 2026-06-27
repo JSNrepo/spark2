@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Calendar, Clock, MapPin, Car, Bike, CreditCard, QrCode, Phone, Download, Star } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -15,6 +15,15 @@ const BookingDetails: React.FC = () => {
   const [booking, setBooking] = useState<Booking | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const timeoutRef = useRef<NodeJS.Timeout>();
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
   const loadBookingDetails = useCallback(async () => {
     if (!id) return;
@@ -123,17 +132,21 @@ const BookingDetails: React.FC = () => {
   const handlePaymentAction = () => {
     if (!booking) return;
     
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
     if (booking.paymentStatus === 'pending') {
       // Simulate payment processing
       toast.loading('Processing payment...', { duration: 2000 });
-      setTimeout(() => {
+      timeoutRef.current = setTimeout(() => {
         setBooking({ ...booking, paymentStatus: 'paid' });
         toast.success('Payment completed successfully!');
       }, 2000);
     } else if (booking.paymentStatus === 'failed') {
       // Retry payment
       toast.loading('Retrying payment...', { duration: 2000 });
-      setTimeout(() => {
+      timeoutRef.current = setTimeout(() => {
         setBooking({ ...booking, paymentStatus: 'paid' });
         toast.success('Payment completed successfully!');
       }, 2000);
