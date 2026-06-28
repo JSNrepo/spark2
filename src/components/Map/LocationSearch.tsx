@@ -50,6 +50,9 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
       if (debounceRef.current) {
         clearTimeout(debounceRef.current);
       }
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
     };
   }, []);
 
