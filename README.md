@@ -217,6 +217,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ### Accessibility Enhancements
 
+![Breadcrumb Aria Current Accessibility](public/breadcrumb-aria-current.png)
+*Breadcrumb Aria Current Accessibility State*
+[Watch Demo Video](public/breadcrumb-aria-current.webm)
+
+
 ![Register Role Selection Focus](public/register_focus.png)
 *Register Page Custom Radio Focus States*
 

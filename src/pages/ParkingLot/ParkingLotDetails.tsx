@@ -134,7 +134,7 @@ const ParkingLotDetails: React.FC = () => {
           <span>/</span>
           <Link to="/search" className="hover:text-blue-600">Search</Link>
           <span>/</span>
-          <span className="text-gray-900">{parkingLot.name}</span>
+          <span className="text-gray-900" aria-current="page">{parkingLot.name}</span>
         </nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
