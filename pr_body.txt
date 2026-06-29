@@ -1,11 +1,12 @@
-# Agent Run Log
+### What you discovered
+- Breadcrumb navigation paths in `ParkingLotDetails.tsx` lack proper accessibility markup.
+- The active/current page item (`{parkingLot.name}`) didn't have `aria-current="page"`.
+- This missing attribute prevents screen readers from announcing which breadcrumb represents the currently viewed page.
 
-## What I discovered
-During the execution, I scanned the repository for isolated issues such as unhandled errors and resource leaks. I found that the `LocationSearch` component (`src/components/Map/LocationSearch.tsx`) was instantiating an `AbortController` (via `abortControllerRef`) to cancel in-flight API requests, but the `useEffect` cleanup hook on component unmount did not invoke the `abort()` method on the controller. This oversight could lead to memory leaks and invalid state updates if an unmounted component's HTTP request resolves asynchronously.
+### What you fixed/added
+- Added `aria-current="page"` to the final breadcrumb item (`<span className="text-gray-900">{parkingLot.name}</span>`) in `src/pages/ParkingLot/ParkingLotDetails.tsx`.
+- This change aligns with the standard accessibility pattern for breadcrumbs, making it clearer for assistive technologies to determine the current step in the user's location.
+- Updated README.md with screenshots and a video of the feature.
 
-## What I fixed/added
-- I updated the cleanup function in the `useEffect` hook in `src/components/Map/LocationSearch.tsx` to safely call `abortControllerRef.current?.abort()`. This correctly signals the `AbortController` to cancel any pending `fetch` calls, preventing both potential race conditions and updates on an unmounted component.
-- The change was thoroughly checked, passing the existing TS, ESLint, and Vite build verifications.
-
-## Next Recommended Target
-I recommend identifying any further occurrences of unhandled error cases (e.g. Supabase DB calls silently swallowing PostgREST errors or not checking `.ok` on raw `fetch` calls in other files), or reviewing the codebase for missing type hints in complex form payloads.
+### Next Recommended Target
+- Investigate other pages utilizing similar breadcrumb patterns (e.g. `BookingPage.tsx` or similar routes) to ensure consistency in accessibility markup for active elements across the app.
