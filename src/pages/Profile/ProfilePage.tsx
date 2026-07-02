@@ -9,7 +9,7 @@ import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
 import Input from '../../components/UI/Input';
 import toast from 'react-hot-toast';
-import { db } from '../../lib/supabase';
+import { db, auth } from '../../lib/supabase';
 
 const profileSchema = z.object({
   firstName: z.string().min(2, 'First name must be at least 2 characters').max(50, 'First name is too long'),
@@ -98,11 +98,12 @@ const ProfilePage: React.FC = () => {
     }
   };
 
-  const onPasswordSubmit = async (_formData: PasswordFormData) => {
+  const onPasswordSubmit = async (formData: PasswordFormData) => {
     setLoading(true);
     try {
-      // In a real app, you'd update the password
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+      const { error } = await auth.updatePassword(formData.newPassword);
+      if (error) throw error;
+
       toast.success('Password updated successfully!');
       passwordForm.reset();
     } catch (error: unknown) {

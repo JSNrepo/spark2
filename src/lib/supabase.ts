@@ -66,6 +66,11 @@ export const auth = {
     return { user, error };
   },
 
+  updatePassword: async (password: string) => {
+    const { data, error } = await supabase.auth.updateUser({ password });
+    return { data, error };
+  },
+
   onAuthStateChange: (callback: (event: string, session: unknown) => void) => {
     return supabase.auth.onAuthStateChange(callback);
   },
