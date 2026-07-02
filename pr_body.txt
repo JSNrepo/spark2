@@ -1,12 +1,5 @@
-### What you discovered
-- Breadcrumb navigation paths in `ParkingLotDetails.tsx` lack proper accessibility markup.
-- The active/current page item (`{parkingLot.name}`) didn't have `aria-current="page"`.
-- This missing attribute prevents screen readers from announcing which breadcrumb represents the currently viewed page.
-
-### What you fixed/added
-- Added `aria-current="page"` to the final breadcrumb item (`<span className="text-gray-900">{parkingLot.name}</span>`) in `src/pages/ParkingLot/ParkingLotDetails.tsx`.
-- This change aligns with the standard accessibility pattern for breadcrumbs, making it clearer for assistive technologies to determine the current step in the user's location.
-- Updated README.md with screenshots and a video of the feature.
-
-### Next Recommended Target
-- Investigate other pages utilizing similar breadcrumb patterns (e.g. `BookingPage.tsx` or similar routes) to ensure consistency in accessibility markup for active elements across the app.
+🚨 Severity: CRITICAL
+💡 Vulnerability: Path traversal vulnerability in `uploadParkingLotImage` function where the `path` argument was directly concatenated into the filename without sanitization when uploading parking lot images.
+🎯 Impact: Attackers could potentially use path traversal characters (like `../`) in the `path` parameter to store files in unintended directories or potentially overwrite other resources in the Supabase storage bucket.
+🔧 Fix: Sanitized the `path` parameter using a regex to allow only alphanumeric characters, hyphens, and underscores before constructing the filename.
+✅ Verification: The application builds successfully and tests pass.

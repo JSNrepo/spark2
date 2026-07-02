@@ -33,3 +33,8 @@
 **Vulnerability:** Full database rows (profiles, bookings, parking lots) containing sensitive user details (emails, phone numbers, vehicle plates) were being exposed in plaintext client-side via `console.log` statements for debugging.
 **Learning:** Logging entire response objects from APIs or database calls can inadvertently expose Personally Identifiable Information (PII) to end-users and malicious actors inspecting the client console, violating privacy standards.
 **Prevention:** Avoid logging complete data objects in production or client-facing environments. When debugging is necessary, log only structural metadata like aggregate counts (`data?.length`) or opaque identifiers (`data?.id`) instead of the full payload.
+
+## 2026-07-02 - Ensure Path Sanitization for Supabase Storage Uploads
+**Vulnerability:** Path traversal vulnerability in `uploadParkingLotImage` function where the `path` argument was directly concatenated into the filename without sanitization when uploading parking lot images.
+**Learning:** Depending entirely on external file type checks and implicit file system behavior is insufficient. User-supplied (or component-supplied) path prefixes could contain path traversal characters (like `../`), allowing attackers to store files in unintended directories or potentially overwrite other resources.
+**Prevention:** Always explicitly sanitize directory paths and filenames constructed with user-provided or variable parameters (e.g., using `path.replace(/[^a-zA-Z0-9_-]/g, '')`) before calling Supabase storage upload methods.
