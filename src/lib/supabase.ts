@@ -457,7 +457,8 @@ export const db = {
         throw new Error('Invalid file extension.');
       }
 
-      const fileName = `${path}-${crypto.randomUUID()}.${fileExt}`;
+      const sanitizedPath = path.replace(/[^a-zA-Z0-9_-]/g, '');
+      const fileName = `${sanitizedPath}-${crypto.randomUUID()}.${fileExt}`;
 
       const { error: uploadError } = await supabase.storage
         .from('parking-lot-images')
