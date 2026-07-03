@@ -29,7 +29,7 @@ const Header: React.FC = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
+          <nav aria-label="Main navigation" className="hidden md:flex items-center space-x-8">
             <Link
               to="/search"
               className="text-gray-700 hover:text-blue-600 transition-colors font-medium"
@@ -159,7 +159,7 @@ const Header: React.FC = () => {
               exit={{ opacity: 0, height: 0 }}
               className="md:hidden border-t border-gray-200 py-4"
             >
-              <nav className="flex flex-col space-y-4">
+              <nav aria-label="Mobile navigation" className="flex flex-col space-y-4">
                 <Link
                   to="/search"
                   className="text-gray-700 hover:text-blue-600 transition-colors font-medium"

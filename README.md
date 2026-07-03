@@ -250,6 +250,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Screenshots & Demo Videos
 - `public/space-provider-password-toggle.png` - Visual verification of the password visibility toggle in the Space Provider Registration page.
 ### Accessibility Enhancements
+- Added semantic ARIA labels (`aria-label`) to `<nav>` elements across the application (Header, Breadcrumbs, Profile Settings) for better screen reader experience.
+
+![Navigation ARIA Labels](public/header-a11y.png)
+
 - Replaced generic `div` wrappers with semantic `fieldset` and `legend` elements for grouped inputs (Price Range and Features) in the `AdvancedFilters` component to ensure screen readers correctly associate the group title with its interactive elements.
 
 ![Advanced Filters Accessibility](public/advanced-filters-a11y.png)

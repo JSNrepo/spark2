@@ -126,7 +126,7 @@ const ProfilePage: React.FC = () => {
           {/* Sidebar */}
           <div className="lg:col-span-1">
             <Card className="p-4">
-              <nav className="space-y-1">
+              <nav aria-label="Profile settings" className="space-y-1">
                 {tabs.map((tab) => {
                   const Icon = tab.icon;
                   return (
