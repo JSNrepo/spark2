@@ -247,10 +247,13 @@ const Home: React.FC = () => {
                 viewport={{ once: true }}
               >
                 <Card className="overflow-hidden h-full">
+                  {/* ⚡ Bolt Optimization: Lazy load off-screen images to improve page load performance and save bandwidth */}
                   <img
                     src={step.image}
                     alt={step.title}
                     className="w-full h-48 object-cover"
+                    loading="lazy"
+                    decoding="async"
                   />
                   <div className="p-6">
                     <div className="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center text-xl font-bold mb-4">
@@ -307,10 +310,13 @@ const Home: React.FC = () => {
                     "{testimonial.content}"
                   </p>
                   <div className="flex items-center">
+                    {/* ⚡ Bolt Optimization: Lazy load off-screen images to improve page load performance and save bandwidth */}
                     <img
                       src={testimonial.avatar}
                       alt={testimonial.name}
                       className="w-12 h-12 rounded-full object-cover mr-4"
+                      loading="lazy"
+                      decoding="async"
                     />
                     <div>
                       <p className="font-semibold text-gray-900">{testimonial.name}</p>
